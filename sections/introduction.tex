@@ -1,0 +1,21 @@
+Dense SLAM(Simultaneous Localisation and Mapping) has proven to be an effective paradigm for the reconstruction of scenes of moderate size,
+with much research on the topic driven by the availablility of consumer grade depth sensing equipment. However, there is a heavy reliance on
+descriptive geometry in the scene when there is a lack of texture. Less descriptive geometry leads to an increase in camera tracking error
+and causes inconsistencies when a loop closure event occurs.
+
+As object reconstruction can be seen as a smaller scale equivelant of the scene based dense reconstruction problem, it too is prone to the
+tracking drift and loop closure problem, sometimes to a prohibitive level. Often it may be desirable to perform object reconstruction
+in an interactive way, for example, as a component of a scene understanding system, or to procure training data for the object in question.
+With a high level of interaction comes an exacerbation of the aformentioned shortcomings of dense SLAM, particulary due to the potential
+for frequent, repetetive motion. This is the problem that is addressed in this work.
+
+In this paper we present a probabilistic object reconstruction framework for in hand reconstruction of rigid objects based on object
+appearances. The framework facilitates the correction of camera tracking drift by representing the object to be reconstructed as a
+collection of overlapping subsegments such that deformations may be inferred to keep the subsegments aligned, resulting in a consistent
+overall model. We utilise a volumetric representation for each of these object subsegments, as with many larger scale reconstruction
+systems. Each voxel in the subsegments has additional appearance posterior information pertaining to the voxels membership of the object.
+Over time, multiple volumes containing both surface and probabilistic appearance information are maintained and manipulated to yield a
+robust and temporally consistent model.
+
+In addition, to further increase the robustness of the object tracking, a novel tracking procedure is used, utilising appearance features
+in image space. Finally, the optimum object shape is optimised for within a continuous max flow framework.
