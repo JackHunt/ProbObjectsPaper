@@ -1,0 +1,15 @@
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.swp
+*.synctex.gz
+*.tcp
+*.toc
+*.*~
+*.tps
+.DS_Store
+paper_draft.pdf
+auto
+sections/auto
