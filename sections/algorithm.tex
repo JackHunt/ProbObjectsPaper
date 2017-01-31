@@ -26,11 +26,14 @@ set of poses over time.
 This gives rise to the following analytical formulation of the above distribution:-
 
 \begin{equation}
+\begin{split}
 P(\mathbf{\Phi}, \mathbf{\Omega}, \mathbf{p}, \mathbf{u}, \mathbf{L}) = 
-\prod_{v \in \mathcal{V}}P(\mathbf{\Phi}|\mathbf{u}_{v})
-\prod_{t=0}^{\infty}\prod_{p \in \mathcal{P}}\prod_{(s, s') \in \mathcal{S}}P(\mathbf{u_{v}}|\mathbf{\Omega}_{p, t}, \mathbf{p}_{t}, \mathbf{L}_{(s, s')})
-P(\mathbf{L}_{(s, s')}|\mathbf{\Omega}_{p, t}, \mathbf{p}_{t})
+\prod_{v \in \mathcal{V}}P(\mathbf{\Phi}|\mathbf{u}_{v}) 
+\prod_{t=0}^{\infty}\prod_{p \in \mathcal{P}}\prod_{(s, s') \in \mathcal{S}}\\
+P(\mathbf{u_{v}}|\mathbf{\Omega}_{p, t}, \mathbf{p}_{t}, \mathbf{L}_{(s, s')})
+P(\mathbf{L}_{(s, s')}|\mathbf{\Omega}_{p, t}, \mathbf{p}_{t})\\
 P(\mathbf{L}_{(s, s')})P(\mathbf{p}_{t})P(\mathbf{\Omega}_{p, t})
+\end{split}
 \end{equation}
 Where $\mathcal{V}$ is the set of voxels across all sub volumes, $\mathcal{P}$ is the set of RGBD pixels for a given 
 frame and $\mathcal{S}$ is the set of sub volumes.
@@ -38,11 +41,12 @@ frame and $\mathcal{S}$ is the set of sub volumes.
 However, if one were to assume temporal and pixel wise independence in the RGBD observations and temporal independence in 
 the poses, the plate containing $\mathbf{\Omega}$ and $\mathbf{p}$ can be removed:-
 \begin{equation}
+\begin{split}
 P(\mathbf{\Phi}, \mathbf{\Omega}, \mathbf{p}, \mathbf{u}, \mathbf{L}) = 
 \prod_{v \in \mathcal{V}}P(\mathbf{\Phi}|\mathbf{u}_{v})
-\prod_{(s, s') \in \mathcal{S}}P(\mathbf{u_{v}}|\mathbf{\Omega}, \mathbf{p}, \mathbf{L}_{(s, s')})
-P(\mathbf{L}_{(s, s')}|\mathbf{\Omega}, \mathbf{p})
-P(\mathbf{L}_{(s, s')})P(\mathbf{p})P(\mathbf{\Omega})
+\prod_{(s, s') \in \mathcal{S}}P(\mathbf{u_{v}}|\mathbf{\Omega}, \mathbf{p}, \mathbf{L}_{(s, s')})\\
+P(\mathbf{L}_{(s, s')}|\mathbf{\Omega}, \mathbf{p}) P(\mathbf{L}_{(s, s')})P(\mathbf{p})P(\mathbf{\Omega})
+\end{split}
 \end{equation}
 
 Furthermore, if one assumes voxel wise independence, the plate over voxels can be removed. Finally, assuming $P(\mathbf{p})$ and 
@@ -54,11 +58,13 @@ $P(\mathbf{\Omega})$ are uniform distributions, then we have the following, simp
 
 With the following analytical form:-
 \begin{equation}
+\begin{split}
 P(\mathbf{\Phi}, \mathbf{\Omega}, \mathbf{p}, \mathbf{u}, \mathbf{L}) = 
 P(\mathbf{\Phi}|\mathbf{u})
-\prod_{(s, s') \in \mathcal{S}}P(\mathbf{u}|\mathbf{\Omega}, \mathbf{p}, \mathbf{L}_{(s, s')})
+\prod_{(s, s') \in \mathcal{S}}P(\mathbf{u}|\mathbf{\Omega}, \mathbf{p}, \mathbf{L}_{(s, s')})\\
 P(\mathbf{L}_{(s, s')}|\mathbf{\Omega}, \mathbf{p})
 P(\mathbf{L}_{(s, s')})
+\end{split}
 \end{equation}
 
 \subsection{Inferring Deformations}
@@ -70,9 +76,11 @@ the objective is to infer a robust, consistent deformation transformation for th
 
 As such, for each pair of visible subvolumes $(s, s')$, the following posterior must be maximised:-
 \begin{equation}
+\begin{split}
 %Bayes rule + chain rule for P(omega, p)
 P(\mathbf{\Omega}, \mathbf{p} | \mathbf{L}_{(s, s')}) = \frac{P(\mathbf{L}_{(s, s')} | \mathbf{\Omega}, \mathbf{p}) P(\mathbf{\Omega} | \mathbf{p})P(\mathbf{p})}
 {P(\mathbf{L}_{(s, s')})}
+\end{split}
 \end{equation}
 The intuition behind the above equation is that the deformation $\mathbf{L}_{(s, s')}$ applied to the probability field $\mathbf{u}$ should 
 increase the probability of observing the current pose $\mathbf{p}$ given the current RGBD frame $\mathbf{\Omega}$ by reducing the 
@@ -86,20 +94,29 @@ gradient based optimisation routine is used to refine the inferred transformatio
 
 The following proportionality to the distribution over deformations is made:-
 \begin{equation}
+\begin{split}
 P(\mathbf{L}_{(s, s')} | \mathbf{\Omega}, \mathbf{p}) \propto P(F_{s}(\mathbf{x}) | F_{s'}(G(\mathbf{x})))
+\end{split}
 \end{equation}
 With the likelihood function taking the following form(a Gaussian distribution is assumed):-
 \begin{equation}
+\begin{split}
 P(F_{s'}(G(\mathbf{x}))) = \prod_{(s, s') \in \mathcal{S}} \frac{1}{\sqrt{2 \pi \sigma}} \exp{\frac{-(F_{s}(\mathbf{x}) - F_{s'}(G(\mathbf{x})))^2}{2\sigma^2}}
+\end{split}
 \end{equation}
 Or alternatively:-
 \begin{equation}
-\ln P(F_{s'}(G(\mathbf{x}))) = m\ln\frac{1}{\sqrt{2\pi}\sigma} -\frac{1}{2\sigma^2} \sum_{(s, s') \in \mathcal{S}} \bigg( F_{s}(\mathbf{x}) - F_{s'}(G(\mathbf{x})) \bigg)^2
+\begin{split}
+\ln P(F_{s'}(G(\mathbf{x}))) = m\ln\frac{1}{\sqrt{2\pi}\sigma}\\
+-\frac{1}{2\sigma^2} \sum_{(s, s') \in \mathcal{S}} \bigg( F_{s}(\mathbf{x}) - F_{s'}(G(\mathbf{x})) \bigg)^2
+\end{split}
 \end{equation}
 Where $F(.)$ is a scalar valued SDF(Signed Distance Function), $\mathbf{x}$ is a point represented by a 3-vector, and $G(.)$ is a transformation function taking
 the following form:-
 \begin{equation}
+\begin{split}
 G(\mathbf{x}) = \mathbf{R}(r_{1}, r_{2}, r_{3})\mathbf{x} + \mathbf{t}
+\end{split}
 \end{equation}
 Where $\mathbf{R}(.)$ is a rotation matrix from the Special Orthogonal group $\mathbbm{SO}(3)$ paramaterised by the three Modified 
 Rodrigues Parameters\cite{Shuster1993} $r_{1}$, $r_{2}$ and $r_{3}$.
@@ -109,11 +126,15 @@ to be maximised in terms of the likelihood term of equation 4. To perform MLE(Ma
 an optimisation routine such as Levenberg Marquardt, the following gradients must be computed for the rotational component of the 
 deformation:-
 \begin{equation}
+\begin{split}
 \frac{\partial E}{\partial r_{n}} = \frac{\partial E}{\partial F} \frac{\partial F}{\partial G} \frac{\partial G}{\partial r_{n}} \text{for } n \in {1,2,3}
+\end{split}
 \end{equation}
 Similarly for the translational component:-
 \begin{equation}
+\begin{split}
 \frac{\partial E}{\partial \mathbf{t}_{d}} = \frac{\partial E}{\partial F} \frac{\partial F}{\partial G} \frac{\partial G}{\partial \mathbf{t}_{d}} \text{for } d \in {x,y,z}
+\end{split}
 \end{equation}
 
 \subsection{Estimation of Inter-Subvolume Constraints}
@@ -124,19 +145,27 @@ procedure is used to estimate the true pose difference between two subvolumes.
 As such, the update for the starting deformation transformation $\mathbf{L}_{t}$ may be defined in 
 terms of $\mathbf{L}_{t-1}$ and observed offsets transforms between segments $\mathbf{Z_{(s, s')}} = \mathbf{T}_{s}^{-1}\mathbf{T}_{s'}$  in a predict-update fashion, using the following prediction equation:-
 \begin{equation}
+\begin{split}
 P(\mathbf{L}_{i} | \mathbf{Z}_{1:i-1}) = \int P(\mathbf{L}_{i} | \mathbf{L}_{i-1})P(\mathbf{L}_{i-1} | \mathbf{Z}_{1:i-1}) d\mathbf{L}_{i-1}
+\end{split}
 \end{equation}
 and update equation
 \begin{equation}
+\begin{split}
 P(\mathbf{L}_{i} | \mathbf{Z}_{1:i}) = \frac{P(\mathbf{Z}_{i} | \mathbf{L}_{i})P(\mathbf{L}_{i} | \mathbf{Z}_{1:i-1})}{P(\mathbf{Z}_{i} | \mathbf{Z}_{1:i-1})}
+\end{split}
 \end{equation}
 where
 \begin{equation}
+\begin{split}
 P(\mathbf{Z}_{i} | \mathbf{Z}_{1:i-1}) = \int P(\mathbf{Z}_{i} | \mathbf{L}_{i})P(\mathbf{L}_{i} | \mathbf{Z}_{1:i-1}) d\mathbf{L}_{i}
+\end{split}
 \end{equation}
 However, it should be noted that the denominator of the update equation may in practice be replaced with a normalisation constant as follows:-
 \begin{equation}
+\begin{split}
 P(\mathbf{L}_{i} | \mathbf{Z}_{1:i}) = \alpha P(\mathbf{Z}_{i} | \mathbf{L}_{i})P(\mathbf{L}_{i} | \mathbf{Z}_{1:i-1})
+\end{split}
 \end{equation}
 Note that in the above equations, the constraint pair subscript has been dropped for clarity in notation.
 
