@@ -15,29 +15,10 @@ posterior higher for the foreground are rendered.
 As previously highlighted, central to the proposed system is a volume of posterior probabilities pertaining to a voxels membership of an object 
 point versus a background scene point. This allows one to formulate the full joint distribution over the object as the following Probabilistic 
 Graphical Model:-
-\iffalse
 \begin{figure}[h]
 	\centering
-	\tikz{
-		%Declare nodes.
-		\node[latent] (phi) {$\mathbf{\Phi}$};
-		\node[latent, right=of phi] (u) {$\mathbf{u}$};
-		\node[latent, below=of u] (L) {$\mathbf{L}$};
-		\node[latent, right=of u, yshift=-1cm] (omega) {$\mathbf{\Omega}$};
-		\node[latent, right=of u, yshift=1cm] (p) {$\mathbf{p}$};
-		
-		%Setup plates.
-		\plate[inner sep=0.25cm] {plate1} {(omega) (p)} {t, p};
-		\plate[inner sep=0.25cm] {plate2} {(u)} {v};
-		\plate[inner sep=0.25cm] {plate3} {(L)} {(s, s')};
-		
-		%Setup edges.
-		\edge {omega, p} {u, L}
-		\edge {L} {u}
-		\edge {u} {phi}
-	}
+	\includegraphics{graphical_models/pgm1.pdf}
 \end{figure}
-\fi
 Where $\mathbf{\Phi}$ is the shape to be reconstructed, $\mathbf{u}$ is the appearance model volume, $\mathbf{L}$ is the 
 set of consistency constraints for each adjacent sub volume pair, $\mathbf{\Omega}$ is the set of RGBD image pixels and $\mathbf{p}$ the 
 set of poses over time.
@@ -66,27 +47,10 @@ P(\mathbf{L}_{(s, s')})P(\mathbf{p})P(\mathbf{\Omega})
 
 Furthermore, if one assumes voxel wise independence, the plate over voxels can be removed. Finally, assuming $P(\mathbf{p})$ and 
 $P(\mathbf{\Omega})$ are uniform distributions, then we have the following, simpler distribution:-
-\iffalse
 \begin{figure}[h]
 	\centering
-	\tikz{
-		%Declare nodes.
-		\node[latent] (phi) {$\mathbf{\Phi}$};
-		\node[latent, right=of phi] (u) {$\mathbf{u}$};
-		\node[latent, below=of u] (L) {$\mathbf{L}$};
-		\node[latent, right=of u, yshift=-1cm] (omega) {$\mathbf{\Omega}$};
-		\node[latent, right=of u, yshift=1cm] (p) {$\mathbf{p}$};
-		
-		%Setup plates.
-		\plate[inner sep=0.25cm] {plate3} {(L)} {(s, s')};
-		
-		%Setup edges.
-		\edge {omega, p} {u, L}
-		\edge {L} {u}
-		\edge {u} {phi}
-	}
+	\includegraphics{graphical_models/pgm2.pdf}
 \end{figure}
-\fi
 
 With the following analytical form:-
 \begin{equation}
