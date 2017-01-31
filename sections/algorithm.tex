@@ -1,4 +1,4 @@
-\subsection*{Representation and Fusion Procedure}
+\subsection{Representation and Fusion Procedure}
 The proposed system is inspired by\cite{Kolev2006} in that the representation used for the shape of the object to be modelled is a volume 
 of probabilities, pertaining to posteriors over a voxels assignment to being either on the objects surface or not. In the proposed system this 
 volume of posterior probabilities is `fused' into with each frame, much like the fusion process in systems such as KinectFusion\cite{Newcombe2011} 
@@ -11,10 +11,11 @@ features of each class, foreground and background. During the fusion process, th
 colour observation for a voxel and posterior's are computed and updated accordingly in the probability volume. Only those voxels with a 
 posterior higher for the foreground are rendered.
 
-\subsection*{Probabilistic Formulation of Object Reconstruction}
+\subsection{Probabilistic Formulation of Object Reconstruction}
 As previously highlighted, central to the proposed system is a volume of posterior probabilities pertaining to a voxels membership of an object 
 point versus a background scene point. This allows one to formulate the full joint distribution over the object as the following Probabilistic 
 Graphical Model:-
+\iffalse
 \begin{figure}[h]
 	\centering
 	\tikz{
@@ -36,6 +37,7 @@ Graphical Model:-
 		\edge {u} {phi}
 	}
 \end{figure}
+\fi
 Where $\mathbf{\Phi}$ is the shape to be reconstructed, $\mathbf{u}$ is the appearance model volume, $\mathbf{L}$ is the 
 set of consistency constraints for each adjacent sub volume pair, $\mathbf{\Omega}$ is the set of RGBD image pixels and $\mathbf{p}$ the 
 set of poses over time.
@@ -64,6 +66,7 @@ P(\mathbf{L}_{(s, s')})P(\mathbf{p})P(\mathbf{\Omega})
 
 Furthermore, if one assumes voxel wise independence, the plate over voxels can be removed. Finally, assuming $P(\mathbf{p})$ and 
 $P(\mathbf{\Omega})$ are uniform distributions, then we have the following, simpler distribution:-
+\iffalse
 \begin{figure}[h]
 	\centering
 	\tikz{
@@ -83,6 +86,7 @@ $P(\mathbf{\Omega})$ are uniform distributions, then we have the following, simp
 		\edge {u} {phi}
 	}
 \end{figure}
+\fi
 
 With the following analytical form:-
 \begin{equation}
@@ -93,7 +97,7 @@ P(\mathbf{L}_{(s, s')}|\mathbf{\Omega}, \mathbf{p})
 P(\mathbf{L}_{(s, s')})
 \end{equation}
 
-\subsection*{Inferring Deformations}
+\subsection{Inferring Deformations}
 The tracking consistency constraint denoted by the variable $\mathbf{L}$ in the above graphical model can be enforced in terms of minimising the 
 transformations between adjacent submaps, such that the camera poses tracked in each subvolume are consistent. This follows the approach 
 of\cite{Kahler2016}.  However, the approach proposed in this work differs in that the optimisation is integrated in to the probabilistic 
@@ -148,7 +152,7 @@ Similarly for the translational component:-
 \frac{\partial E}{\partial \mathbf{t}_{d}} = \frac{\partial E}{\partial F} \frac{\partial F}{\partial G} \frac{\partial G}{\partial \mathbf{t}_{d}} \text{for } d \in {x,y,z}
 \end{equation}
 
-\subsection*{Estimation of Inter-Subvolume Constraints}
+\subsection{Estimation of Inter-Subvolume Constraints}
 Due to the on-line nature of the fusion pipeline there is a degree of uncertainty around the measured offsets between subvolumes. As such, to 
 counter this and yield a robust starting constraint for the previously described optimisation procedure, a recursive bayesian estimation 
 procedure is used to estimate the true pose difference between two subvolumes.

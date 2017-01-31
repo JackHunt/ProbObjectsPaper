@@ -1,4 +1,4 @@
-\subsection*{Dense 3D Reconstruction}
+\subsection{Dense 3D Reconstruction}
 Much 3D reconstruction work in recent years has been influenced by the seminal KinectFusion\cite{Newcombe2011} of Newcombe et al in which
 RGBD data was integrated into a volumetric reporesentation of the scene, performing simultaneous tracking and mapping. The end result was
 high quality 3D static scene models. However KinectFusion notably suffered from tracking drift and had no capacity to handle loop closure
@@ -14,7 +14,7 @@ However, a later publication\cite{Kahler2016} from the authors of\cite{Prisacari
 solution based on the splitting of the scene in to sub scenes with pose adjustments made to tracking constraints between them. This approach 
 is pertinent to this work as it inspired the multi subsection approach that we take.
 
-\subsection*{Object Reconstruction}
+\subsection{Object Reconstruction}
 In addition to the larger scale dense SLAM works discussed in the previous section, there has been much work on object reconstruction and 
 object centric SLAM. Ren et al present a probabilistic object tracking and reconstruction system\cite{Ren2013} that like our work builds 
 object reconstructions based on an appearance model. The presented system of Ren et al evolves a level set object representation for voxels that 
