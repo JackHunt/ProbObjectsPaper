@@ -1,15 +1,22 @@
 \subsection{Representation and Fusion Procedure}
 The proposed system is inspired by\cite{Kolev2006} in that the representation used for the shape of the object to be modelled is a volume 
-of probabilities, pertaining to posteriors over a voxels assignment to being either on the objects surface or not. In the proposed system this 
-volume of posterior probabilities is `fused' into with each frame, much like the fusion process in systems such as KinectFusion\cite{Newcombe2011} 
+of probabilities, pertaining to posteriors over a voxels assignment to being either belonging to the object or not. In the proposed system this 
+volume of posterior probabilities is built into with each frame, parallel to the fusion process in systems such as KinectFusion\cite{Newcombe2011} 
 and InfiniTAM\cite{Prisacariu2014}.
 
-The probabilities that are `fused' into the volume are generated from an appearance model, initialised prior to reconstruction by a Maximum 
-Likelihood procedure over the first frame of the RGB image. There are two appearance models, one for the foreground object and one for 
-the background, with the foreground object indicated by a bounding box on the first RGB frame. A normal distribution is fitted over the colour 
-features of each class, foreground and background. During the fusion process, the PDF's of these distributions are evaluated on the latest 
-colour observation for a voxel and posterior's are computed and updated accordingly in the probability volume. Only those voxels with a 
-posterior higher for the foreground are rendered.
+The probabilities that are accumulated into the volume are generated from a Random Forest based appearance model using patch based features encompassing 
+appearance and surface information, such as depth gradients, initialised prior to reconstruction by a user interaction in the first frame. There are two 
+classes in the appearance model, one for the foreground object and one for the background, with the foreground object indicated by a bounding box on the 
+first RGB frame. At each frame a smaller, image sized volume is constructed based on the predictions of the current frame. During the fusion process, this 
+smaller volume is mapped in to as a source of voxel wise appearance probability information. The overall appearance based posterior for a given voxel 
+$\psi \in \mathbf{\Psi}$ takes the following form, where $\mathbf{\Psi}$ is the volume of voxels for which measurements are accumulated, $\mathbf{\Phi}$ 
+is the volume of voxels pertaining to the object, $\mathbf{\Omega}$ is the current image observation and $\mathbf{p}$ is the currently tracked pose:-
+\begin{equation}
+\begin{split}
+P(\psi \in \mathbf{\Phi} | \mathbf{\Omega}, \mathbf{p}) = \prod_{t=0}^{\infty} P(\psi_{t} \in \mathbf{\Phi}_{t} | \mathbf{\Omega}_{t}, \mathbf{p}_{t})
+\end{split}
+\end{equation}
+The above encodes the probability of a voxel belonging to an object as the product of the instantaneous conditionals for observations at each time step.
 
 \subsection{Probabilistic Formulation of Object Reconstruction}
 As previously highlighted, central to the proposed system is a volume of posterior probabilities pertaining to a voxels membership of an object 
@@ -171,3 +178,14 @@ Note that in the above equations, the constraint pair subscript has been dropped
 
 This online prediction-update schema will allow the evolution of pose difference constraints over time increasing their robustness at the time 
 of optimisation of deformations.
+
+\section{Volumetric Object Segmentation}
+The final stage in the proposed object reconstruction pipeline is the segmentation of the object voxels from those that have had measurements fused 
+from the background. This process can be posed as an energy minimisation problem over a cut in voxel space, such that a segmentation in 3D is yielded. The 
+following energy function consists of the unary posterior probabilities over appearance accumulated during the fusion process and an additional pairwise 
+smoothing term representing the physical appearance similarity of the object region represented by the voxel:-
+\begin{equation}
+\begin{split}
+E()
+\end{split}
+\end{equation}
