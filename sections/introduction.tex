@@ -1,21 +1,23 @@
-Dense SLAM(Simultaneous Localisation and Mapping) has proven to be an effective paradigm for the reconstruction of scenes of moderate size,
-with much research on the topic driven by the availablility of consumer grade depth sensing equipment. However, there is a heavy reliance on
+Dense SLAM (Simultaneous Localisation and Mapping) has proven to be an effective paradigm for the reconstruction of moderately-sized scenes,
+with much recent research on the topic driven by the availability of inexpensive, consumer-grade depth sensing equipment. \STUART{This should probably be backed up with some references.} However, there is a heavy reliance on
 descriptive geometry in the scene when there is a lack of texture. Less descriptive geometry leads to an increase in camera tracking error
-and causes inconsistencies when a loop closure event occurs.
+and causes inconsistencies when a loop closure event occurs. \STUART{It's not clear quite what your point is here: trackers that rely purely on geometry fail in the absence of sufficient geometry, and trackers that rely purely on texture fail in the absence of sufficient texture. If you're dealing with scenes in which there isn't much texture, you might be tempted to use a geometry-based tracker, but this will then fail in areas where there isn't sufficient geometry. I'm guessing that your real point is that one of the fundamental difficulties when doing dense SLAM is being able to track the position of the camera with respect to the scene, and that all of the commonly-used cues for such tracking (geometry, texture, etc.) unfortunately have failure modes that crop up quite often in practice. As a result, tracking is a pain, and the challenges it poses are only exacerbated when trying to do object reconstruction, since in that case you have less to track against and therefore encounter the failure modes more often.}
 
-As object reconstruction can be seen as a smaller scale equivelant of the scene based dense reconstruction problem, it too is prone to the
-tracking drift and loop closure problem, sometimes to a prohibitive level. Often it may be desirable to perform object reconstruction
-in an interactive way, for example, as a component of a scene understanding system, or to procure training data for the object in question.
-With a high level of interaction comes an exacerbation of the aformentioned shortcomings of dense SLAM, particulary due to the potential
-for frequent, repetetive motion. This is the problem that is addressed in this work.
+As object reconstruction can be seen as a smaller-scale equivalent of the scene-based dense reconstruction problem, it too is prone to the
+tracking drift and loop closure problem, sometimes to a prohibitive level. \STUART{The tracking problem is harder for small objects even when there isn't much user interaction, because you don't have much to track against. I think that needs stronger emphasis. User interaction also makes life harder, but for reasons (dynamic movement, occlusions, etc.) that are at least partly orthogonal to the scale of the problem.} Often it may be desirable to perform object reconstruction
+in an interactive way, for example, as a component of a scene understanding system, or to procure training data for the object in question. \STUART{Is it obvious that interactivity is desirable / necessary for these things? I think we should explicitly make the argument for it.}
+With a high level of interaction comes an exacerbation of the aforementioned shortcomings of dense SLAM, particularly due to the potential
+for frequent, repetitive motion. This is the problem that is addressed in this work.
 
-In this paper we present a probabilistic object reconstruction framework for in hand reconstruction of rigid objects based on object
+In this paper, we present a probabilistic object reconstruction framework for in-hand reconstruction of rigid objects based on object
 appearances. The framework facilitates the correction of camera tracking drift by representing the object to be reconstructed as a
 collection of overlapping subsegments such that deformations may be inferred to keep the subsegments aligned, resulting in a consistent
 overall model. We utilise a volumetric representation for each of these object subsegments, as with many larger scale reconstruction
-systems. Each voxel in the subsegments has additional appearance posterior information pertaining to the voxels membership of the object.
+systems. \STUART{Victor and Olaf's ECCV 2016 paper should be being cited somewhere in here.} Each voxel in the subsegments has additional appearance posterior information pertaining to the voxel's membership of the object.
 Over time, multiple volumes containing both surface and probabilistic appearance information are maintained and manipulated to yield a
-robust and temporally consistent model.
+robust and temporally-consistent model.
 
 In addition, to further increase the robustness of the object tracking, a novel tracking procedure is used, utilising appearance features
-in image space. Finally, the optimum object shape is optimised for within a continuous max flow framework.
+in image space. Finally, we optimise for the optimum object shape within a continuous max-flow framework.
+
+\STUART{We need to talk about the experiments we've performed at this point, and how they demonstrate the awesomeness of our results. Basically we need to answer the `so what?' question. Why do people need to wake up and care? At the moment, this introduction says, `We did something'. It needs to say, `Here's an exciting problem that everybody has, it's been hard to solve for these reasons, but luckily we're here to help. By building on the great work of Prisacariu, K{\"a}hler, etc.\ and introducing serious additional awesomeness, we completely solve the problem. In comparisons with the state-of-the-art on standard benchmarks for this problem, we blow them out of the water with our amazing results. We include lots of numbers to make this point, together with quite a few pictures to make our paper look pretty. We're off to get a pizza now, but please cite us.'}
