@@ -1,7 +1,7 @@
 
 all: clean cleanpdf pdf bib pdf pdf
 
-name=egpaper_for_review
+name=paper
 
 pdf: *.tex
 	pdflatex $(name).tex
