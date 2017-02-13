@@ -1,52 +1,59 @@
 \subsection{Representation and Fusion Procedure}
-The proposed system is inspired by\cite{Kolev2006} in that the representation used for the shape of the object to be modelled is a volume 
+The representation of the object to be reconstructed makes use of multiple `subvolumes' each pertaining to some patch on the object surface. 
+New subvolumes are started when a sufficient amount of new voxels have been allocated and have had data integrated. By ensuring overlap 
+between the subvolumes, transformations between them can be found. Using the multiple volume approach allows for pose estimation in each 
+volume such that pose estimation discrepancies between subvolumes can be detected and are indicative of pose estimation drift.
+
+The proposed system is inspired by\cite{Kolev2006} in that the representation used for the shape of the object to be modelled is a set of volumes 
 of probabilities, pertaining to posteriors over a voxels assignment to being either belonging to the object or not. In the proposed system this 
 volume of posterior probabilities is built into with each frame, parallel to the fusion process in systems such as KinectFusion\cite{Newcombe2011} 
 and InfiniTAM\cite{Prisacariu2014}.
 
-The probabilities that are accumulated into the volume are generated from a Random Forest based appearance model using patch based features encompassing 
-appearance and surface information, such as depth gradients, initialised prior to reconstruction by a user interaction in the first frame. There are two 
-classes in the appearance model, one for the foreground object and one for the background, with the foreground object indicated by a bounding box on the 
-first RGB frame. At each frame a smaller, image sized volume is constructed based on the predictions of the current frame. During the fusion process, this 
+At each frame a smaller, image sized volume is constructed based on the predictions of the model given the current frame. During the fusion process, this 
 smaller volume is mapped in to as a source of voxel wise appearance probability information. The overall appearance based posterior for a given voxel 
-$\psi \in \mathbf{\Psi}$ takes the following form, where $\mathbf{\Psi}$ is the volume of voxels for which measurements are accumulated, $\mathbf{\Phi}$ 
-is the volume of voxels pertaining to the object, $\mathbf{\Omega}$ is the current image observation and $\mathbf{p}$ is the currently tracked pose:-
+$\psi \in \mathbf{\Psi}$ takes the following form:
 \begin{equation}
 \begin{split}
 P(\psi \in \mathbf{\Phi} | \mathbf{\Omega}, \mathbf{p}) = \prod_{t=0}^{\infty} P(\psi_{t} \in \mathbf{\Phi}_{t} | \mathbf{\Omega}_{t}, \mathbf{p}_{t})
 \end{split}
 \end{equation}
-The above encodes the probability of a voxel belonging to an object as the product of the instantaneous conditionals for observations at each time step.
+where $\mathbf{\Psi}$ is the volume of voxels for which measurements are accumulated, $\mathbf{\Phi}$ 
+is the volume of voxels pertaining to the object, $\mathbf{\Omega}$ is the current image observation and $\mathbf{p}$ is the currently tracked pose
+The above encodes the probability of a voxel belonging to an object as the product of the instantaneous conditionals for observations at each time step. 
+Note that in general $\mathbf{\Phi} \subset \mathbf{\Psi}$, and the use of $\mathbf{\Phi}$ in the above equation is an abuse of notation as in the above 
+$\mathbf{\Phi}$ is a discretisation of the continuous $\mathbf{\Phi}$ in the probabilistic formulation that follows. Finally, note that a conditional 
+independence assumption is made to aid computational tractability in the model.
 
 \subsection{Probabilistic Formulation of Object Reconstruction}
-As previously highlighted, central to the proposed system is a volume of posterior probabilities pertaining to a voxels membership of an object 
-point versus a background scene point. This allows one to formulate the full joint distribution over the object as the following Probabilistic 
-Graphical Model:-
+As previously highlighted, central to the proposed system is a volume of posterior probabilities pertaining to a voxel wise membership of either the 
+object set or the non object set. This allows one to formulate the full joint distribution over the object as the following Probabilistic 
+Graphical Model:
 \begin{figure}[h]
 	\centering
 	\includegraphics{graphical_models/pgm1.pdf}
 \end{figure}
+
 Where $\mathbf{\Phi}$ is the shape to be reconstructed, $\mathbf{u}$ is the appearance model volume, $\mathbf{L}$ is the 
 set of consistency constraints for each adjacent sub volume pair, $\mathbf{\Omega}$ is the set of RGBD image pixels and $\mathbf{p}$ the 
 set of poses over time.
 
-This gives rise to the following analytical formulation of the above distribution:-
+This gives rise to the following analytical formulation of the above distribution:
 
 \begin{equation}
 \begin{split}
 P(\mathbf{\Phi}, \mathbf{\Omega}, \mathbf{p}, \mathbf{u}, \mathbf{L}) = 
-\prod_{v \in \mathcal{V}}P(\mathbf{\Phi}|\mathbf{u}_{v}) 
-\prod_{t=0}^{\infty}\prod_{p \in \mathcal{P}}\prod_{(s, s') \in \mathcal{S}}\\
-P(\mathbf{u_{v}}|\mathbf{\Omega}_{p, t}, \mathbf{p}_{t}, \mathbf{L}_{(s, s')})
-P(\mathbf{L}_{(s, s')}|\mathbf{\Omega}_{p, t}, \mathbf{p}_{t})\\
+\prod_{v \in \mathcal{V}}\prod_{(s, s') \in \mathcal{S}}P(\mathbf{\Phi}|\mathbf{u}_{v}, \mathbf{L}_{(s, s')}) 
+\prod_{t=0}^{\infty}\prod_{p \in \mathcal{P}}\\
+P(\mathbf{u_{v}}|\mathbf{\Omega}_{p, t}, \mathbf{p}_{t})
+P(\mathbf{L}_{(s, s')}|\mathbf{\Omega}_{p, t}, \mathbf{p}_{t})
 P(\mathbf{L}_{(s, s')})P(\mathbf{p}_{t})P(\mathbf{\Omega}_{p, t})
 \end{split}
 \end{equation}
-Where $\mathcal{V}$ is the set of voxels across all sub volumes, $\mathcal{P}$ is the set of RGBD pixels for a given 
+where $\mathcal{V}$ is the set of voxels across all sub volumes, $\mathcal{P}$ is the set of RGBD pixels for a given 
 frame and $\mathcal{S}$ is the set of sub volumes.
 
 However, if one were to assume temporal and pixel wise independence in the RGBD observations and temporal independence in 
-the poses, the plate containing $\mathbf{\Omega}$ and $\mathbf{p}$ can be removed:-
+the poses, the plate containing $\mathbf{\Omega}$ and $\mathbf{p}$ can be removed:
 \begin{equation}
 \begin{split}
 P(\mathbf{\Phi}, \mathbf{\Omega}, \mathbf{p}, \mathbf{u}, \mathbf{L}) = 
@@ -55,24 +62,27 @@ P(\mathbf{\Phi}, \mathbf{\Omega}, \mathbf{p}, \mathbf{u}, \mathbf{L}) =
 P(\mathbf{L}_{(s, s')}|\mathbf{\Omega}, \mathbf{p}) P(\mathbf{L}_{(s, s')})P(\mathbf{p})P(\mathbf{\Omega})
 \end{split}
 \end{equation}
+In practice this temporal independence assumption causes no issues.
 
 Furthermore, if one assumes voxel wise independence, the plate over voxels can be removed. Finally, assuming $P(\mathbf{p})$ and 
-$P(\mathbf{\Omega})$ are uniform distributions, then we have the following, simpler distribution:-
+$P(\mathbf{\Omega})$ are uniform distributions, then we have the following, simpler distribution:
 \begin{figure}[h]
 	\centering
 	\includegraphics{graphical_models/pgm2.pdf}
 \end{figure}
 
-With the following analytical form:-
+With the following analytical form:
 \begin{equation}
 \begin{split}
 P(\mathbf{\Phi}, \mathbf{\Omega}, \mathbf{p}, \mathbf{u}, \mathbf{L}) = 
-P(\mathbf{\Phi}|\mathbf{u})
-\prod_{(s, s') \in \mathcal{S}}P(\mathbf{u}|\mathbf{\Omega}, \mathbf{p}, \mathbf{L}_{(s, s')})\\
+\prod_{(s, s') \in \mathcal{S}} P(\mathbf{\Phi}|\mathbf{u}, \mathbf{L}_{(s, s')})
+P(\mathbf{u}|\mathbf{\Omega}, \mathbf{p})\\
 P(\mathbf{L}_{(s, s')}|\mathbf{\Omega}, \mathbf{p})
 P(\mathbf{L}_{(s, s')})
 \end{split}
 \end{equation}
+
+The above formalisms describe a system in which...
 
 \subsection{Inferring Deformations}
 The tracking consistency constraint denoted by the variable $\mathbf{L}$ in the above graphical model can be enforced in terms of minimising the 
@@ -81,7 +91,7 @@ of\cite{Kahler2016}.  However, the approach proposed in this work differs in tha
 formulation previously outlined. Given instantaneously inferred transforms between subvolumes obtained from tracking results, 
 the objective is to infer a robust, consistent deformation transformation for the subvolume pair.
 
-As such, for each pair of visible subvolumes $(s, s')$, the following posterior must be maximised:-
+As such, for each pair of visible subvolumes $(s, s')$, the following posterior must be maximised:
 \begin{equation}
 \begin{split}
 %Bayes rule + chain rule for P(omega, p)
@@ -99,13 +109,13 @@ subsegments is estimated over time from observed offsets, as documented in the f
 initialise a gradient based maximisation of the above posterior to yield an optimal deformation. The intuition behind this schema is that the 
 gradient based optimisation routine is used to refine the inferred transformations between subsegments, improving robustness.
 
-The following proportionality to the distribution over deformations is made:-
+The following proportionality to the distribution over deformations is made:
 \begin{equation}
 \begin{split}
 P(\mathbf{L}_{(s, s')} | \mathbf{\Omega}, \mathbf{p}) \propto P(F_{s}(\mathbf{x}) | F_{s'}(G(\mathbf{x})))
 \end{split}
 \end{equation}
-With the likelihood function taking the following form(a Gaussian distribution is assumed):-
+With the likelihood function taking the following form(a Gaussian distribution is assumed):
 \begin{equation}
 \begin{split}
 P(F_{s'}(G(\mathbf{x}))) = \prod_{(s, s') \in \mathcal{S}} \frac{1}{\sqrt{2 \pi \sigma}} \exp{\frac{-(F_{s}(\mathbf{x}) - F_{s'}(G(\mathbf{x})))^2}{2\sigma^2}}
@@ -119,7 +129,7 @@ Or alternatively:-
 \end{split}
 \end{equation}
 Where $F(.)$ is a scalar valued SDF(Signed Distance Function), $\mathbf{x}$ is a point represented by a 3-vector, and $G(.)$ is a transformation function taking
-the following form:-
+the following form:
 \begin{equation}
 \begin{split}
 G(\mathbf{x}) = \mathbf{R}(r_{1}, r_{2}, r_{3})\mathbf{x} + \mathbf{t}
@@ -150,7 +160,7 @@ counter this and yield a robust starting constraint for the previously described
 procedure is used to estimate the true pose difference between two subvolumes.
 
 As such, the update for the starting deformation transformation $\mathbf{L}_{t}$ may be defined in 
-terms of $\mathbf{L}_{t-1}$ and observed offsets transforms between segments $\mathbf{Z_{(s, s')}} = \mathbf{T}_{s}^{-1}\mathbf{T}_{s'}$  in a predict-update fashion, using the following prediction equation:-
+terms of $\mathbf{L}_{t-1}$ and observed offsets transforms between segments $\mathbf{Z_{(s, s')}} = \mathbf{T}_{s}^{-1}\mathbf{T}_{s'}$  in a predict-update fashion, using the following prediction equation:
 \begin{equation}
 \begin{split}
 P(\mathbf{L}_{i} | \mathbf{Z}_{1:i-1}) = \int P(\mathbf{L}_{i} | \mathbf{L}_{i-1})P(\mathbf{L}_{i-1} | \mathbf{Z}_{1:i-1}) d\mathbf{L}_{i-1}
@@ -168,7 +178,7 @@ where
 P(\mathbf{Z}_{i} | \mathbf{Z}_{1:i-1}) = \int P(\mathbf{Z}_{i} | \mathbf{L}_{i})P(\mathbf{L}_{i} | \mathbf{Z}_{1:i-1}) d\mathbf{L}_{i}
 \end{split}
 \end{equation}
-However, it should be noted that the denominator of the update equation may in practice be replaced with a normalisation constant as follows:-
+However, it should be noted that the denominator of the update equation may in practice be replaced with a normalisation constant as follows:
 \begin{equation}
 \begin{split}
 P(\mathbf{L}_{i} | \mathbf{Z}_{1:i}) = \alpha P(\mathbf{Z}_{i} | \mathbf{L}_{i})P(\mathbf{L}_{i} | \mathbf{Z}_{1:i-1})
@@ -183,10 +193,16 @@ of optimisation of deformations.
 The final stage in the proposed object reconstruction pipeline is the segmentation of the object voxels from those that have had measurements fused 
 from the background. This process can be posed as an energy minimisation problem over a cut in voxel space, such that a segmentation in 3D is yielded. The 
 following energy function consists of the unary posterior probabilities over appearance accumulated during the fusion process and an additional pairwise 
-smoothing term representing the physical appearance similarity of the object region represented by the voxel:-
+smoothing term representing the physical appearance similarity of the object region represented by the voxel:
 \begin{equation}
 \begin{split}
 TO-DO
 \end{split}
 \end{equation}
 The energy of the cut is minimised by a max-flow procedure as per the max-flow/min-cut theorem.
+
+\section{Implementation Notes}
+The probabilities that are accumulated into the volume are generated from a Random Forest based appearance model using patch based features encompassing 
+appearance and surface information, such as depth gradients, initialised prior to reconstruction by a user interaction in the first frame. There are two 
+classes in the appearance model, one for the foreground object and one for the background, with the foreground object indicated by a bounding box on the 
+first RGB frame.
