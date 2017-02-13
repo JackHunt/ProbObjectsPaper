@@ -1,23 +1,30 @@
 Dense SLAM (Simultaneous Localisation and Mapping) has proven to be an effective paradigm for the reconstruction of moderately-sized scenes,
-with much recent research on the topic driven by the availability of inexpensive, consumer-grade depth sensing equipment. \STUART{This should probably be backed up with some references.} However, there is a heavy reliance on
-descriptive geometry in the scene when there is a lack of texture. Less descriptive geometry leads to an increase in camera tracking error
-and causes inconsistencies when a loop closure event occurs. \STUART{It's not clear quite what your point is here: trackers that rely purely on geometry fail in the absence of sufficient geometry, and trackers that rely purely on texture fail in the absence of sufficient texture. If you're dealing with scenes in which there isn't much texture, you might be tempted to use a geometry-based tracker, but this will then fail in areas where there isn't sufficient geometry. I'm guessing that your real point is that one of the fundamental difficulties when doing dense SLAM is being able to track the position of the camera with respect to the scene, and that all of the commonly-used cues for such tracking (geometry, texture, etc.) unfortunately have failure modes that crop up quite often in practice. As a result, tracking is a pain, and the challenges it poses are only exacerbated when trying to do object reconstruction, since in that case you have less to track against and therefore encounter the failure modes more often.}
+with much recent research on the topic driven by the availability of inexpensive, consumer-grade depth sensing equipment\cite{Newcombe2011,Niessner2013,Prisacariu2014}. 
+However, a prominent problem within the dense SLAM paradigm is that of tracking camera motion with respect to the scene. Two common approaches exploit geometry and texture 
+respectively. However, there are failure cases in both approaches when there is a lack of geometrical or texture based features to which the system must track against. 
+Common issues range from tracking drift, often caused by ambiguity, to complete tracker failure. In addition, the error incurred during loop closure events can be detrimental 
+to tracking quality with the aforementioned approaches. Failure cases for such approaches are only exacerbated when there is 
+less data to track with/against, as is the case with the tracking of an objects pose w.r.t the camera(the inverse to the camera tracking problem).
 
 As object reconstruction can be seen as a smaller-scale equivalent of the scene-based dense reconstruction problem, it too is prone to the
-tracking drift and loop closure problem, sometimes to a prohibitive level. \STUART{The tracking problem is harder for small objects even when there isn't much user interaction, because you don't have much to track against. I think that needs stronger emphasis. User interaction also makes life harder, but for reasons (dynamic movement, occlusions, etc.) that are at least partly orthogonal to the scale of the problem.} Often it may be desirable to perform object reconstruction
-in an interactive way, for example, as a component of a scene understanding system, or to procure training data for the object in question. \STUART{Is it obvious that interactivity is desirable / necessary for these things? I think we should explicitly make the argument for it.}
-With a high level of interaction comes an exacerbation of the aforementioned shortcomings of dense SLAM, particularly due to the potential
-for frequent, repetitive motion. This is the problem that is addressed in this work.
+tracking drift and loop closure problem, sometimes to a prohibitive level. As previously highlighted, the tracking of an objects pose w.r.t the camera is also affected 
+by geometric or texture based ambiguities, caused by a much more focused domain of the data available to the tracking algorithm. For example, when reconstructing an 
+entire scene, all of the data in the current and previous frames is available. When tracking solely an object this is not the case.
 
 In this paper, we present a probabilistic object reconstruction framework for in-hand reconstruction of rigid objects based on object
 appearances. The framework facilitates the correction of camera tracking drift by representing the object to be reconstructed as a
 collection of overlapping subsegments such that deformations may be inferred to keep the subsegments aligned, resulting in a consistent
 overall model. We utilise a volumetric representation for each of these object subsegments, as with many larger scale reconstruction
-systems. \STUART{Victor and Olaf's ECCV 2016 paper should be being cited somewhere in here.} Each voxel in the subsegments has additional appearance posterior information pertaining to the voxel's membership of the object.
+systems\cite{Kahler2016}. Each voxel in the subsegments has additional appearance posterior information pertaining to the voxel's membership of the object.
 Over time, multiple volumes containing both surface and probabilistic appearance information are maintained and manipulated to yield a
 robust and temporally-consistent model.
 
 In addition, to further increase the robustness of the object tracking, a novel tracking procedure is used, utilising appearance features
-in image space. Finally, we optimise for the optimum object shape within a continuous max-flow framework.
+in image space. Finally, we optimise for the optimum object shape within a max-flow framework.
 
-\STUART{We need to talk about the experiments we've performed at this point, and how they demonstrate the awesomeness of our results. Basically we need to answer the `so what?' question. Why do people need to wake up and care? At the moment, this introduction says, `We did something'. It needs to say, `Here's an exciting problem that everybody has, it's been hard to solve for these reasons, but luckily we're here to help. By building on the great work of Prisacariu, K{\"a}hler, etc.\ and introducing serious additional awesomeness, we completely solve the problem. In comparisons with the state-of-the-art on standard benchmarks for this problem, we blow them out of the water with our amazing results. We include lots of numbers to make this point, together with quite a few pictures to make our paper look pretty. We're off to get a pizza now, but please cite us.'}
+We demonstrate an improvement in object reconstruction quality by performing online transformations to the aforementioned subsegments to counteract inconsistencies 
+caused by drift in the object pose tracking process. 
+We perform (...) experiments and demonstrate a significant qualitative improvement. In addition we demonstrate that the proposed system is quantitatively better 
+with regards to (...) by performing (...) experiments.
+
+TO-DO:- Decide upon and perform experiments and expand on this here.
