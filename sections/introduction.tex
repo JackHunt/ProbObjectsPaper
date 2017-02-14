@@ -8,14 +8,14 @@ less data to track with/against, as is the case with the tracking of an object's
 
 As object reconstruction can be seen as a smaller-scale equivalent of the scene-based dense reconstruction problem \STUART{Well, \emph{dense} object reconstruction can be.}, it too is prone to the
 tracking drift and loop closure problem, sometimes to a prohibitive level. As previously highlighted, the tracking of an object's pose w.r.t.\ the camera is also affected 
-by geometric or texture-based ambiguities, caused by a much more focused domain of the data available to the tracking algorithm. For example, when reconstructing an 
-entire scene, all of the data in the current and previous frames is available. When tracking solely an object this is not the case.
+by geometric or texture-based ambiguities, caused by a much more focused domain of the data available to the tracking algorithm. \STUART{Are the ambiguities caused by having less data available? Or are there just fewer unambiguous points available for tracking?} For example, when reconstructing an 
+entire scene, all of the data in the current and previous frames is available. When tracking solely an object this is not the case. \STUART{Well, the data is arguably available, but you only want to use the bits corresponding to the object for tracking.}
 
 In this paper, we present a probabilistic object reconstruction framework for in-hand reconstruction of rigid objects based on object
-appearances. The framework facilitates the correction of camera tracking drift by representing the object to be reconstructed as a
+appearances. \STUART{Are we doing in-hand? Or are we doing things like chairs? Does our in-hand reconstruction work?} The framework facilitates the correction of camera tracking drift by representing the object to be reconstructed as a
 collection of overlapping subsegments such that deformations may be inferred to keep the subsegments aligned, resulting in a consistent
-overall model. We utilise a volumetric representation for each of these object subsegments, as with many larger scale reconstruction
-systems\cite{Kahler2016}. Each voxel in the subsegments has additional appearance posterior information pertaining to the voxel's membership of the object.
+overall model. We utilise a volumetric representation for each of these object subsegments, as with many larger-scale reconstruction
+systems\cite{Kahler2016}. \STUART{Are there many systems that do what \cite{Kahler2016} does? Or is there just this one, and we're using it?} Each voxel in the subsegments has additional appearance posterior information pertaining to the voxel's membership of the object.
 Over time, multiple volumes containing both surface and probabilistic appearance information are maintained and manipulated to yield a
 robust and temporally-consistent model.
 
@@ -23,7 +23,7 @@ In addition, to further increase the robustness of the object tracking, a novel 
 in image space. Finally, we optimise for the optimum object shape within a max-flow framework.
 
 We demonstrate an improvement in object reconstruction quality by performing online transformations to the aforementioned subsegments to counteract inconsistencies 
-caused by drift in the object pose tracking process. 
+caused by drift in the object pose tracking process. \STUART{An improvement in quality with respect to what?}
 We perform (...) experiments and demonstrate a significant qualitative improvement. In addition we demonstrate that the proposed system is quantitatively better 
 with regards to (...) by performing (...) experiments.
 
