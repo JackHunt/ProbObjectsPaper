@@ -1,23 +1,25 @@
 \subsection{Dense 3D Reconstruction}
 Much 3D reconstruction work in recent years has been influenced by the seminal KinectFusion\cite{Newcombe2011} of Newcombe et al in which
-RGBD data was integrated into a volumetric reporesentation of the scene, performing simultaneous tracking and mapping. The end result was
-high quality 3D static scene models. However KinectFusion notably suffered from tracking drift and had no capacity to handle loop closure
+RGBD data was integrated into a volumetric reporesentation \STUART{`representation'} of the scene, performing simultaneous tracking and mapping. The end result was
+high quality 3D static scene models. \STUART{Look back at the related work in the BMVC paper for this!} However KinectFusion notably suffered from tracking drift and had no capacity to handle loop closure
 events.
 
 Following KinectFusion, Neissner et al present another volumetric reconstruction system\cite{Niessner2013} based around the notion of
-hashing regions of space in to voxel blocks. The primary contribution is the ability to scale the abilities of KinectFusion to larger
+hashing regions of space in to voxel blocks. \STUART{There were various works in between these two. See the BMVC paper.} The primary contribution is the ability to scale the abilities of KinectFusion to larger
 scenes. However, the contributions do not extend to the camera tracking drift and loop closure problems.
 
 Prisacariu et al present an alternative voxel hashing based system\cite{Prisacariu2014} which provides many optimisations and an open source 
 implementation. However, the limitations of\cite{Newcombe2011,Niessner2013} with regards to loop closure and tracking drift are still present. 
 However, a later publication\cite{Kahler2016} from the authors of\cite{Prisacariu2014} presents a loop closure and tracking drift reduction 
 solution based on the splitting of the scene in to sub scenes with pose adjustments made to tracking constraints between them. This approach 
-is pertinent to this work as it inspired the multi subsection approach that we take.
+is pertinent to this work as it inspired the multi subsection approach that we take. \STUART{Actually it's deeply pertinent, since we essentially use the code!}
 
 \subsection{Object Reconstruction}
+\STUART{Please see your email for a PDF containing lots of other relevant references for this section.}
+
 In addition to the larger scale dense SLAM works discussed in the previous section, there has been much work on object reconstruction and 
-object centric SLAM. Ren et al present a probabilistic object tracking and reconstruction system\cite{Ren2013} that like our work builds 
-object reconstructions based on an appearance model. The presented system of Ren et al evolves a level set object representation for voxels that 
+object-centric SLAM. Ren et al present a probabilistic object tracking and reconstruction system\cite{Ren2013} \STUART{Put the citation directly after the et al.} that, like our work, builds 
+object reconstructions based on an appearance model. The presented system of Ren et al \STUART{The prose here sounds repetitive.} evolves a level set object representation for voxels that 
 are on the object, as per the appearance model. However, the presented system does not have any provision for loop closure detection and 
 is prone to tracking drift over time.
 
