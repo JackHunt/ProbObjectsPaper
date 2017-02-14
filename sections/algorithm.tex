@@ -31,6 +31,7 @@ Graphical Model:
 \begin{figure}[h]
 	\centering
 	\includegraphics{graphical_models/pgm1.pdf}
+	\caption{Probabilistic formulation of the object reconstruction pipeline.}
 \end{figure}
 
 Where $\mathbf{\Phi}$ is the shape to be reconstructed, $\mathbf{u}$ is the appearance model volume, $\mathbf{L}$ is the 
@@ -69,6 +70,7 @@ $P(\mathbf{\Omega})$ are uniform distributions, then we have the following, simp
 \begin{figure}[h]
 	\centering
 	\includegraphics{graphical_models/pgm2.pdf}
+	\caption{Simplified probabilistic formulation of the object reconstruction pipeline.}
 \end{figure}
 
 With the following analytical form:
@@ -82,12 +84,20 @@ P(\mathbf{L}_{(s, s')})
 \end{split}
 \end{equation}
 
-The above formalisms describe a system in which...
+The above formalisms describe a probabilistic framework in which online corrections can be made to the reconstructed model to counteract 
+errors incurred by pose tracking inconsistencies. As with previous dense SLAM systems \cite{Newcombe2011, Prisacariu2014, Neissner2013}, 
+our system follows a pipeline that consists of a tracking stage and an integration stage. However, our formulation of this pipeline 
+consists of an additional estimation module that relies on the use of a subvolume representation to correct tracking errors by applying 
+transformations to the subsegments to align them when there are intra subsegment tracking inconsistencies. 
+As previously described, during reconstruction the object is split in to subsegments, also referred to in a technical context as subvolumes, 
+with the pose estimation performed in each of the active, visible subsegments. The pose estimation stage for each of these subsegments follows 
+the standard ICP(Iterated Closest Point) approach.
+As inference on the joint distribution of our model is intractable, conditional independence assumptions are made that do not appear 
+to cause any functional issues. The estimation phase of the pipeline is described in the following section.
 
-\subsection{Inferring Deformations}
+\subsection{Estimating Deformations}
 The tracking consistency constraint denoted by the variable $\mathbf{L}$ in the above graphical model can be enforced in terms of minimising the 
-transformations between adjacent submaps, such that the camera poses tracked in each subvolume are consistent. This follows the approach 
-of\cite{Kahler2016}.  However, the approach proposed in this work differs in that the optimisation is integrated in to the probabilistic 
+transformations between adjacent submaps, such that the camera poses tracked in each subvolume are consistent.  The approach proposed in this work differs from \cite{Kahler2016} in that the optimisation is integrated in to the probabilistic 
 formulation previously outlined. Given instantaneously inferred transforms between subvolumes obtained from tracking results, 
 the objective is to infer a robust, consistent deformation transformation for the subvolume pair.
 
@@ -106,30 +116,34 @@ of the reconstruction.
 
 The maximisation of the above posterior consists of a two stage process. Firstly, as a preprocessing step, the true transformation between 
 subsegments is estimated over time from observed offsets, as documented in the following section. This inferred transformation is used to 
-initialise a gradient based maximisation of the above posterior to yield an optimal deformation. The intuition behind this schema is that the 
+initialise a gradient based maximisation of the above posterior to yield an optimal deformation as the maximisation of the given posterior is 
+a highly nonlinear optimisation problem. The intuition behind this schema is that the 
 gradient based optimisation routine is used to refine the inferred transformations between subsegments, improving robustness.
+
+It should be noted that in our implementation the $P(\mathbf{\Omega} | \mathbf{p})$ term is assumed to be uniform in the case of an 
+RGBD sensor being used, however for applications such as monocular SLAM this term may be replaced with a noise model when there is 
+significant uncertainty about the given depth map at each frame.
 
 The following proportionality to the distribution over deformations is made:
 \begin{equation}
 \begin{split}
-P(\mathbf{L}_{(s, s')} | \mathbf{\Omega}, \mathbf{p}) \propto P(F_{s}(\mathbf{x}) | F_{s'}(G(\mathbf{x})))
+P(\mathbf{L}_{(s, s')} | \mathbf{\Omega}, \mathbf{p}) \propto P(\mathbf{\Psi}_{s}(\mathbf{x}) | \mathbf{\Psi}_{s'}(G(\mathbf{x})))
 \end{split}
 \end{equation}
 With the likelihood function taking the following form(a Gaussian distribution is assumed):
 \begin{equation}
 \begin{split}
-P(F_{s'}(G(\mathbf{x}))) = \prod_{(s, s') \in \mathcal{S}} \frac{1}{\sqrt{2 \pi \sigma}} \exp{\frac{-(F_{s}(\mathbf{x}) - F_{s'}(G(\mathbf{x})))^2}{2\sigma^2}}
+P(F_{s'}(G(\mathbf{x}))) = \prod_{(s, s') \in \mathcal{S}} \frac{1}{\sqrt{2 \pi \sigma}} \exp{\frac{-(\mathbf{\Psi}_{s}(\mathbf{x}) - \mathbf{\Psi}_{s'}(G(\mathbf{x})))^2}{2\sigma^2}}
 \end{split}
 \end{equation}
 Or alternatively:-
 \begin{equation}
 \begin{split}
-\ln P(F_{s'}(G(\mathbf{x}))) = m\ln\frac{1}{\sqrt{2\pi}\sigma}\\
--\frac{1}{2\sigma^2} \sum_{(s, s') \in \mathcal{S}} \bigg( F_{s}(\mathbf{x}) - F_{s'}(G(\mathbf{x})) \bigg)^2
+\ln P(\mathbf{\Psi}_{s'}(G(\mathbf{x}))) = m\ln\frac{1}{\sqrt{2\pi}\sigma}\\
+-\frac{1}{2\sigma^2} \sum_{(s, s') \in \mathcal{S}} \bigg( \mathbf{\Psi}_{s}(\mathbf{x}) - \mathbf{\Psi}_{s'}(G(\mathbf{x})) \bigg)^2
 \end{split}
 \end{equation}
-Where $F(.)$ is a scalar valued SDF(Signed Distance Function), $\mathbf{x}$ is a point represented by a 3-vector, and $G(.)$ is a transformation function taking
-the following form:
+Where $\mathbf{\Psi}(.)$ is a scalar valued SDF(Signed Distance Function), a dicretised field of $\mathbf{\Phi}$, as previously described. $\mathbf{x}$ is a point represented by a 3-vector and $G(.)$ is a transformation function taking the following form:
 \begin{equation}
 \begin{split}
 G(\mathbf{x}) = \mathbf{R}(r_{1}, r_{2}, r_{3})\mathbf{x} + \mathbf{t}
@@ -154,7 +168,7 @@ Similarly for the translational component:-
 \end{split}
 \end{equation}
 
-\subsection{Estimation of Inter-Subvolume Constraints}
+\subsection{Estimation of Intra-Subvolume Constraints}
 Due to the on-line nature of the fusion pipeline there is a degree of uncertainty around the measured offsets between subvolumes. As such, to 
 counter this and yield a robust starting constraint for the previously described optimisation procedure, a recursive bayesian estimation 
 procedure is used to estimate the true pose difference between two subvolumes.
