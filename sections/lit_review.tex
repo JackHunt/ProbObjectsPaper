@@ -1,10 +1,10 @@
 \subsection{Dense 3D Reconstruction}
 Much 3D reconstruction work in recent years has been influenced by the seminal KinectFusion\cite{Newcombe2011} of Newcombe et al in which
 RGBD data was integrated into a volumetric reporesentation \STUART{`representation'} of the scene, performing simultaneous tracking and mapping. The end result was
-high quality 3D static scene models. \STUART{Look back at the related work in the BMVC paper for this!} However KinectFusion notably suffered from tracking drift and had no capacity to handle loop closure
+high quality 3D static scene models. \STUART{Look back at the related work in the BMVC paper for this. It's arguable that we may also want to mention a few papers that are not based on KinectFusion.} However KinectFusion notably suffered from tracking drift and had no capacity to handle loop closure
 events.
 
-Following KinectFusion, Neissner et al present another volumetric reconstruction system\cite{Niessner2013} based around the notion of
+Following KinectFusion, Neissner et al \STUART{This isn't how you spell Niessner / Nie{\ss}ner.} present another volumetric reconstruction system\cite{Niessner2013} based around the notion of
 hashing regions of space in to voxel blocks. \STUART{There were various works in between these two. See the BMVC paper.} The primary contribution is the ability to scale the abilities of KinectFusion to larger
 scenes. However, the contributions do not extend to the camera tracking drift and loop closure problems.
 
@@ -13,6 +13,8 @@ implementation. However, the limitations of\cite{Newcombe2011,Niessner2013} with
 However, a later publication\cite{Kahler2016} from the authors of\cite{Prisacariu2014} presents a loop closure and tracking drift reduction 
 solution based on the splitting of the scene in to sub scenes with pose adjustments made to tracking constraints between them. This approach 
 is pertinent to this work as it inspired the multi subsection approach that we take. \STUART{Actually it's deeply pertinent, since we essentially use the code!}
+
+\STUART{You should be mentioning other recent works in this section, e.g.\ BundleFusion, `Large-scale and drift-free surface reconstruction using online subvolume registration', etc.}
 
 \subsection{Object Reconstruction}
 \STUART{Please see your email for a PDF containing lots of other relevant references for this section.}
