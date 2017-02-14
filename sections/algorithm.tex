@@ -1,13 +1,13 @@
 \subsection{Representation and Fusion Procedure}
 The proposed system is inspired by\cite{Kolev2006} in that the representation used for the shape of the object to be modelled is a volume 
-of probabilities, pertaining to posteriors over a voxels assignment to being either belonging to the object or not. In the proposed system this 
+of probabilities, pertaining to posteriors over a voxels assignment to being either belonging to the object or not. \STUART{The wording of this needs improvement.} In the proposed system this 
 volume of posterior probabilities is built into with each frame, parallel to the fusion process in systems such as KinectFusion\cite{Newcombe2011} 
 and InfiniTAM\cite{Prisacariu2014}.
 
 The probabilities that are accumulated into the volume are generated from a Random Forest based appearance model using patch based features encompassing 
 appearance and surface information, such as depth gradients, initialised prior to reconstruction by a user interaction in the first frame. There are two 
 classes in the appearance model, one for the foreground object and one for the background, with the foreground object indicated by a bounding box on the 
-first RGB frame. At each frame a smaller, image sized volume is constructed based on the predictions of the current frame. During the fusion process, this 
+first RGB frame. \STUART{Is it true that you're using a bounding box for initialisation rather than a segmentation? If so, why?} At each frame a smaller, image sized volume \STUART{What do you mean by image-sized volume here?} is constructed based on the predictions of the current frame. During the fusion process, this 
 smaller volume is mapped in to as a source of voxel wise appearance probability information. The overall appearance based posterior for a given voxel 
 $\psi \in \mathbf{\Psi}$ takes the following form, where $\mathbf{\Psi}$ is the volume of voxels for which measurements are accumulated, $\mathbf{\Phi}$ 
 is the volume of voxels pertaining to the object, $\mathbf{\Omega}$ is the current image observation and $\mathbf{p}$ is the currently tracked pose:-
