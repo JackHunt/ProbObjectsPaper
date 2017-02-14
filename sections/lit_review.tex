@@ -38,10 +38,10 @@ as with all other works introduced up to this point there is no loop closure abi
 
 Slavcheva et al present a volumetric object reconstruction system for RGBD sensors in which pose estimates are yielded by registering pairs of 
 SDF(Signed Distance Function) volumes. Unlike many of the aforementioned works, the authors do present a loop closure step, however it is 
-performed offline as a post processing step, as such it is unclear what the timings for this step are.
+performed offline as a post processing step, as such it is unclear what the timings for this step are. \STUART{We should email Mira and ask her.}
 
 Finally, Weise et al present an explicit, surfel based object reconstruction system\cite{Weise2009} based on objects rotating in front of a 3D 
 range scanner. During reconstruction an object topology graph is constructed that is used on-line to handle loop closure cases. When a loop 
 closure is detected, if there are discrepancies in the topology graph then deformations are applied locally to patches of the object surface. As 
 such, the two misaligned ends of the surface are realigned. However, what is not clear is the systems ability to handle motion beyond a simple 
-rotation. In addition, the use of the explicit Surfel based representation makes the reconstructed models less amenable to structured  computation(such as processing by a Convolution Neural Network) than their volumetric counterparts.
+rotation. \STUART{Is it not clear that it has the ability, or does it not have the ability? We should avoid weasel words here.} In addition, the use of the explicit Surfel based representation makes the reconstructed models less amenable to structured  computation(such as processing by a Convolution Neural Network) than their volumetric counterparts. \STUART{Meh! -- the `surfels are bad' argument is a weak argument, because the real problem here is the pose estimation / loop closure. If you can get that to work, then you can construct whatever representation you like. The bottom line is that we need to beat these guys fair and square: we can't dodge the bullet by saying that they use a different representation.}
