@@ -5,11 +5,11 @@ between the subvolumes, transformations between them can be found. Using the mul
 volume such that pose estimation discrepancies between subvolumes can be detected and are indicative of pose estimation drift.
 
 The proposed system is inspired by\cite{Kolev2006} in that the representation used for the shape of the object to be modelled is a set of volumes 
-of probabilities, pertaining to posteriors over a voxels assignment to being either belonging to the object or not. \STUART{The wording of this needs improvement.} In the proposed system this 
-volume of posterior probabilities is built into with each frame, parallel to the fusion process in systems such as KinectFusion\cite{Newcombe2011} 
-and InfiniTAM\cite{Prisacariu2014}.
+of probabilities and surface information. The probabilities are posteriors over a per voxel assignment to being either belonging to the object or not. 
+In the proposed system this volume of posterior probabilities is built into with each frame, parallel to the fusion process in systems such 
+as KinectFusion\cite{Newcombe2011} and InfiniTAM\cite{Prisacariu2014}.
 
-At each frame a smaller, image sized volume \STUART{What do you mean by image-sized volume here?} is constructed based on the predictions of the model given the current frame. During the fusion process, this 
+At each frame a probability map is constructed based on the predictions of the model given the current frame. During the fusion process, this 
 smaller volume is mapped in to as a source of voxel wise appearance probability information. The overall appearance based posterior for a given voxel 
 $\psi \in \mathbf{\Psi}$ takes the following form:
 \begin{equation}

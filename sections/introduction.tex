@@ -1,26 +1,36 @@
 Dense SLAM (Simultaneous Localisation and Mapping) has proven to be an effective paradigm for the reconstruction of moderately-sized scenes,
 with much recent research on the topic driven by the availability of inexpensive, consumer-grade depth sensing equipment \cite{Newcombe2011,Niessner2013,Prisacariu2014}. 
-However, a prominent problem within the dense SLAM paradigm is that of tracking camera motion with respect to the scene. \STUART{It's arguable that it's half the point of SLAM, since SLAM involves localisation and mapping, and that's the localisation bit. I would word this slightly differently: it currently sounds a bit self-evident.} Two common approaches exploit geometry and texture 
-respectively. \STUART{I know what you mean, but I wouldn't word it like this. It's common for tracking approaches to exploit geometry and/or texture cues, and various approaches exploit one or both to a greater or lesser extent. However, the way you've worded it sounds like you're talking about two specific approaches, neither of which you cite.} However, there are failure cases in both approaches when there is a lack of geometrical or texture based features to which the system must track against. \STUART{Or more precisely, trackers that rely purely on geometry cues tend to fail when there's no geometry, and trackers that rely purely on texture cues tend to fail when there's no texture. As worded, it's a little vague. I think fixing the previous point will help -- you need to make it clear that you're not talking about two specific approaches.}
-Common issues range from tracking drift, often caused by ambiguity, to complete tracker failure. \STUART{It's not clear precisely what you mean by `ambiguity' here: this needs pinning down. Also, there are various causes of tracking drift beyond what I think you mean. As a separate question: when you talk about `common issues', what other issues did you have in mind?} In addition, the error incurred during loop closure events can be detrimental 
-to tracking quality with the aforementioned approaches. \STUART{It's not obvious to me what you mean by `the aforementioned approaches' here: we're still talking in vague terms about trackers at this point. I think if we're going to point to things that are problematic in existing approaches, we need to make it clear which existing approaches we're talking about.} Failure cases for such approaches are only exacerbated when there is 
-less data to track with/against, as is the case with the tracking of an object's pose w.r.t.\ the camera (the inverse of the camera tracking problem).
+However, a prominent problem within the dense SLAM paradigm is that of accurate pose estimation given potentially erroneous measurements, or a degree of measurement ambiguity. Many common approaches to the problem exploit texture and/or geometry features of the scene to estimate 
+an updated pose at each frame.
 
-As object reconstruction can be seen as a smaller-scale equivalent of the scene-based dense reconstruction problem \STUART{Well, \emph{dense} object reconstruction can be.}, it too is prone to the
-tracking drift and loop closure problem, sometimes to a prohibitive level. As previously highlighted, the tracking of an object's pose w.r.t.\ the camera is also affected 
-by geometric or texture-based ambiguities, caused by a much more focused domain of the data available to the tracking algorithm. \STUART{Are the ambiguities caused by having less data available? Or are there just fewer unambiguous points available for tracking?} For example, when reconstructing an 
-entire scene, all of the data in the current and previous frames is available. When tracking solely an object this is not the case. \STUART{Well, the data is arguably available, but you only want to use the bits corresponding to the object for tracking.}
+However, there are failure cases when there is a lack of geometrical or texture based features to which a system may track against. Purely geometry 
+based approaches may fail with a lack of descriptive geometry, as may texture based approaches with a lack of texture. 
 
-In this paper, we present a probabilistic object reconstruction framework for in-hand reconstruction of rigid objects based on object
-appearances. \STUART{Are we doing in-hand? Or are we doing things like chairs? Does our in-hand reconstruction work?} The framework facilitates the correction of camera tracking drift by representing the object to be reconstructed as a
+Common issues range from tracking drift, often caused by geometrical and/or texture ambiguity, to complete tracker failure. In addition, many dense 
+SLAM systems fail during loop closure events with explicit handling often required. The error incurred during loop closure events can be detrimental 
+to tracking quality in such systems. 
+
+Failure cases for such approaches are only exacerbated when there is less data to track with/against, as is the case with the tracking of an 
+object's pose w.r.t.\ the camera (the inverse of the camera tracking problem).
+
+As dense object reconstruction can be seen as a smaller-scale equivalent of the scene-based dense reconstruction problem, it too is prone to the
+tracking drift and loop closure issues, sometimes to a prohibitive level. As previously highlighted, the tracking of an object's pose w.r.t.\ the camera 
+is also affected by geometric or texture-based ambiguities, caused by a much more focused domain of the data available to the tracking algorithm. 
+Such failure cases may occur with a combination of ambiguous features on the object and a lack of unambiguous features as are often present 
+in the scene based counterpart.
+
+For example, when reconstructing an entire scene, all of the data in the current and previous frames is available for tracking. When tracking solely an object this is not the case as attempting to track an objects movement w.r.t.\ static scene points and dynamic object points would cause a failure 
+event.
+
+In this paper, we present a probabilistic object reconstruction framework for reconstruction of rigid objects based on object
+appearances. The framework facilitates the correction of camera tracking drift by representing the object to be reconstructed as a
 collection of overlapping subsegments such that deformations may be inferred to keep the subsegments aligned, resulting in a consistent
-overall model. We utilise a volumetric representation for each of these object subsegments, as with many larger-scale reconstruction
-systems\cite{Kahler2016}. \STUART{Are there many systems that do what \cite{Kahler2016} does? Or is there just this one, and we're using it?} Each voxel in the subsegments has additional appearance posterior information pertaining to the voxel's membership of the object.
-Over time, multiple volumes containing both surface and probabilistic appearance information are maintained and manipulated to yield a
-robust and temporally-consistent model.
+overall model. We utilise a volumetric representation for each of these object subsegments, as with other larger-scale reconstruction
+systems\cite{Kahler2016}. Each voxel in the subsegments has additional appearance posterior information pertaining to the voxel's membership 
+of the object. Over time, multiple volumes containing both surface and probabilistic appearance information are maintained and manipulated to 
+yield a robust and temporally-consistent model.
 
-In addition, to further increase the robustness of the object tracking, a novel tracking procedure is used, utilising appearance features
-in image space. Finally, we optimise for the optimum object shape within a max-flow framework.
+Finally, we optimise for the optimum object shape within a CRF(Conditional Random Field) framework.
 
 We demonstrate an improvement in object reconstruction quality by performing online transformations to the aforementioned subsegments to counteract inconsistencies 
 caused by drift in the object pose tracking process. \STUART{An improvement in quality with respect to what?}
