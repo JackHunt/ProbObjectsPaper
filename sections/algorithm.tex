@@ -127,26 +127,26 @@ significant uncertainty about the given depth map at each frame.
 The following proportionality to the distribution over deformations is made:
 \begin{equation}
 \begin{split}
-P(\mathbf{L}_{(s, s')} | \mathbf{\Omega}, \mathbf{p}) \propto P(\mathbf{\Psi}_{s}(\mathbf{x}) | \mathbf{\Psi}_{s'}(G(\mathbf{x})))
+P(\mathbf{L}_{(s, s')} | \mathbf{\Omega}, \mathbf{p}) \propto P(\mathbf{\Psi}_{s}(\mathbf{x}) | \mathbf{\Psi}_{s'}(\Lambda(\mathbf{x})))
 \end{split}
 \end{equation}
 With the likelihood function taking the following form(a Gaussian distribution is assumed):
 \begin{equation}
 \begin{split}
-P(F_{s'}(G(\mathbf{x}))) = \prod_{(s, s') \in \mathcal{S}} \frac{1}{\sqrt{2 \pi \sigma}} \exp{\frac{-(\mathbf{\Psi}_{s}(\mathbf{x}) - \mathbf{\Psi}_{s'}(G(\mathbf{x})))^2}{2\sigma^2}}
+P(\mathbf{\Psi}_{s'}(\Lambda(\mathbf{x}))) = \prod_{(s, s') \in \mathcal{S}} \frac{1}{\sqrt{2 \pi \sigma}} \exp{\frac{-(\mathbf{\Psi}_{s}(\mathbf{x}) - \mathbf{\Psi}_{s'}(\Lambda(\mathbf{x})))^2}{2\sigma^2}}
 \end{split}
 \end{equation}
 Or alternatively:-
 \begin{equation}
 \begin{split}
-\ln P(\mathbf{\Psi}_{s'}(G(\mathbf{x}))) = m\ln\frac{1}{\sqrt{2\pi}\sigma}\\
+\ln P(\mathbf{\Psi}_{s'}(\Lambda(\mathbf{x}))) = m\ln\frac{1}{\sqrt{2\pi}\sigma}\\
 -\frac{1}{2\sigma^2} \sum_{(s, s') \in \mathcal{S}} \bigg( \mathbf{\Psi}_{s}(\mathbf{x}) - \mathbf{\Psi}_{s'}(G(\mathbf{x})) \bigg)^2
 \end{split}
 \end{equation}
 Where $\mathbf{\Psi}(.)$ is a scalar valued SDF(Signed Distance Function), a dicretised field of $\mathbf{\Phi}$, as previously described. $\mathbf{x}$ is a point represented by a 3-vector and $G(.)$ is a transformation function taking the following form:
 \begin{equation}
 \begin{split}
-G(\mathbf{x}) = \mathbf{R}(r_{1}, r_{2}, r_{3})\mathbf{x} + \mathbf{t}
+\Lambda(\mathbf{x}) = \mathbf{R}(r_{1}, r_{2}, r_{3})\mathbf{x} + \mathbf{t}
 \end{split}
 \end{equation}
 Where $\mathbf{R}(.)$ is a rotation matrix from the Special Orthogonal group $\mathbbm{SO}(3)$ paramaterised by the three Modified 
@@ -158,16 +158,17 @@ an optimisation routine such as Levenberg Marquardt, the following gradients mus
 deformation:-
 \begin{equation}
 \begin{split}
-\frac{\partial E}{\partial r_{n}} = \frac{\partial E}{\partial F} \frac{\partial F}{\partial G} \frac{\partial G}{\partial r_{n}} \text{for } n \in {1,2,3}
+\frac{\partial E}{\partial r_{n}} = \frac{\partial E}{\partial \mathbf{\Psi}} \frac{\partial \mathbf{\Psi}}{\partial \Lambda} \frac{\partial \Lambda}{\partial r_{n}} \text{for } n \in {1,2,3}
 \end{split}
 \end{equation}
 Similarly for the translational component:-
 \begin{equation}
 \begin{split}
-\frac{\partial E}{\partial \mathbf{t}_{d}} = \frac{\partial E}{\partial F} \frac{\partial F}{\partial G} \frac{\partial G}{\partial \mathbf{t}_{d}} \text{for } d \in {x,y,z}
+\frac{\partial E}{\partial \mathbf{t}_{d}} = \frac{\partial E}{\partial \mathbf{\Psi}} \frac{\partial \mathbf{\Psi}}{\partial \Lambda} \frac{\partial \Lambda}{\partial \mathbf{t}_{d}} \text{for } d \in {x,y,z}
 \end{split}
 \end{equation}
 
+\iffalse
 \subsection{Estimation of Intra-Subvolume Constraints}
 Due to the on-line nature of the fusion pipeline there is a degree of uncertainty around the measured offsets between subvolumes. As such, to 
 counter this and yield a robust starting constraint for the previously described optimisation procedure, a recursive bayesian estimation 
@@ -203,20 +204,42 @@ Note that in the above equations, the constraint pair subscript has been dropped
 This online prediction-update schema will allow the evolution of pose difference constraints over time increasing their robustness at the time 
 of optimisation of deformations.
 
-\section{Volumetric Object Segmentation}
-The final stage in the proposed object reconstruction pipeline is the segmentation of the object voxels from those that have had measurements fused 
-from the background. This process can be posed as an energy minimisation problem over a cut in voxel space, such that a segmentation in 3D is yielded. The 
-following energy function consists of the unary posterior probabilities over appearance accumulated during the fusion process and an additional pairwise 
-smoothing term representing the physical appearance similarity of the object region represented by the voxel:
+\fi
+
+\section{Implicit Surface Deformations}
+In the previous section, a model and estimation procedure was presented to find optimal transformations between the aforementioned subvolumes. When rendering 
+however, the overall object surface $\mathbf{\Phi}$ is implicitly deformed by a combining functional $\mathbf{\zeta}(\mathbf{\Phi})$ over each of the subvolumes to which transformations have been applied.
+As such the rendering of the surface $\mathbf{\Phi}$ is given by the following:
 \begin{equation}
 \begin{split}
-TO-DO
+\mathbf{\Phi} = \int_{\chi \in X} \mathbf{\zeta}(\mathbf{\Phi}_{\chi}) d \mathbf{\Phi}_{\chi}
 \end{split}
 \end{equation}
-The energy of the cut is minimised by a max-flow procedure as per the max-flow/min-cut theorem.
+
+\section{Volumetric Object Segmentation}
+The final stage in the proposed object reconstruction pipeline is the segmentation of the object voxels from those that have had measurements fused 
+from the background. This segmentation is formulated within a CRF framework, where each node in the CRF represents a set of neighbouring voxels in space, 
+with connections being made between adjacent neighbourhoods. The process of segmentation can be posed as an energy minimisation problem over a cut in voxel space, 
+such that a segmentation in 3D is yielded. The following energy functional consists of the unary posterior probabilities over appearance accumulated during the fusion 
+process for a region in space and an additional pairwise smoothing term representing the physical appearance similarity of the object region represented by the voxel 
+neighbourhoods $\gamma$ and $\gamma^{'}$:
+\begin{equation}
+\begin{split}
+E_{n} = \prod_{t=0}^{\infty} \prod_{\psi \in \mathbf{\Phi}_{n}} P(\psi \in \mathbf{\Psi} | \mathbf{\Omega}_{t}, \mathbf{p}_{t}) + P(\mathbb{E}[\mathbf{c}]_{\gamma} | \mathbb{E}[\mathbf{c}]_{\gamma^{'}})
+\end{split}
+\end{equation}
+where $\mathbf{c}$ represents the colour measurement fused in to a voxel, for all $N$ subvolumes.
 
 \section{Implementation Notes}
 The probabilities that are accumulated into the volume are generated from a Random Forest based appearance model using patch based features encompassing 
 appearance and surface information, such as depth gradients, initialised prior to reconstruction by a user interaction in the first frame. There are two 
 classes in the appearance model, one for the foreground object and one for the background, with the foreground object indicated by a bounding box on the 
 first RGB frame.
+
+An overview of the processing pipeline for the proposed system is outlined in Figure \ref{pipelineDiagram}.
+\begin{figure*}[h]
+	\centering
+	\includegraphics[scale=0.5]{pipeline.pdf}
+	\caption{Object reconstruction pipeline.}
+	\label{pipelineDiagram}
+\end{figure*}
