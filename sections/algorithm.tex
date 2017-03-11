@@ -167,6 +167,7 @@ Similarly for the translational component:-
 \frac{\partial E}{\partial \mathbf{t}_{d}} = \frac{\partial E}{\partial \mathbf{\Psi}} \frac{\partial \mathbf{\Psi}}{\partial \Lambda} \frac{\partial \Lambda}{\partial \mathbf{t}_{d}} \text{for } d \in {x,y,z}
 \end{split}
 \end{equation}
+where the gradient $\frac{\partial \mathbf{\Psi}}{\partial \Lambda}$ is found via finite differencing.
 
 \iffalse
 \subsection{Estimation of Intra-Subvolume Constraints}
@@ -208,8 +209,8 @@ of optimisation of deformations.
 
 \section{Implicit Surface Deformations}
 In the previous section, a model and estimation procedure was presented to find optimal transformations between the aforementioned subvolumes. When rendering 
-however, the overall object surface $\mathbf{\Phi}$ is implicitly deformed by a combining functional $\mathbf{\zeta}(\mathbf{\Phi})$ over each of the subvolumes to which transformations have been applied.
-As such the rendering of the surface $\mathbf{\Phi}$ is given by the following:
+however, the overall object surface $\mathbf{\Phi}$ is implicitly deformed by a combining function $\mathbf{\zeta}(\mathbf{\Phi})$ over each of the subvolumes to which transformations have been applied.
+As such the surface $\mathbf{\Phi}$ is given by the following:
 \begin{equation}
 \begin{split}
 \mathbf{\Phi} = \int_{\chi \in X} \mathbf{\zeta}(\mathbf{\Phi}_{\chi}) d \mathbf{\Phi}_{\chi}
@@ -238,7 +239,7 @@ classes in the appearance model, one for the foreground object and one for the b
 first RGB frame.
 
 An overview of the processing pipeline for the proposed system is outlined in Figure \ref{pipelineDiagram}.
-\begin{figure*}[h]
+\begin{figure*}[!t]
 	\centering
 	\includegraphics[scale=0.5]{pipeline.pdf}
 	\caption{Object reconstruction pipeline.}
