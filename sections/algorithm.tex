@@ -158,13 +158,13 @@ an optimisation routine such as Levenberg Marquardt, the following gradients mus
 deformation:-
 \begin{equation}
 \begin{split}
-\frac{\partial E}{\partial r_{n}} = \frac{\partial E}{\partial \mathbf{\Psi}} \frac{\partial \mathbf{\Psi}}{\partial \Lambda} \frac{\partial \Lambda}{\partial r_{n}} \text{for } n \in {1,2,3}
+\frac{\partial E}{\partial r_{n}} = \frac{\partial E}{\partial \mathbf{\Psi}} \frac{\partial \mathbf{\Psi}}{\partial \Lambda} \frac{\partial \Lambda}{\partial r_{n}} \text{for } n \in \{1,2,3\}
 \end{split}
 \end{equation}
 Similarly for the translational component:-
 \begin{equation}
 \begin{split}
-\frac{\partial E}{\partial \mathbf{t}_{d}} = \frac{\partial E}{\partial \mathbf{\Psi}} \frac{\partial \mathbf{\Psi}}{\partial \Lambda} \frac{\partial \Lambda}{\partial \mathbf{t}_{d}} \text{for } d \in {x,y,z}
+\frac{\partial E}{\partial \mathbf{t}_{d}} = \frac{\partial E}{\partial \mathbf{\Psi}} \frac{\partial \mathbf{\Psi}}{\partial \Lambda} \frac{\partial \Lambda}{\partial \mathbf{t}_{d}} \text{for } d \in  \{x,y,z\}
 \end{split}
 \end{equation}
 where the gradient $\frac{\partial \mathbf{\Psi}}{\partial \Lambda}$ is found via finite differencing.
