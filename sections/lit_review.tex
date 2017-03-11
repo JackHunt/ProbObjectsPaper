@@ -6,26 +6,20 @@ However KinectFusion notably suffered from tracking drift and had no capacity to
 events.
 
 Following KinectFusion, Nie{\ss}ner et al present another volumetric reconstruction system\cite{Niessner2013} based around the notion of
-hashing regions of space in to voxel blocks. \STUART{There were various works in between these two. See the BMVC paper.} The primary contribution is the ability to scale the abilities of KinectFusion to larger
+hashing regions of space in to voxel blocks. The primary contribution is the ability to scale the abilities of KinectFusion to larger
 scenes. However, the contributions do not extend to the camera tracking drift and loop closure problems.
 
 Prisacariu et al present an alternative voxel hashing based system\cite{Prisacariu2014} which provides many optimisations and an open source 
 implementation. However, the limitations of\cite{Newcombe2011,Niessner2013} with regards to loop closure and tracking drift are still present. 
 However, a later publication\cite{Kahler2016} from the authors of\cite{Prisacariu2014} presents a loop closure and tracking drift reduction 
-solution based on the splitting of the scene in to sub scenes with pose adjustments made to tracking constraints between them. This approach 
-is extremely pertinent to this work as it inspired the multi subsection approach that we take.
-Dai et al recently introduced a system that improves pose estimation for large scale scenes by considering each previously seen frame within a 
-hierarchical framework and perform sparse feature matching to optimise for the camera pose. However, mismatches between keypoints are reported 
-to have an impact on the robustness of the optimisation procedure.
+solution based on the splitting of the scene in to sub scenes with pose adjustments made to tracking constraints between them, with 
+a pose graph optimisation as a final processing step. This approach is extremely pertinent to this work as it inspired the multi subsection approach 
+that we take. Dai et al recently introduced a system that improves pose estimation for large scale scenes by considering each previously seen frame within a hierarchical framework and perform sparse feature matching to optimise for the camera pose. However, mismatches between keypoints are reported to have an impact on the robustness of the optimisation procedure.
 
 All of the aforementioned voxel based reconstruction works are closely related to and derived from the early work of Curless et al \cite{Curless1996} 
-which introduces the notion of encoding isosurfaces as the zero level of a level set functions.
-
-\STUART{You should be mentioning other recent works in this section, e.g.\ BundleFusion, `Large-scale and drift-free surface reconstruction using online subvolume registration', etc.}
+which introduces the notion of encoding isosurfaces as the zero level of a level set function.
 
 \subsection{Object Reconstruction}
-\STUART{Please see your email for a PDF containing lots of other relevant references for this section.}
-
 In addition to the larger scale dense SLAM works discussed in the previous section, there has been much work on object reconstruction and 
 object-centric SLAM. Ren et al \cite{Ren2013} present a probabilistic object tracking and reconstruction system that, like our work, builds 
 object reconstructions based on an appearance model. The presented system evolves a level set object representation for voxels that 
@@ -33,8 +27,8 @@ are on the object, as per the appearance model. However, the presented system do
 is prone to tracking drift over time.
 
 Kolev et al present a probabilistic 3D segmentation and surface extraction algorithm\cite{Kolev2006} based on a variational evolution of a level 
-set representation. Object appearance probabilities are fused in to the objects volume for the segmentation, much like the approach taken in 
-this paper, such that the algorithm is robust to outliers in the observation images. However, their system does not provide any handling of 
+set representation. Object appearance probabilities are fused in to the objects volume for the segmentation, such that the algorithm is robust to 
+outliers in the observation images. However, their system does not provide any handling of 
 loop closure occurrences and the paper makes no reference to tracking integrity. In addition, the images on which their algorithm was tested 
 contained only the objects to be reconstructed, with no background noise.
 
@@ -45,12 +39,9 @@ as with all other works introduced up to this point there is no loop closure abi
 
 Slavcheva et al present a volumetric object reconstruction system for RGBD sensors in which pose estimates are yielded by registering pairs of 
 SDF(Signed Distance Function) volumes. Unlike many of the aforementioned works, the authors do present a loop closure step, however it is 
-performed offline as a post processing step, as such it is unclear what the timings for this step are. \STUART{We should email Mira and ask her.} 
-In addition, the tracking procedure of the presented work is reliant on the use of fiducial markers.
+performed offline as a post processing step. In addition, the tracking procedure of the presented work is reliant on the use of fiducial markers.
 
 Finally, Weise et al present an explicit, surfel based object reconstruction system\cite{Weise2009} based on objects rotating in front of a 3D 
 range scanner. During reconstruction an object topology graph is constructed that is used on-line to handle loop closure cases. When a loop 
 closure is detected, if there are discrepancies in the topology graph then deformations are applied locally to patches of the object surface. As 
 such, the two misaligned ends of the surface are realigned. In addition, the use of the explicit Surfel based representation makes the reconstructed models less amenable to structured  computation(such as processing by a Convolution Neural Network) than their volumetric counterparts. 
-
-\STUART{Meh! -- the `surfels are bad' argument is a weak argument, because the real problem here is the pose estimation / loop closure. If you can get that to work, then you can construct whatever representation you like. The bottom line is that we need to beat these guys fair and square: we can't dodge the bullet by saying that they use a different representation.}

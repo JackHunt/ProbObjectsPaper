@@ -1,6 +1,6 @@
 Dense SLAM (Simultaneous Localisation and Mapping) has proven to be an effective paradigm for the reconstruction of moderately-sized scenes,
 with much recent research on the topic driven by the availability of inexpensive, consumer-grade depth sensing equipment \cite{Newcombe2011,Niessner2013,Prisacariu2014}. 
-However, a prominent problem within the dense SLAM paradigm is that of accurate pose estimation given potentially erroneous measurements, or a degree of measurement ambiguity. Many common approaches to the problem exploit texture and/or geometry features of the scene to estimate 
+However, a prominent problem within the dense SLAM literature is that of accurate pose estimation given potentially erroneous measurements, or a degree of measurement ambiguity. Many common approaches to the problem exploit texture and/or geometry features of the scene to estimate 
 an updated pose at each frame.
 
 However, there are failure cases when there is a lack of geometrical or texture based features to which a system may track against. Purely geometry 
@@ -22,19 +22,21 @@ in the scene based counterpart.
 For example, when reconstructing an entire scene, all of the data in the current and previous frames is available for tracking. When tracking solely an object this is not the case as attempting to track an objects movement w.r.t.\ static scene points and dynamic object points would cause a failure 
 event.
 
-In this paper, we present a probabilistic object reconstruction framework for reconstruction of rigid objects based on object
+In this paper, we present a probabilistic object reconstruction framework for reconstruction of rigid objects based on 
 appearances. The framework facilitates the correction of camera tracking drift by representing the object to be reconstructed as a
-collection of overlapping subsegments such that deformations may be inferred to keep the subsegments aligned, resulting in a consistent
-overall model. We utilise a volumetric representation for each of these object subsegments, as with other larger-scale reconstruction
+collection of overlapping subsegments such that transformations may be inferred to keep the subsegments aligned, resulting in a consistent
+overall model. By combining these transformed surfaces we extract an implicitly deformed surface optimised for via the probabilistic formulation 
+that follows.
+
+We utilise a volumetric representation for each of these object subsegments, as with other larger-scale reconstruction
 systems\cite{Kahler2016}. Each voxel in the subsegments has additional appearance posterior information pertaining to the voxel's membership 
 of the object. Over time, multiple volumes containing both surface and probabilistic appearance information are maintained and manipulated to 
 yield a robust and temporally-consistent model.
 
 Finally, we optimise for the optimum object shape within a CRF(Conditional Random Field) framework.
 
-We demonstrate an improvement in object reconstruction quality by performing online transformations to the aforementioned subsegments to counteract inconsistencies 
-caused by drift in the object pose tracking process. \STUART{An improvement in quality with respect to what?}
-We perform (...) experiments and demonstrate a significant qualitative improvement. In addition we demonstrate that the proposed system is quantitatively better 
-with regards to (...) by performing (...) experiments.
+We demonstrate an efficacy object reconstruction by performing online transformations to the aforementioned subsegments to counteract inconsistencies caused by drift in the object pose tracking process.
 
-TO-DO:- Decide upon and perform experiments and expand on this here.
+We perform quantitative and qualitative experiments and demonstrate efficacious pose estimation and reconstruction quality respectively. As a base 
+for comparison tracking quality is compared with a well established dense SLAM system \cite{Prisacariu2014} and reconstruction quality with the 
+object reconstruction system outlined in \cite{Ren2013}.
