@@ -32,6 +32,9 @@
 \usepackage{amssymb}
 \usepackage{bbm}
 \usepackage{booktabs}
+%\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{subcaption}
 
 %% We encourage the use of mathptmx for consistent usage of times font
 %% throughout the proceedings. However, if you encounter conflicts
@@ -53,7 +56,7 @@
 
 %% Paper title.
 
-\title{Title}
+\title{Probabilistic Object Reconstruction with Loop Closure}
 
 %% This is how authors are specified in the conference style
 
@@ -68,17 +71,18 @@
 %%\affiliation{\scriptsize Martha Stewart Enterprises \\ Microsoft Research}
 
 %% Author and Affiliation (multiple authors with multiple affiliations)
-\author{Author 1\thanks{email@domain}\\ %
-        \scriptsize Affiliation %
-\and Author 2\thanks{email@domain}\\ %
-     \scriptsize Affiliation %
-\and Author 3\thanks{email@domain}\\ %
-     \parbox{1.4in}{\scriptsize \centering Affiliation}}
-
+\author{Jack Hunt\thanks{jmhunt@robots.ox.ac.uk}\\ %
+        \scriptsize University of Oxford %
+\and Victor Prisacariu\thanks{victor@viprad.net}\\ %
+     \scriptsize University of Oxford %
+\and Stuart Golodetz\thanks{stuart.golodetz@eng.ox.ac.uk}\\ %
+	\scriptsize University of Oxford
+\and Phil Torr\thanks{philip.torr@eng.ox.ac.uk}\\%
+     \parbox{1.4in}{\scriptsize \centering University of Oxford}} 
 %% A teaser figure can be included as follows, but is not recommended since
 %% the space is now taken up by a full width abstract.
 %\teaser{
-%  \includegraphics[width=1.5in]{sample.eps}
+%  \includegraphics[width=1.5in]{deformation.png}
 %  \caption{Lookit! Lookit!}
 %}
 
