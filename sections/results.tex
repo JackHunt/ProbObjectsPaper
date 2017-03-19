@@ -28,28 +28,22 @@ Tracking between the two systems is evaluated w.r.t. ATE(Absolute Trajectory Err
 	\label{ateTable}
 \end{table}
 
-\begin{figure*}[!t]
+\begin{figure}[h]
 	\centering
-	\caption{Trajectories outputted by the InfiniTAM dense SLAM system and our system.}
-	\begin{subfigure}[b]{0.3\textwidth}
-		\centering
-		\includegraphics[scale=0.25]{plots/chairTrajectories.png}
-		\caption{Chair Sequence}
-		\label{chairTrajectory}
-	\end{subfigure}%
-	\begin{subfigure}[b]{0.3\textwidth}
-		\centering
-		\includegraphics[scale=0.25]{plots/chairTrajectories.png}
-		\caption{Chair Sequence}
-		\label{chairTrajectory2}
-	\end{subfigure}%
-	\begin{subfigure}[b]{0.3\textwidth}
-		\centering
-		\includegraphics[scale=0.25]{plots/chairTrajectories.png}
-		\caption{Chair Sequence}
-		\label{chairTrajectory3}
-	\end{subfigure}
-\end{figure*}
+	\begin{tabular}{cccc}
+		\bmvaHangBox{\fbox{\includegraphics[scale=0.25]{plots/chairTrajectories.png}}}&
+		\bmvaHangBox{\fbox{\includegraphics[scale=0.25]{plots/chairTrajectories.png}}}&
+		\bmvaHangBox{\fbox{\includegraphics[scale=0.25]{plots/chairTrajectories.png}}}\\
+		(a)&(b)&(c)&(d)
+	\end{tabular}
+	\caption{
+		\textbf{(a)} Description A.
+		\textbf{(b)} Description B.
+		\textbf{(c)} Description C.
+	}
+\label{fig:tumTrajectories}
+\vspace{-1.5\baselineskip}
+\end{figure}
 
 \subsubsection{Chair Sequence}
 In this sequence a static chair is reconstructed by moving the camera in an approximately circular fashion around with some repetitive camera motion at the end of the sequence to test 

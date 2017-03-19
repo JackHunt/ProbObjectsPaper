@@ -16,11 +16,11 @@ The pose estimation method used in this work is based on the ICP algorithm as us
 the camera or object 6-DoF pose is formulated as a minimisation problem of the following form
 \begin{equation}
 \begin{split}
-E = \sum_{\omega \in \mathbf{\Omega}_{d}} \bigg( \big( \mathbf{R}\mathbf{x}_{\omega} + \mathbf{t} - \mathcal{V}(\bar{\omega}) \big)\mathcal{N}(\bar{\omega}) \bigg)^{2}
+E = \sum_{\omega \in \bm{\Omega}_{d}} \bigg( \big( \bm{R}\bm{x}_{\omega} + \bm{t} - \mathcal{V}(\bar{\omega}) \big)\mathcal{N}(\bar{\omega}) \bigg)^{2}
 \end{split}
 \end{equation}
-where $\mathbf{\Omega}_{d}$ is a depth image, $\omega$ is a 3D point extracted form the depth image, $\mathbf{R}$ is an  $\mathbbm{SO}(3)$ 
-rotation matrix, $\mathbf{t}$ is a translation vector, $\mathcal{V}$ is a rendered depth map from the SDF model, $\mathcal{N}$ is a rendered 
+where $\bm{\Omega}_{d}$ is a depth image, $\omega$ is a 3D point extracted form the depth image, $\bm{R}$ is an  $\mathbbm{SO}(3)$ 
+rotation matrix, $\bm{t}$ is a translation vector, $\mathcal{V}$ is a rendered depth map from the SDF model, $\mathcal{N}$ is a rendered 
 normal map from the SDF model and $\bar{\omega}$ is the point $\omega$ projected into the coordinate frame of $\mathcal{V}$ and 
 $\mathcal{N}$.
 
@@ -47,18 +47,18 @@ such as KinectFusion\cite{Newcombe2011} and InfiniTAM\cite{Prisacariu2014}.
 
 At each frame a probability map is constructed based on the predictions of the model given the current frame. During the fusion process, this 
 smaller volume is mapped in to as a source of voxel wise appearance probability information. The overall appearance based posterior for a given voxel 
-$\psi \in \mathbf{\Psi}$ takes the following form:
+$\psi \in \bm{\Psi}$ takes the following form:
 \begin{equation}
 \begin{split}
-P(\psi \in \mathbf{\Phi} | \mathbf{\Omega}, \mathbf{p}) = \prod_{t=0}^{\infty} P(\psi_{t} \in \mathbf{\Phi}_{t} | \mathbf{\Omega}_{t}, \mathbf{p}_{t})
+P(\psi \in \bm{\Phi} | \bm{\Omega}, \bm{p}) = \prod_{t=0}^{\infty} P(\psi_{t} \in \bm{\Phi}_{t} | \bm{\Omega}_{t}, \bm{p}_{t})
 \end{split}
 \end{equation}
-where $\mathbf{\Psi}$ is the volume of voxels for which measurements are accumulated, $\mathbf{\Phi}$ 
-is the volume of voxels pertaining to the object, $\mathbf{\Omega}_{t}$ is the current image observation at time $t$ and $\mathbf{p}_{t}$ is the 
+where $\bm{\Psi}$ is the volume of voxels for which measurements are accumulated, $\bm{\Phi}$ 
+is the volume of voxels pertaining to the object, $\bm{\Omega}_{t}$ is the current image observation at time $t$ and $\bm{p}_{t}$ is the 
 currently tracked pose at time $t$.
 The above encodes the probability of a voxel belonging to an object as the product of the instantaneous conditionals for observations at each time step. 
-Note that in general $\mathbf{\Phi} \subset \mathbf{\Psi}$, and the use of $\mathbf{\Phi}$ in the above equation is an abuse of notation as in the above 
-$\mathbf{\Phi}$ is a discretisation of the continuous $\mathbf{\Phi}$ in the probabilistic formulation that follows. Finally, note that a conditional 
+Note that in general $\bm{\Phi} \subset \bm{\Psi}$, and the use of $\bm{\Phi}$ in the above equation is an abuse of notation as in the above 
+$\bm{\Phi}$ is a discretisation of the continuous $\bm{\Phi}$ in the probabilistic formulation that follows. Finally, note that a conditional 
 independence assumption is made to aid computational tractability in the model.
 
 \subsection{Probabilistic Formulation of Object Reconstruction}
@@ -72,39 +72,39 @@ Graphical Model of Figure \ref{pgm1}.
 	\label{pgm1}
 \end{figure}
 
-Where $\mathbf{\Phi}$ is the shape to be reconstructed, $\mathbf{u}$ is the appearance model volume, $\mathbf{L}$ is the 
-set of consistency constraints for each adjacent sub volume pair in the form of rigid transformations, $\mathbf{\Omega}$ is the set of 
-RGBD image pixels and $\mathbf{p}$ the set of poses over time.
+Where $\bm{\Phi}$ is the shape to be reconstructed, $\bm{u}$ is the appearance model volume, $\bm{L}$ is the 
+set of consistency constraints for each adjacent sub volume pair in the form of rigid transformations, $\bm{\Omega}$ is the set of 
+RGBD image pixels and $\bm{p}$ the set of poses over time.
 
 This gives rise to the following analytical formulation of the above distribution:
 
 \begin{equation}
 \begin{split}
-P(\mathbf{\Phi}, \mathbf{\Omega}, \mathbf{p}, \mathbf{u}, \mathbf{L}) = 
-\prod_{\psi \in \mathbf{\Psi}}\prod_{(s, s') \in \mathcal{S}}P(\mathbf{\Phi}|\mathbf{u}_{v}, \mathbf{L}_{(s, s')}) 
+P(\bm{\Phi}, \bm{\Omega}, \bm{p}, \bm{u}, \bm{L}) = 
+\prod_{\psi \in \bm{\Psi}}\prod_{(s, s') \in \mathcal{S}}P(\bm{\Phi}|\bm{u}_{v}, \bm{L}_{(s, s')}) 
 \prod_{t=0}^{\infty}\prod_{p \in \mathcal{P}}\\
-P(\mathbf{u_{v}}|\mathbf{\Omega}_{p, t}, \mathbf{p}_{t})
-P(\mathbf{L}_{(s, s')}|\mathbf{\Omega}_{p, t}, \mathbf{p}_{t})
-P(\mathbf{L}_{(s, s')})P(\mathbf{p}_{t})P(\mathbf{\Omega}_{p, t})
+P(\bm{u_{v}}|\bm{\Omega}_{p, t}, \bm{p}_{t})
+P(\bm{L}_{(s, s')}|\bm{\Omega}_{p, t}, \bm{p}_{t})
+P(\bm{L}_{(s, s')})P(\bm{p}_{t})P(\bm{\Omega}_{p, t})
 \end{split}
 \end{equation}
 where $\mathcal{V}$ is the set of voxels across all sub volumes, $\mathcal{P}$ is the set of RGBD pixels for a given 
 frame and $\mathcal{S}$ is the set of sub volumes.
 
 However, if one were to assume temporal and pixel wise independence in the RGBD observations and temporal independence in 
-the poses, the plate containing $\mathbf{\Omega}$ and $\mathbf{p}$ can be removed:
+the poses, the plate containing $\bm{\Omega}$ and $\bm{p}$ can be removed:
 \begin{equation}
 \begin{split}
-P(\mathbf{\Phi}, \mathbf{\Omega}, \mathbf{p}, \mathbf{u}, \mathbf{L}) = 
-\prod_{v \in \mathcal{V}}P(\mathbf{\Phi}|\mathbf{u}_{v})
-\prod_{(s, s') \in \mathcal{S}}P(\mathbf{u_{v}}|\mathbf{\Omega}, \mathbf{p}, \mathbf{L}_{(s, s')})\\
-P(\mathbf{L}_{(s, s')}|\mathbf{\Omega}, \mathbf{p}) P(\mathbf{L}_{(s, s')})P(\mathbf{p})P(\mathbf{\Omega})
+P(\bm{\Phi}, \bm{\Omega}, \bm{p}, \bm{u}, \bm{L}) = 
+\prod_{v \in \mathcal{V}}P(\bm{\Phi}|\bm{u}_{v})
+\prod_{(s, s') \in \mathcal{S}}P(\bm{u_{v}}|\bm{\Omega}, \bm{p}, \bm{L}_{(s, s')})\\
+P(\bm{L}_{(s, s')}|\bm{\Omega}, \bm{p}) P(\bm{L}_{(s, s')})P(\bm{p})P(\bm{\Omega})
 \end{split}
 \end{equation}
 In practice this temporal independence assumption causes no issues.
 
-Furthermore, if one assumes voxel wise independence, the plate over voxels can be removed. Finally, assuming $P(\mathbf{p})$ and 
-$P(\mathbf{\Omega})$ are uniform distributions, then we have the simpler distribution given by Figure \ref{pgm2}.
+Furthermore, if one assumes voxel wise independence, the plate over voxels can be removed. Finally, assuming $P(\bm{p})$ and 
+$P(\bm{\Omega})$ are uniform distributions, then we have the simpler distribution given by Figure \ref{pgm2}.
 \begin{figure}[h]
 	\centering
 	\includegraphics{graphical_models/pgm2.pdf}
@@ -115,11 +115,11 @@ $P(\mathbf{\Omega})$ are uniform distributions, then we have the simpler distrib
 Where the simpler distribution takes the following analytical form:
 \begin{equation}
 \begin{split}
-P(\mathbf{\Phi}, \mathbf{\Omega}, \mathbf{p}, \mathbf{u}, \mathbf{L}) = 
-\prod_{(s, s') \in \mathcal{S}} P(\mathbf{\Phi}|\mathbf{u}, \mathbf{L}_{(s, s')})
-P(\mathbf{u}|\mathbf{\Omega}, \mathbf{p})\\
-P(\mathbf{L}_{(s, s')}|\mathbf{\Omega}, \mathbf{p})
-P(\mathbf{L}_{(s, s')})
+P(\bm{\Phi}, \bm{\Omega}, \bm{p}, \bm{u}, \bm{L}) = 
+\prod_{(s, s') \in \mathcal{S}} P(\bm{\Phi}|\bm{u}, \bm{L}_{(s, s')})
+P(\bm{u}|\bm{\Omega}, \bm{p})\\
+P(\bm{L}_{(s, s')}|\bm{\Omega}, \bm{p})
+P(\bm{L}_{(s, s')})
 \end{split}
 \end{equation}
 
@@ -135,7 +135,7 @@ As inference on the joint distribution of our model is intractable, conditional 
 to cause any functional issues. The estimation phase of the pipeline is described in the following section.
 
 \subsection{Estimating Deformations}
-The tracking consistency constraint denoted by the variable $\mathbf{L}$ in the graphical model given by Figure \ref{pgm1} and Figure \ref{pgm2} can 
+The tracking consistency constraint denoted by the variable $\bm{L}$ in the graphical model given by Figure \ref{pgm1} and Figure \ref{pgm2} can 
 be enforced in terms of minimising the transformations between adjacent submaps, such that the camera poses tracked in each subvolume are consistent.  
 %The approach proposed in this work differs from \cite{Kahler2016} in that the optimisation is integrated in to the probabilistic formulation previously outlined. 
 Given instantaneously inferred transforms between subvolumes obtained from tracking results, 
@@ -145,47 +145,47 @@ As such, for each pair of visible subvolumes $(s, s')$, the following posterior 
 \begin{equation}
 \begin{split}
 %Bayes rule + chain rule for P(omega, p)
-P(\mathbf{\Omega}, \mathbf{p} | \mathbf{L}_{(s, s')}) = \frac{P(\mathbf{L}_{(s, s')} | \mathbf{\Omega}, \mathbf{p}) P(\mathbf{\Omega} | \mathbf{p})P(\mathbf{p})}
-{P(\mathbf{L}_{(s, s')})}
+P(\bm{\Omega}, \bm{p} | \bm{L}_{(s, s')}) = \frac{P(\bm{L}_{(s, s')} | \bm{\Omega}, \bm{p}) P(\bm{\Omega} | \bm{p})P(\bm{p})}
+{P(\bm{L}_{(s, s')})}
 \end{split}
 \end{equation}
-The intuition behind the above equation is that the deformation $\mathbf{L}_{(s, s')}$ applied to the probability field $\mathbf{u}$ should 
-increase the probability of observing the current pose $\mathbf{p}$ given the current RGBD frame $\mathbf{\Omega}$ by reducing the 
+The intuition behind the above equation is that the deformation $\bm{L}_{(s, s')}$ applied to the probability field $\bm{u}$ should 
+increase the probability of observing the current pose $\bm{p}$ given the current RGBD frame $\bm{\Omega}$ by reducing the 
 variance of the camera tracking result. As such, global tracking variance is reduced by enforcing local consistency, improving the quality 
 of the reconstruction.
 
 A gradient based maximisation of the above posterior to yield an optimal deformation is a highly nonlinear optimisation problem. As such, it is suited 
 to second order gradient based optimisation routines such as Gauss-Newton or Levenberg-Marquardt.
-It should be noted that in our implementation the $P(\mathbf{\Omega} | \mathbf{p})$ term is assumed to be uniform in the case of an 
+It should be noted that in our implementation the $P(\bm{\Omega} | \bm{p})$ term is assumed to be uniform in the case of an 
 RGBD sensor being used, however for applications such as monocular SLAM this term may be replaced with a noise model when there is 
 significant uncertainty about the given depth map at each frame.
 
 The following proportionality to the distribution over deformations is made:
 \begin{equation}
 \begin{split}
-P(\mathbf{L}_{(s, s')} | \mathbf{\Omega}, \mathbf{p}) \propto P(\mathbf{\Psi}_{s}(\mathbf{x}) | \mathbf{\Psi}_{s'}(\Lambda(\mathbf{x})))
+P(\bm{L}_{(s, s')} | \bm{\Omega}, \bm{p}) \propto P(\bm{\Psi}_{s}(\bm{x}) | \bm{\Psi}_{s'}(\Lambda(\bm{x})))
 \end{split}
 \end{equation}
 With the likelihood function taking the following form:
 \begin{equation}
 \begin{split}
-P(\mathbf{\Psi}_{s'}(\Lambda(\mathbf{x}))) = \prod_{(s, s') \in \mathcal{S}} \frac{1}{\sqrt{2 \pi \sigma}} \exp{\frac{-(\mathbf{\Psi}_{s}(\mathbf{x}) - \mathbf{\Psi}_{s'}(\Lambda(\mathbf{x})))^2}{2\sigma^2}}
+P(\bm{\Psi}_{s'}(\Lambda(\bm{x}))) = \prod_{(s, s') \in \mathcal{S}} \frac{1}{\sqrt{2 \pi \sigma}} \exp{\frac{-(\bm{\Psi}_{s}(\bm{x}) - \bm{\Psi}_{s'}(\Lambda(\bm{x})))^2}{2\sigma^2}}
 \end{split}
 \end{equation}
 Or alternatively:-
 \begin{equation}
 \begin{split}
-\ln P(\mathbf{\Psi}_{s'}(\Lambda(\mathbf{x}))) = m\ln\frac{1}{\sqrt{2\pi}\sigma}\\
--\frac{1}{2\sigma^2} \sum_{(s, s') \in \mathcal{S}} \bigg( \mathbf{\Psi}_{s}(\mathbf{x}) - \mathbf{\Psi}_{s'}(G(\mathbf{x})) \bigg)^2
+\ln P(\bm{\Psi}_{s'}(\Lambda(\bm{x}))) = m\ln\frac{1}{\sqrt{2\pi}\sigma}\\
+-\frac{1}{2\sigma^2} \sum_{(s, s') \in \mathcal{S}} \bigg( \bm{\Psi}_{s}(\bm{x}) - \bm{\Psi}_{s'}(G(\bm{x})) \bigg)^2
 \end{split}
 \end{equation}
-Where $\mathbf{\Psi}(.)$ is a scalar valued SDF(Signed Distance Function), a dicretised field of $\mathbf{\Phi}$, as previously described. $\mathbf{x}$ is a point represented by a 3-vector and $\Lambda(.)$ is a transformation function taking the following form:
+Where $\bm{\Psi}(.)$ is a scalar valued SDF(Signed Distance Function), a dicretised field of $\bm{\Phi}$, as previously described. $\bm{x}$ is a point represented by a 3-vector and $\Lambda(.)$ is a transformation function taking the following form:
 \begin{equation}
 \begin{split}
-\Lambda(\mathbf{x}) = \mathbf{R}(r_{1}, r_{2}, r_{3})\mathbf{x} + \mathbf{t}
+\Lambda(\bm{x}) = \bm{R}(r_{1}, r_{2}, r_{3})\bm{x} + \bm{t}
 \end{split}
 \end{equation}
-Where $\mathbf{R}(.)$ is a rotation matrix from the Special Orthogonal group $\mathbbm{SO}(3)$ paramaterised by the three 
+Where $\bm{R}(.)$ is a rotation matrix from the Special Orthogonal group $\mathbbm{SO}(3)$ paramaterised by the three 
 Rodrigues Parameters\cite{Shuster1993} $r_{1}$, $r_{2}$ and $r_{3}$.
 
 Note that the logarithmic form of the above likelihood is suitable to Nonlinear Least Squares optimisation, allowing the posterior of equation 4 
@@ -194,27 +194,27 @@ an optimisation routine such as Levenberg Marquardt, the following gradients mus
 deformation:-
 \begin{equation}
 \begin{split}
-\frac{\partial E}{\partial r_{n}} = \frac{\partial E}{\partial \mathbf{\Psi}} \frac{\partial \mathbf{\Psi}}{\partial \Lambda} \frac{\partial \Lambda}{\partial r_{n}} \text{for } n \in \{1,2,3\}
+\frac{\partial E}{\partial r_{n}} = \frac{\partial E}{\partial \bm{\Psi}} \frac{\partial \bm{\Psi}}{\partial \Lambda} \frac{\partial \Lambda}{\partial r_{n}} \text{for } n \in \{1,2,3\}
 \end{split}
 \end{equation}
 Similarly for the translational component:-
 \begin{equation}
 \begin{split}
-\frac{\partial E}{\partial \mathbf{t}_{d}} = \frac{\partial E}{\partial \mathbf{\Psi}} \frac{\partial \mathbf{\Psi}}{\partial \Lambda} \frac{\partial \Lambda}{\partial \mathbf{t}_{d}} \text{for } d \in  \{x,y,z\}
+\frac{\partial E}{\partial \bm{t}_{d}} = \frac{\partial E}{\partial \bm{\Psi}} \frac{\partial \bm{\Psi}}{\partial \Lambda} \frac{\partial \Lambda}{\partial \bm{t}_{d}} \text{for } d \in  \{x,y,z\}
 \end{split}
 \end{equation}
-where the gradient $\frac{\partial \mathbf{\Psi}}{\partial \Lambda}$ is found via finite differencing.
+where the gradient $\frac{\partial \bm{\Psi}}{\partial \Lambda}$ is found via finite differencing.
 
 \section{Implicit Surface Deformations}
 In the previous section, a model and estimation procedure was presented to find optimal transformations between the aforementioned subvolumes.
-The overall object surface $\mathbf{\Phi}$ is implicitly deformed by a combining function $\mathbf{\zeta}(\mathbf{\Phi})$ over each of the subvolumes to which transformations have been applied.
-As such the surface $\mathbf{\Phi}$ is given by the following:
+The overall object surface $\bm{\Phi}$ is implicitly deformed by a combining function $\bm{\zeta}(\bm{\Phi})$ over each of the subvolumes to which transformations have been applied.
+As such the surface $\bm{\Phi}$ is given by the following:
 \begin{equation}
 \begin{split}
-\mathbf{\Phi} = \int_{\chi \in X} \mathbf{\zeta}(\mathbf{\Phi}_{\chi}) d \mathbf{\Phi}_{\chi}
+\bm{\Phi} = \int_{\chi \in X} \bm{\zeta}(\bm{\Phi}_{\chi}) d \bm{\Phi}_{\chi}
 \end{split}
 \end{equation}
-where $X$ is the set of subvolumes contributing to the surface $\mathbf{\Phi}$.
+where $X$ is the set of subvolumes contributing to the surface $\bm{\Phi}$.
 
 As such, the previously described transformation estimation process that deforms each of the subscenes implicitly to optimise jointly for the true 
 surface as depicted in Figure.
@@ -235,10 +235,10 @@ process for a region in space and an additional pairwise smoothing term represen
 neighbourhoods $\gamma$ and $\gamma^{'}$:
 \begin{equation}
 \begin{split}
-E_{n} = \prod_{t=0}^{\infty} \prod_{\psi \in \mathbf{\Phi}_{n}} P(\psi \in \mathbf{\Psi} | \mathbf{\Omega}_{t}, \mathbf{p}_{t}) + P(\mathbb{E}[\mathbf{c}]_{\gamma} | \mathbb{E}[\mathbf{c}]_{\gamma^{'}})
+E_{n} = \prod_{t=0}^{\infty} \prod_{\psi \in \bm{\Phi}_{n}} P(\psi \in \bm{\Psi} | \bm{\Omega}_{t}, \bm{p}_{t}) + P(\mathbb{E}[\bm{c}]_{\gamma} | \mathbb{E}[\bm{c}]_{\gamma^{'}})
 \end{split}
 \end{equation}
-where $\mathbf{c}$ represents the set of colour measurements fused in to the voxels within a given neighbourhood, for all $N$ subvolumes.
+where $\bm{c}$ represents the set of colour measurements fused in to the voxels within a given neighbourhood, for all $N$ subvolumes.
 
 \section{Implementation Notes}
 The probabilities that are accumulated into the volume are generated from a Random Forest based appearance model using patch based features encompassing 
