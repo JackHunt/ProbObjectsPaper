@@ -5,11 +5,11 @@
 \begin{tikzpicture}
 
 %Declare nodes.
-\node[latent] (phi) {$\mathbf{\Phi}$};
-\node[latent, right=of phi] (u) {$\mathbf{u}$};
-\node[latent, below=of u] (L) {$\mathbf{L}$};
-\node[obs, right=of u, yshift=-1cm] (omega) {$\mathbf{\Omega}$};
-\node[obs, right=of u, yshift=1cm] (p) {$\mathbf{p}$};
+\node[latent] (phi) {$\Phi$};
+\node[latent, right=of phi] (u) {$u$};
+\node[latent, below=of u] (L) {$L$};
+\node[obs, right=of u, yshift=-1cm] (omega) {$\Omega$};
+\node[obs, right=of u, yshift=1cm] (p) {$p$};
 
 %Setup plates.
 \plate[inner sep=0.25cm] {plate3} {(L)} {(s, s')};
