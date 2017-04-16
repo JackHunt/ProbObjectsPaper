@@ -1,6 +1,4 @@
 The availability of high-quality, consumer-grade depth sensing equipment has motivated much research in dense SLAM systems for
-object reconstruction. Though much progress has been made, the well-known loop closure problem remains an active target of research.
-In this paper, we present an object reconstruction system that is capable of counteracting camera tracking drift and detecting loop
-closures to achieve high-quality reconstructions.
-We demonstrate that our novel correction algorithm is able to reduce tracking drift, detect loop closures and increase overall
-object reconstruction quality.
+object reconstruction. Though much progress has been made, the well-known loop closure and pose estimation drift problems remain 
+active targets of research.
+In this paper, we present an object reconstruction system that is capable of both detecting loop closures and counteracting pose tracking drift via an online model correction algorithm. Our system performs online model correction both during reconstruction and in the event of a detected loop closure on top of a novel multi segment representation. We demonstrate that our correction algorithm is able to yield closed reconstructions by tracking either camera or object motion with a high degree of accuracy. In addition to surface data, the representation encodes probabilistic object memberships to aid segmentation.
