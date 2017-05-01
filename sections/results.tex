@@ -29,7 +29,7 @@ Tracking is evaluated w.r.t. ATE(Absolute Trajectory Error) as outlined in \cite
 	\label{ateTable}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[!t]
 	\centering
 	\begin{tabular}{cccc}
 		\bmvaHangBox{\fbox{\includegraphics[scale=0.15]{results/rgbd_dataset_freiburg3_cabinet.png}}}&
@@ -41,7 +41,6 @@ Tracking is evaluated w.r.t. ATE(Absolute Trajectory Error) as outlined in \cite
 		\textbf{(b)} Trajectory of the camera for the \textit{freiburg3\_teddy} sequence versus ground truth.
 	}
 \label{fig:tumTrajectories}
-\vspace{-1.5\baselineskip}
 \end{figure}
 
 As can be seen by the presented results, our system is able to robustly estimate poses with close to ground truth quality when using only the objects geometry. In the \textit{freiburg3\_cabinet} sequence, 
@@ -55,7 +54,7 @@ In this section we present a qualitative evaluation of our method vs the work of
 efficacy over \cite{Ren2013} in this regard. Each sequence is run through our system and that of \cite{Ren2013} with snapshots of the reconstruction in the case of our system and level set evolutions 
 in the case of \cite{Ren2013}, at quarterly intervals of the systems run time through the sequence.
 
-\begin{figure}[h]
+\begin{figure}[!t]
 	\centering
 	\begin{tabular}{cccc}
 		\bmvaHangBox{\fbox{\includegraphics[scale=0.2]{filmstrips/dino.png}}}&\\
@@ -68,7 +67,6 @@ in the case of \cite{Ren2013}, at quarterly intervals of the systems run time th
 		\textbf{(b)} Quarterly interval snapshots of the Dinosaur Head level set evolution using the method of Ren et al.
 	}
 	\label{fig:dinoComparison}
-	\vspace{-1.5\baselineskip}
 \end{figure}
 
 As can be seen in Figure \ref{fig:dinoComparison} our method is able to successfully reconstruct the Dinosaur Head whereas the method of Ren et al fails to converge towards a feasible shape. In addition, 
@@ -77,7 +75,7 @@ also apparent for other sequences used in this work, with a similar failure to c
 
 The object models in Figure \ref{fig:demo} were reconstructed from sequences in which a camera is moved 360 around each object to generate a closed model.
 
-\begin{figure}[h]
+\begin{figure}[!t]
 	\centering
 	\begin{tabular}{cccc}
 		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/dino_colour_top.PNG}}}&
@@ -91,7 +89,6 @@ The object models in Figure \ref{fig:demo} were reconstructed from sequences in 
 		\textbf{(c)} Closed reconstruction of a Rock.
 	}
 	\label{fig:top_shots}
-	\vspace{-1.5\baselineskip}
 \end{figure}
 
 As can be seen from the top down views of Figure \ref{fig:top_shots}, our system is capable of producing closed models, unaffected by tracking drift and loop closure events.

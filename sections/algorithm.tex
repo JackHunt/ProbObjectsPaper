@@ -65,7 +65,7 @@ independence assumption is made to aid computational tractability in the model.
 As previously highlighted, central to the proposed system is a volume of posterior probabilities pertaining to a voxel wise membership of either the 
 object set or the non object set. This allows one to formulate the full joint distribution over the object as the Probabilistic 
 Graphical Model of Figure \ref{pgm1}.
-\begin{figure}[h]
+\begin{figure}[!t]
 	\centering
 	\includegraphics{graphical_models/pgm1.pdf}
 	\caption{Probabilistic formulation of the object reconstruction pipeline.}
@@ -105,7 +105,7 @@ In practice this temporal independence assumption causes no issues.
 
 Furthermore, if one assumes voxel wise independence, the plate over voxels can be removed. Finally, assuming $P(p)$ and 
 $P(\Omega)$ are uniform distributions, then we have the simpler distribution given by Figure \ref{pgm2}.
-\begin{figure}[h]
+\begin{figure}[!t]
 	\centering
 	\includegraphics{graphical_models/pgm2.pdf}
 	\caption{Simplified probabilistic formulation of the object reconstruction pipeline.}

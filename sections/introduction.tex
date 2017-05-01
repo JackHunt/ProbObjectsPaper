@@ -7,7 +7,26 @@ However, there are failure cases when there is a lack of geometric or texture-ba
 
 Common issues range from tracking drift, often caused by geometric and/or texture ambiguity, to complete tracker failure. In addition, many dense 
 SLAM systems fail during loop closure events, with explicit handling often required. The error incurred during loop closure events can be detrimental 
-to tracking quality in such systems. 
+to tracking quality in such systems.
+
+\begin{figure}[!t]
+	\centering
+	\begin{tabular}{cccc}
+		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/bear_colour.PNG}}}&
+		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/chair_colour.PNG}}}&
+		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/dino_colour.PNG}}}&
+		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/rock_colour.PNG}}}\\
+		(a)&(b)&(c)&(d)
+	\end{tabular}
+	\caption{
+		\textbf{(a)} Reconstructed Teddy Bear.
+		\textbf{(b)} Reconstructed Chair.
+		\textbf{(c)} Reconstructed Dinosaur Head.
+		\textbf{(d)} Reconstructed Rock.
+	}
+	%A person enters the static scene\textbf{(a)}, is detected as a dynamic object\textbf{(b)} and becomes stable\textbf{(c)}.}
+	\label{fig:demo}
+\end{figure}
 
 Failure cases for such approaches are only exacerbated when there is less data to track with/against, as is the case with the tracking of an 
 object's pose w.r.t.\ the camera (the inverse of the camera tracking problem). In the case of tracking an object's motion w.r.t.\ the static 
