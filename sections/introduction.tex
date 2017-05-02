@@ -1,6 +1,6 @@
 Dense Simultaneous Localisation and Mapping (SLAM) has proven very effective for reconstructing moderately-sized scenes,
 with much recent research driven by the availability of inexpensive, consumer-grade depth sensing equipment \cite{Newcombe2011,Niessner2013,Prisacariu2014}. 
-However, accurate pose estimation in the presence of erroneous measurements and visual aliasing in the scene remains difficult to fully solve. Common approaches \cite{Besl1992,Levoy2001} exploit geometric/texture cues to estimate the pose each frame, but tracking can drift or even fail completely without reliable features against which to track.
+However, accurate pose estimation in the presence of erroneous measurements and visual aliasing in the scene remains difficult to fully solve. Common approaches \cite{Besl1992,Levoy2001} exploit geometric/texture cues to estimate the pose of each frame, but tracking can drift -- or even fail completely -- without reliable features against which to track.
 %Purely geometry based approaches may fail with a lack of descriptive geometry, as may texture based approaches with a lack of texture. 
 %Common issues range from tracking drift, often caused by geometric and/or texture ambiguity, to complete tracking failure.
 Loop closure events are another common source of tracking problems, with explicit handling often required. Moreover, a failure to handle loop closures correctly can lead to errors in the model, exacerbating any existing tracking issues.
