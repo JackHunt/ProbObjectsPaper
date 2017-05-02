@@ -1,4 +1,11 @@
 \paragraph{Dense 3D Reconstruction}
+
+Much recent dense 3D reconstruction work stems back to the seminal KinectFusion work of Newcombe et al.\ \cite{Newcombe2011}. This was used to build an implicit, voxel-based TSDF representation \cite{Curless1996} of a small-scale environment, but could only reconstruct static scenes, and struggled to scale due to inefficient use of memory and difficulties in preventing significant tracking drift in larger-scale scenes. Scalability has progressively been addressed by a moving reconstruction window \cite{Roth2012,Whelan2012}, octrees \cite{Zeng2012}, and sparse methods based on voxel hashing and streaming data to and from the GPU \cite{Niessner2013,Prisacariu2014}. This has made it possible to reconstruct static scenes whose size is only limited by available system memory, although reconstructing a large scene can still occupy significant space. Tracking drift has also been addressed to some extent, generally by detecting loop closures and either rigidly or non-rigidly deforming parts of the scene \cite{Zhou2013,Whelan2015IJRR,Whelan2015RSS}. Other approaches exist that do not explicitly detect loop closures \cite{Fioraio2015}.
+
+Recently, Dai et al.\ \cite{dai2016bundlefusion} introduced a system that improves pose estimation for large-scale scenes by considering each previously seen frame within a hierarchical framework and performing sparse feature matching to optimise for the camera pose. However, mismatches between keypoints are reported to have an impact on the robustness of their optimisation procedure. K{\"a}hler et al.\ \cite{Kahler2016} took a different approach, showing how to combine a multi-segment representation of the scene with loop closure detection and an online model correction algorithm to achieve accurate, globally-consistent scene reconstruction. They reduce drift by tracking only against recent segments of the scene and adjusting the poses between segments online, before refining the final model using pose graph optimisation. In this paper, we extend this latter approach to achieve globally-consistent reconstructions of objects.
+
+
+\iffalse
 Much 3D reconstruction work in recent years has been influenced by the seminal KinectFusion work \cite{Newcombe2011} of Newcombe et al in which
 RGBD data was integrated into a volumetric representation of the scene, performing simultaneous tracking and mapping. The end result was
 high quality 3D static scene models. 
@@ -24,6 +31,7 @@ reported to have an impact on the robustness of the optimisation procedure.
 All of the aforementioned voxel based reconstruction works are closely related to and derived from the early work of Curless and Levoy \cite{Curless1996} 
 which introduces the notion of encoding isosurfaces with TSDF's (Truncated Signed Distance Function). The isosurface is the zero level set of the function 
 and at all other points within some truncation region, a distance to the zero level set.
+\fi
 
 \paragraph{Object Reconstruction}
 In addition to the scene-scale dense SLAM works discussed in the previous section, there has been much work on object reconstruction and 
