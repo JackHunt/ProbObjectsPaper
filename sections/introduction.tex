@@ -1,30 +1,10 @@
 Dense SLAM (Simultaneous Localisation and Mapping) has proven very effective for reconstructing moderately-sized scenes,
 with much recent research driven by the availability of inexpensive, consumer-grade depth sensing equipment \cite{Newcombe2011,Niessner2013,Prisacariu2014}. 
-However, one of the key tasks in SLAM, namely accurate pose estimation given potentially erroneous measurements/a degree of measurement ambiguity, remains difficult to fully solve. Common approaches \cite{Besl1992,Levoy2001} exploit geometric/texture cues to estimate an updated pose at each frame, but can fail in the absence of suitable features against which to track. 
+However, accurate pose estimation in the presence of erroneous measurements and visual aliasing in the scene remains difficult to fully solve. Common approaches \cite{Besl1992,Levoy2001} exploit geometric/texture cues to estimate the pose each frame, but tracking can drift or even fail completely without reliable features against which to track.
 %Purely geometry based approaches may fail with a lack of descriptive geometry, as may texture based approaches with a lack of texture. 
-
-Common issues range from tracking drift, often caused by geometric and/or texture ambiguity, to complete tracking failure. In addition, many dense 
-SLAM systems fail during loop closure events, with explicit handling often required. The error incurred during loop closure events can be detrimental 
-to tracking quality in such systems.
-
-\begin{figure}[!t]
-	\centering
-	\begin{tabular}{cccc}
-		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/bear_colour.PNG}}}&
-		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/chair_colour.PNG}}}&
-		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/dino_colour.PNG}}}&
-		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/rock_colour.PNG}}}\\
-		(a)&(b)&(c)&(d)
-	\end{tabular}
-	\caption{
-		\textbf{(a)} Reconstructed Teddy Bear.
-		\textbf{(b)} Reconstructed Chair.
-		\textbf{(c)} Reconstructed Dinosaur Head.
-		\textbf{(d)} Reconstructed Rock.
-	}
-	%A person enters the static scene\textbf{(a)}, is detected as a dynamic object\textbf{(b)} and becomes stable\textbf{(c)}.}
-	\label{fig:demo}
-\end{figure}
+%Common issues range from tracking drift, often caused by geometric and/or texture ambiguity, to complete tracking failure.
+Loop closure events are another common source of tracking problems, with explicit handling often required. Moreover, a failure to handle loop closures correctly can lead to errors in the model, exacerbating any existing tracking issues.
+%In addition, many dense SLAM systems fail during loop closure events, with explicit handling often required. The error incurred during loop closure events can be detrimental to tracking quality in such systems.
 
 Failure cases for such approaches are only exacerbated when there is less data to track with/against, as is the case with the tracking of an 
 object's pose w.r.t.\ the camera (the inverse of the camera tracking problem). In the case of tracking an object's motion w.r.t.\ the static 
@@ -35,6 +15,27 @@ tracking drift and loop closure issues, sometimes to a prohibitive level. As pre
 is also affected by geometric or texture-based ambiguities, caused by a much more focused domain of the data available to the tracking algorithm. 
 Such failure cases may occur with the presence of ambiguous features, and a lack of unambiguous features on the object surface, causing data 
 association errors when attempting to recover pose.
+
+\begin{figure}[!t]
+	\centering
+	\begin{tabular}{cccc}
+		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/bear_colour.PNG}}}&
+		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/chair_colour.PNG}}}&
+		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/dino_colour.PNG}}}&
+		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/rock_colour.PNG}}}\\
+		(a)&(b)&(c)&(d)
+	\end{tabular}
+	\vspace{1mm}
+	\caption{
+		Reconstruction examples:
+		\textbf{(a)} Teddy,
+		\textbf{(b)} Chair,
+		\textbf{(c)} Dinosaur Head,
+		\textbf{(d)} Rock.
+	}
+	\vspace{-5mm}
+	\label{fig:demo}
+\end{figure}
 
 For example, when reconstructing an entire scene and assuming no masking, all of the data in the current and previous frames is available for tracking. When tracking solely an object this is not the case as attempting to track an objects movement w.r.t.\ static scene points and dynamic object points would cause a failure event.
 
