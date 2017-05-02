@@ -1,11 +1,9 @@
-Dense SLAM (Simultaneous Localisation and Mapping) has proven to be an effective paradigm for the reconstruction of moderately-sized scenes,
-with much of the recent research on the topic being driven by the availability of inexpensive, consumer-grade depth sensing equipment \cite{Newcombe2011,Niessner2013,Prisacariu2014}. 
-However, a prominent problem within the dense SLAM literature is that of accurate pose estimation given potentially erroneous measurements, or a degree of measurement ambiguity. Many common approaches\cite{Besl1992,Levoy2001} to the problem exploit texture and/or geometry features of the scene to estimate an updated pose at each frame.
-
-However, there are failure cases when there is a lack of geometric or texture-based features against which a system may track. 
+Dense SLAM (Simultaneous Localisation and Mapping) has proven very effective for reconstructing moderately-sized scenes,
+with much recent research driven by the availability of inexpensive, consumer-grade depth sensing equipment \cite{Newcombe2011,Niessner2013,Prisacariu2014}. 
+However, one of the key tasks in SLAM, namely accurate pose estimation given potentially erroneous measurements/a degree of measurement ambiguity, remains difficult to fully solve. Common approaches \cite{Besl1992,Levoy2001} exploit geometric/texture cues to estimate an updated pose at each frame, but can fail in the absence of suitable features against which to track. 
 %Purely geometry based approaches may fail with a lack of descriptive geometry, as may texture based approaches with a lack of texture. 
 
-Common issues range from tracking drift, often caused by geometric and/or texture ambiguity, to complete tracker failure. In addition, many dense 
+Common issues range from tracking drift, often caused by geometric and/or texture ambiguity, to complete tracking failure. In addition, many dense 
 SLAM systems fail during loop closure events, with explicit handling often required. The error incurred during loop closure events can be detrimental 
 to tracking quality in such systems.
 
