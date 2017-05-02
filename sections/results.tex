@@ -15,7 +15,8 @@ In the following experiments, tracking is performed using only geometry cues fro
 
 Tracking is evaluated w.r.t. ATE(Absolute Trajectory Error) as outlined in \cite{sturm12iros} and is summarised in Table \ref{ateTable}
 \begin{table}[!t]
-	{\small
+	{
+        \footnotesize
 		\begin{center}
 			\begin{tabular}{l@{\hskip 1cm} c c}
 				\emph{Sequence Name} & \emph{ATE}\\
@@ -31,9 +32,9 @@ Tracking is evaluated w.r.t. ATE(Absolute Trajectory Error) as outlined in \cite
 
 \begin{figure}[!t]
 	\centering
-	\begin{tabular}{cccc}
-		\bmvaHangBox{\fbox{\includegraphics[scale=0.15]{results/rgbd_dataset_freiburg3_cabinet.png}}}&
-		\bmvaHangBox{\fbox{\includegraphics[scale=0.15]{results/rgbd_dataset_freiburg3_teddy.png}}}&\\
+	\begin{tabular}{cc}
+		\bmvaHangBox{\fbox{\includegraphics[width=0.25\textwidth]{results/rgbd_dataset_freiburg3_cabinet.png}}}&
+		\bmvaHangBox{\fbox{\includegraphics[width=0.25\textwidth]{results/rgbd_dataset_freiburg3_teddy.png}}}\\
 		(a)&(b)
 	\end{tabular}
 	\caption{
@@ -56,11 +57,10 @@ in the case of \cite{Ren2013}, at quarterly intervals of the systems run time th
 
 \begin{figure}[!t]
 	\centering
-	\begin{tabular}{cccc}
-		\bmvaHangBox{\fbox{\includegraphics[scale=0.2]{filmstrips/dino.png}}}&\\
-		(a)\\
-		\bmvaHangBox{\fbox{\includegraphics[scale=0.2]{filmstrips/dino_s3d_large.png}}}&\\
-		(b)
+	\begin{tabular}{cc}
+		\bmvaHangBox{\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/dino.png}}}&
+		\bmvaHangBox{\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/dino_s3d_large.png}}}\\
+		(a)&(b)
 	\end{tabular}
 	\caption{
 		\textbf{(a)} Quarterly interval snapshots of the Dinosaur Head reconstruction using our method.
@@ -77,10 +77,10 @@ The object models in Figure \ref{fig:demo} were reconstructed from sequences in 
 
 \begin{figure}[!t]
 	\centering
-	\begin{tabular}{cccc}
-		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/dino_colour_top.PNG}}}&
-		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/chair_colour_top.PNG}}}&
-		\bmvaHangBox{\fbox{\includegraphics[width=2.5cm]{screenshots/rock_colour_top.PNG}}}\\
+	\begin{tabular}{ccc}
+		\bmvaHangBox{\fbox{\includegraphics[width=0.2\textwidth]{screenshots/dino_colour_top.PNG}}}&
+		\bmvaHangBox{\fbox{\includegraphics[width=0.2\textwidth]{screenshots/chair_colour_top.PNG}}}&
+		\bmvaHangBox{\fbox{\includegraphics[width=0.2\textwidth]{screenshots/rock_colour_top.PNG}}}\\
 		(a)&(b)&(c)
 	\end{tabular}
 	\caption{
