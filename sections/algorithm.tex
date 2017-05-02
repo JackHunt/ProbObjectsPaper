@@ -1,3 +1,5 @@
+
+\iffalse
 \subsection{Preliminaries}
 \paragraph{Volumetric Representation}
 The system we present follows the familiar KinectFusion \cite{Newcombe2011} pipeline for the integration of surface information. In such a 
@@ -33,8 +35,13 @@ for a new depth measurement $\eta$ projected to by voxel $\psi$, the following u
 \end{split}
 \end{equation}
 where $w(.)$ is a weighting function and $\mu$ is the aforementioned TSDF truncation region.
+\fi
 
-\subsection{Representation and Fusion Procedure}
+%\subsection{Representation and Fusion Procedure}
+\subsection{Object Probability Fusion Procedure}
+
+The surface map and camera pose are estimated using the standard pipeline of \cite{Newcombe2011,Prisacariu2014}. The surface location is represented as the zero level set of a truncated signed distance function (TSDF) over voxels, with online weighted-mean fusion of new observations. Pose estimation via ICP is run quasi-simultaneously against the evolving map. Here, we augment this procedure by estimating the posterior probability, per map voxel, of belonging to the object surface.
+
 The representation of the object to be reconstructed makes use of multiple `subvolumes' each pertaining to some patch on the object surface. 
 New subvolumes are started when a sufficient amount of new voxels have been allocated and have had data integrated. By ensuring overlap 
 between the subvolumes, transformations between them can be found. Using the multiple volume approach allows for pose estimation in each 
