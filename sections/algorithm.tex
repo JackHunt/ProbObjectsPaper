@@ -40,17 +40,9 @@ where $w(.)$ is a weighting function and $\mu$ is the aforementioned TSDF trunca
 %\subsection{Representation and Fusion Procedure}
 \subsection{Object Probability Fusion Procedure}
 
-The surface map and camera pose are estimated using the standard pipeline of \cite{Newcombe2011,Prisacariu2014}. The surface location is represented as the zero level set of a truncated signed distance function (TSDF) over voxels, with online weighted-mean fusion of new observations. Pose estimation via ICP is run quasi-simultaneously against the evolving map. Here, inspired by \cite{Kolev2006}, we augment this procedure by estimating the posterior probability, per map voxel, of belonging to the object. This volume of posterior probabilities is updated on each frame, parallel to the fusion process in the mapping and pose estimation subsystems.
+The surface map and camera pose are estimated using the standard pipeline of \cite{Newcombe2011,Prisacariu2014}. The surface location is represented as the zero level set of a truncated signed distance function (TSDF) over voxels, with online weighted-mean fusion of new observations. Pose estimation via ICP is run quasi-simultaneously against the evolving map. Here, inspired by \cite{Kolev2006}, we augment this procedure by estimating the posterior probability, per map voxel, of belonging to the object. This volume of posterior probabilities is updated on each frame, parallel to the fusion process in the mapping and pose estimation subsystems. Similarly to \cite{Kahler2016}, the representation of the reconstructed object comprises multiple `subvolumes', each pertaining to some patch on the object surface. New subvolumes are started when sufficiently many new voxels have been allocated and had data integrated, and exactly one is `active' at any time. By ensuring overlap between subvolumes, transformations between them can be found and pose inconsistencies addressed, online.
 
-The representation of the object to be reconstructed makes use of multiple `subvolumes', each pertaining to some patch on the object surface. 
-New subvolumes are started when sufficiently many new voxels have been allocated and had data integrated. By ensuring overlap 
-between the subvolumes, transformations between them can be found and pose inconsistencies addressed.
-
-
-
-At each frame a probability map is constructed based on the predictions of the model given the current frame. During the fusion process, this 
-smaller volume is mapped into as a source of voxel wise appearance probability information. The overall appearance based posterior for a given voxel 
-$\psi \in \Psi$ takes the following form:
+At each frame, the object probabilities for the visible voxels in the active submap are updated via fusion of an appearance-derived probability map for that frame. Under the assumption of conditional independence between frames (for sake of tractability), the posterior probability of a given voxel $\psi \in \Psi$ belonging to the object has the following form:
 \begin{equation}
 \begin{split}
 P(\psi \in \Phi | \Omega, p) = \prod_{t=0}^{\infty} P(\psi_{t} \in \Phi_{t} | \Omega_{t}, p_{t})
@@ -59,10 +51,9 @@ P(\psi \in \Phi | \Omega, p) = \prod_{t=0}^{\infty} P(\psi_{t} \in \Phi_{t} | \O
 where $\Psi$ is the volume of voxels for which measurements are accumulated, $\Phi$ 
 is the volume of voxels pertaining to the object, $\Omega_{t}$ is the current image observation at time $t$ and $p_{t}$ is the 
 currently tracked pose at time $t$.
-The above encodes the probability of a voxel belonging to an object as the product of the instantaneous conditionals for observations at each time step. 
-Note that in general $\Phi \subset \Psi$, and the use of $\Phi$ in the above equation is an abuse of notation as in the above 
-$\Phi$ is a discretisation of the continuous $\Phi$ in the probabilistic formulation that follows. Finally, note that a conditional 
-independence assumption is made to aid computational tractability in the model.
+This encodes the probability of a voxel belonging to the object as the product of the instantaneous appearance-derived pixel-wise conditionals over the times at which it was observed.
+(In the above,
+$\Phi$ is a discretisation of the continuous $\Phi$ in the probabilistic formulation that follows.)
 
 \subsection{Probabilistic Formulation of Object Reconstruction}
 As previously highlighted, central to the proposed system is a volume of posterior probabilities pertaining to a voxel wise membership of either the 
