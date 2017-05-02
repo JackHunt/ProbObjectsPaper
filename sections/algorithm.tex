@@ -1,5 +1,5 @@
 \subsection{Preliminaries}
-\subsubsection{Volumetric Representation}
+\paragraph{Volumetric Representation}
 The system we present follows the familiar KinectFusion \cite{Newcombe2011} pipeline for the integration of surface information. In such a 
 formulation the scene or object is represented as the zero level of a zero level set \cite{Curless1996}, where the level set is a field of distances 
 to the surface and as described, the surface is given by
@@ -11,7 +11,7 @@ S = \left\{\psi | \mathcal{D}(\psi) = 0\right\}
 where $S$ is the set of surface voxels, $\psi$ is a voxel in the SDF(Signed Distance Function) volume and $\mathcal{D}(.)$ is the SDF value. 
 The SDF volume is truncated to yield a TSDF(Truncated Signed Distance Function) with truncation region $\mu$.
 
-\subsubsection{Pose Estimation}
+\paragraph{Pose Estimation}
 The pose estimation method used in this work is based on the ICP algorithm as used in \cite{Newcombe2011, Prisacariu2014}. The estimation of 
 the camera or object 6-DoF pose is formulated as a minimisation problem of the form:
 \begin{equation}
@@ -24,7 +24,7 @@ rotation matrix, $t$ is a translation vector, $\mathcal{V}$ is a rendered depth 
 normal map from the SDF model and $\bar{\omega}$ is the point $\omega$ projected into the coordinate frame of $\mathcal{V}$ and 
 $\mathcal{N}$.
 
-\subsubsection{Surface Integration}
+\paragraph{Surface Integration}
 As in previous works \cite{Newcombe2011,Prisacariu2014} we utilise a weighted mean to fuse new depth measurements in to the TSDF model. As such, 
 for a new depth measurement $\eta$ projected to by voxel $\psi$, the following update to the TSDF volume $\mathcal{D}$ is made
 \begin{equation}
