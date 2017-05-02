@@ -1,8 +1,6 @@
 \paragraph{Dense 3D Reconstruction}
 
-Much recent dense 3D reconstruction work stems back to the seminal KinectFusion work of Newcombe et al.\ \cite{Newcombe2011}. This was used to build an implicit, voxel-based TSDF representation \cite{Curless1996} of a small-scale environment, but could only reconstruct static scenes, and struggled to scale due to inefficient use of memory and difficulties in preventing significant tracking drift in larger-scale scenes. Scalability has progressively been addressed by a moving reconstruction window \cite{Roth2012,Whelan2012}, octrees \cite{Zeng2012}, and sparse methods based on voxel hashing and streaming data to and from the GPU \cite{Niessner2013,Prisacariu2014}. This has made it possible to reconstruct static scenes whose size is only limited by available system memory, although reconstructing a large scene can still occupy significant space. Tracking drift has also been addressed to some extent, generally by detecting loop closures and either rigidly or non-rigidly deforming parts of the scene \cite{Zhou2013,Whelan2015IJRR,Whelan2015RSS}. Other approaches exist that do not explicitly detect loop closures \cite{Fioraio2015}.
-
-Recently, Dai et al.\ \cite{dai2016bundlefusion} introduced a system that improves pose estimation for large-scale scenes by considering each previously seen frame within a hierarchical framework and performing sparse feature matching to optimise for the camera pose. However, mismatches between keypoints are reported to have an impact on the robustness of their optimisation procedure. K{\"a}hler et al.\ \cite{Kahler2016} took a different approach, showing how to combine a multi-segment representation of the scene with loop closure detection and an online model correction algorithm to achieve accurate, globally-consistent scene reconstruction. They reduce drift by tracking only against recent segments of the scene and adjusting the poses between segments online, before refining the final model using pose graph optimisation. In this paper, we extend this latter approach to achieve globally-consistent reconstructions of objects.
+Much recent dense 3D reconstruction work stems back to the seminal KinectFusion work of Newcombe et al.\ \cite{Newcombe2011}. This was used to build an implicit, voxel-based TSDF representation \cite{Curless1996} of a small-scale environment, but could only reconstruct static scenes, and struggled to scale due to inefficient use of memory and difficulties in preventing significant tracking drift in larger-scale scenes. Scalability has progressively been addressed by a moving reconstruction window \cite{Roth2012,Whelan2012}, octrees \cite{Zeng2012}, and sparse methods based on voxel hashing and streaming data to and from the GPU \cite{Niessner2013,Prisacariu2014}. This has made it possible to reconstruct static scenes whose size is only limited by available system memory, although reconstructing a large scene can still occupy significant space. Tracking drift has also been addressed to some extent, generally by detecting loop closures and either rigidly or non-rigidly deforming parts of the scene \cite{Zhou2013,Whelan2015IJRR,Whelan2015RSS}. Other approaches exist that do not explicitly detect loop closures \cite{Fioraio2015}. Recently, Dai et al.\ \cite{dai2016bundlefusion} introduced a system that improves pose estimation for large-scale scenes by considering each previously seen frame within a hierarchical framework and performing sparse feature matching to optimise for the camera pose. However, mismatches between keypoints are reported to have an impact on the robustness of their optimisation procedure. K{\"a}hler et al.\ \cite{Kahler2016} took a different approach, showing how to combine a multi-segment representation of the scene with loop closure detection and an online model correction algorithm to achieve accurate, globally-consistent scene reconstruction. They reduce drift by tracking only against recent segments of the scene and adjusting the poses between segments online, before refining the final model using pose graph optimisation. In this paper, we extend this latter approach to achieve globally-consistent reconstructions of objects.
 
 
 \iffalse
@@ -34,40 +32,48 @@ and at all other points within some truncation region, a distance to the zero le
 \fi
 
 \paragraph{Object Reconstruction}
-In addition to the scene-scale dense SLAM works discussed in the previous section, there has been much work on object reconstruction and 
-object-centric SLAM. Ren et al \cite{Ren2013} present a probabilistic object tracking and reconstruction system that, like our work, builds 
-object reconstructions based on an appearance model. The presented system evolves a level set object representation for voxels that 
-are on the object, as per the appearance model. However, the presented system does not have any provision for loop closure detection and 
-is prone to tracking drift over time.
+In addition to scene-scale works, there has been much work on object reconstruction and object-centric SLAM. Kolev et al.\ \cite{Kolev2006} presented a probabilistic 3D segmentation and surface extraction algorithm based on a variational evolution of a level set representation, but did not handle loop closures and tested their approach only on images with no background noise. Weise et al.\ \cite{Weise2009} presented an explicit, surfel-based reconstruction system for objects rotating in front of a 3D range scanner. They maintain an object topology graph to handle loop closures online, but they only deform the object model when detecting loop closure events, whereas our approach continuously updates the rigid transformations between object segments, making it easier for the user to see what the final model will look like. Ohno et al.\ \cite{Ohno2011} presented a robotic system for reconstructing unknown objects in an environment by pushing them and estimating their motion using 3D flow. Krainin et al.\ \cite{Krainin2011IJRR} TODO. Xu et al.\ \cite{Xu2012} TODO. Alexiadis et al.\ \cite{Alexiadis2013} TODO. Cui et al.\ \cite{Cui2013} presented an object reconstruction system based on Time of Flight (ToF) sensors. They use a super-resolution representation of chunks of raw depth images to reconstruct detailed models. Mihalyi et al.\ \cite{Mihalyi2015} TODO. Narayan et al.\ \cite{Narayan2015} TODO. Panteleris et al.\ \cite{Pantaleris2015, Panteleris2015b} reconstruct objects by tracking hand-object manipulations. Their approach runs in real time, but they do not handle loop closures. Tzionas and Gall \cite{Tzionas2015} also make use of hand-object interactions, presenting an elegant system that can reconstruct featureless and highly symmetric objects by tracking contact points between the hand and the object. Their system produces appealing results, but is not real-time and can fail if the fingers slip over the manipulated object. Gupta et al.\ \cite{Gupta2016} performed object reconstruction based on monocular, multi-view cues. They segment the objects using graph cuts and track based on geometric/texture cues, but do not handle loop closures and report fluctuating tracking quality caused by illumination variation and specular surfaces. Recently, Slavcheva et al.\ \cite{slavcheva2016eccv} presented an object reconstruction system that estimates poses by registering pairs of TSDF volumes. Their system handles loop closures and achieves high-quality results, but at the cost of relying on fiducial markers to improve their tracking and performing loop closure offline as a post-processing step.
 
-Later work by Ren et al \cite{Ren2014} utilise the object tracking component of \cite{Ren2013} to provide a system capable of real time tracking 
-of multiple objects for which an initial model is available. The work however relies on the objects to be tracked having identical appearances, 
-though this does indicate that the authors system is capable of distinguishing between objects of identical appearance.
+The closest approach to ours is that of Ren et al.\ \cite{Ren2013}, who presented a probabilistic tracking and reconstruction system that reconstructs objects based on an appearance model, evolving a level set representation for voxels that are on the object. However, they do not detect loop closures and are prone to tracking drift. Their later work \cite{Ren2014} extended \cite{Ren2013} to track multiple objects for which an initial model is available in real time.
 
+%The work however relies on the objects to be tracked having identical appearances, though this does indicate that the authors system is capable of distinguishing between objects of identical appearance.
+
+\iffalse
 Kolev et al present a probabilistic 3D segmentation and surface extraction algorithm \cite{Kolev2006} based on a variational evolution of a level 
 set representation. Object appearance probabilities are fused in to the objects volume for the segmentation, such that the algorithm is robust to 
 outliers in the observation images. However, their system does not provide any handling of 
 loop closure occurrences and the paper makes no reference to tracking integrity. In addition, the images on which their algorithm was tested 
 contained only the objects to be reconstructed, with no background noise.
+\fi
 
+\iffalse
 Another volumetric object reconstruction system is presented by Gupta et al \cite{Gupta2016}, using monocular multi view cues. The authors 
 perform object segmentation within a graph cut framework to yield object models and perform tracking based on visual and textual cues. 
 However the authors report fluctuating camera tracking quality due to the breakage of brightness constancy and specular surfaces. In addition, 
 as with all other works introduced up to this point there is no loop closure ability and tracking drift is an issue.
+\fi
 
+\iffalse
 Cui et al present a system to improve the reconstruction of objects using ToF(Time of Flight) sensors \cite{Cui2013}. The authors utilise a super-resolution 
 representation of chunks of raw depth images to improve the level of detail in the reconstructed models. In addition, the authors present a probabilistic 
 alignment framework in their reconstruction pipeline that proves to be efficacious.
+\fi
 
+\iffalse
 Slavcheva et al \cite{slavcheva2016eccv} present a volumetric object reconstruction system for RGBD sensors in which pose estimates are yielded by registering pairs of 
 SDF(Signed Distance Function) volumes. Unlike many of the aforementioned works, the authors do present a loop closure step, however it is 
 performed offline as a post processing step. In addition, the tracking procedure of the presented work is reliant on the use of fiducial markers.
+\fi
 
+\iffalse
 Panteleris et al \cite{Pantaleris2015, Panteleris2015b} present novel approaches to object reconstruction where by segmentation and reconstruction is achieved by 
 tracking hand motion. However, there is no handling of loop closure events. 
+\fi
 
+\iffalse
 Finally, Weise et al present an explicit, surfel based object reconstruction system \cite{Weise2009} based on objects rotating in front of a 3D 
 range scanner. During reconstruction an object topology graph is constructed that is used on-line to handle loop closure cases. When a loop 
 closure is detected, if there are discrepancies in the topology graph then deformations are applied to patches of the object surface. As 
 such, the two misaligned ends of the surface are realigned. However, this method requires the maintaining of a topology graph with deformation 
 optimisations being computed over this graph.
+\fi
