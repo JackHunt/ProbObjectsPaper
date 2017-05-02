@@ -40,17 +40,13 @@ where $w(.)$ is a weighting function and $\mu$ is the aforementioned TSDF trunca
 %\subsection{Representation and Fusion Procedure}
 \subsection{Object Probability Fusion Procedure}
 
-The surface map and camera pose are estimated using the standard pipeline of \cite{Newcombe2011,Prisacariu2014}. The surface location is represented as the zero level set of a truncated signed distance function (TSDF) over voxels, with online weighted-mean fusion of new observations. Pose estimation via ICP is run quasi-simultaneously against the evolving map. Here, we augment this procedure by estimating the posterior probability, per map voxel, of belonging to the object surface.
+The surface map and camera pose are estimated using the standard pipeline of \cite{Newcombe2011,Prisacariu2014}. The surface location is represented as the zero level set of a truncated signed distance function (TSDF) over voxels, with online weighted-mean fusion of new observations. Pose estimation via ICP is run quasi-simultaneously against the evolving map. Here, inspired by \cite{Kolev2006}, we augment this procedure by estimating the posterior probability, per map voxel, of belonging to the object. This volume of posterior probabilities is updated on each frame, parallel to the fusion process in the mapping and pose estimation subsystems.
 
-The representation of the object to be reconstructed makes use of multiple `subvolumes' each pertaining to some patch on the object surface. 
-New subvolumes are started when a sufficient amount of new voxels have been allocated and have had data integrated. By ensuring overlap 
-between the subvolumes, transformations between them can be found. Using the multiple volume approach allows for pose estimation in each 
-volume such that pose estimation discrepancies between subvolumes can be detected and are indicative of pose estimation drift.
+The representation of the object to be reconstructed makes use of multiple `subvolumes', each pertaining to some patch on the object surface. 
+New subvolumes are started when sufficiently many new voxels have been allocated and had data integrated. By ensuring overlap 
+between the subvolumes, transformations between them can be found and pose inconsistencies addressed.
 
-The proposed system is inspired by\cite{Kolev2006} in that the representation used for the shape of the object to be modelled is a set of volumes 
-of probabilities and surface information. The probabilities are posteriors over a per voxel assignment to either the object voxel set or to the non 
-object voxel set. In the proposed system this volume of posterior probabilities is built into with each frame, parallel to the fusion process in systems 
-such as KinectFusion\cite{Newcombe2011} and InfiniTAM\cite{Prisacariu2014}.
+
 
 At each frame a probability map is constructed based on the predictions of the model given the current frame. During the fusion process, this 
 smaller volume is mapped into as a source of voxel wise appearance probability information. The overall appearance based posterior for a given voxel 
