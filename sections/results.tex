@@ -61,9 +61,9 @@ In the \textit{freiburg3\_teddy} sequence we determine a trajectory very close t
 Improvement over the accuracy in \textit{freiburg3\_cabinet} is due to the wider availability of geometrical features, such as curves in the teddy's body and head.
 
 \subsection{Qualitative Reconstruction Quality}
-In this section we present a qualitative evaluation of our method vs the work of Ren et al \cite{Ren2013} in the reconstruction of closed object models. We use a variety of sequences and demonstrate 
-efficacy over \cite{Ren2013} in this regard. Each sequence is run through our system and that of \cite{Ren2013} with snapshots of the reconstruction in the case of our system and level set evolutions 
-in the case of \cite{Ren2013}, at quarterly intervals of the systems run time through the sequence.
+In this section we present a qualitative comparison of our method vs. the approach by Ren et~al.~\cite{Ren2013} in the reconstruction of closed object models. %by relying on a variety of sequences and demonstrating efficacy over \cite{Ren2013} in this regard.
+Each sequence is run through both systems; to evaluate the obtained results we regularly take snapshots of the reconstruction, in the case of our system, and the level set evolutions, in the case of \cite{Ren2013}.
+Such snapshots are captured after each quarter of a sequence has been processed. %quarterly intervals of the systems run time through the sequence.
 
 \begin{figure}[!t]
 	\centering
@@ -73,17 +73,19 @@ in the case of \cite{Ren2013}, at quarterly intervals of the systems run time th
 		(a)&(b)
 	\end{tabular}
 	\caption{
-		\textbf{(a)} Quarterly interval snapshots of the Dinosaur Head reconstruction using our method.
-		\textbf{(b)} Quarterly interval snapshots of the Dinosaur Head level set evolution using the method of Ren et al.
+        Quarterly interval snapshots of the Dinosaur Head reconstruction using \textbf{(a)} our method, and \textbf{(b)} the one proposed by Ren et~al.~\cite{Ren2013}.
 	}
 	\label{fig:dinoComparison}
 \end{figure}
 
-As can be seen in Figure \ref{fig:dinoComparison} our method is able to successfully reconstruct the Dinosaur Head whereas the method of Ren et al fails to converge towards a feasible shape. In addition, 
-Figure \ref{fig:top_shots} demonstrates that our system is able to generate closed models for a variety of sequences with the presence of loop closure. The failure of the method of Ren et al is 
-also apparent for other sequences used in this work, with a similar failure to converge to a correct shape. The supplementary materials to this work demonstrate our efficacy vs that of Ren et al \cite{Ren2013}.\\
+As depicted in Figure~\ref{fig:dinoComparison}, our method is able to successfully reconstruct the Dinosaur Head, whereas the approach by Ren~et~al. fails to converge towards a feasible shape.
+In addition, Figure~\ref{fig:top_shots} demonstrates that our system is able to generate consistent models (unaffected by camera tracking drift) for a variety of sequences containing several loop closures.
+Failure of the competing method %of Ren et al
+is also apparent for other sequences evaluated in this work, all presenting failure cases analogous to Figure~\ref{fig:dinoComparison}b. % to converge to a correct shape.
+Such examples will be presented in the supplementary materials.
+%The supplementary materials to this work demonstrate our efficacy vs that of Ren et al \cite{Ren2013}.\\
 
-The object models in Figure \ref{fig:demo} were reconstructed from sequences in which a camera is moved 360 around each object to generate a closed model.
+The object reconstructions depicted in Figure~\ref{fig:demo} have been obtained from sequences in which a camera was moved in a loop around each object in order to generate a closed model.
 
 \begin{figure}[!t]
 	\centering
@@ -94,11 +96,11 @@ The object models in Figure \ref{fig:demo} were reconstructed from sequences in 
 		(a)&(b)&(c)
 	\end{tabular}
 	\caption{
-		\textbf{(a)} Closed reconstruction of a Dinosaur Head.
-		\textbf{(b)} Closed reconstruction of a Chair.
-		\textbf{(c)} Closed reconstruction of a Rock.
+		Closed reconstructions of \textbf{(a)} a Dinosaur Head,
+		\textbf{(b)} a Chair, and
+		\textbf{(c)} a Rock.
 	}
 	\label{fig:top_shots}
 \end{figure}
 
-As can be seen from the top down views of Figure \ref{fig:top_shots}, our system is capable of producing closed models, unaffected by tracking drift and loop closure events.
+%As can be seen from the top down views of Figure \ref{fig:top_shots}, our system is capable of producing closed models, unaffected by tracking drift and loop closure events.
