@@ -39,24 +39,20 @@ association errors when attempting to recover pose.
 
 For example, when reconstructing an entire scene and assuming no masking, all of the data in the current and previous frames is available for tracking. When tracking solely an object this is not the case as attempting to track an objects movement w.r.t.\ static scene points and dynamic object points would cause a failure event.
 
-In this paper, we present a probabilistic object reconstruction framework for the reconstruction of rigid objects based on 
+In this paper, we present a probabilistic rigid-object reconstruction framework based on 
 depth and texture features. The framework facilitates the correction of camera tracking drift by representing the object to be reconstructed as a
 collection of overlapping subsegments such that transformations may be inferred to keep the subsegments aligned, resulting in a consistent
 overall model. By combining these transformed surfaces, we extract an implicitly deformed surface, optimised for via the probabilistic formulation 
-that follows.
-
-We utilise a volumetric representation for each of these object subsegments, as with other larger-scale reconstruction
+that follows. We utilise a volumetric representation for each of these object subsegments, as with larger-scale reconstruction
 systems \cite{Kahler2016}. Each voxel in the subsegments has additional appearance posterior information pertaining to the voxel's membership 
 of the object. Over time, multiple volumes containing both surface and probabilistic appearance information are maintained and manipulated to 
-yield a robust and temporally-consistent model.
+yield a robust and temporally consistent model. Finally, we optimise for the optimum object shape within a CRF (Conditional Random Field) framework.
 
-Finally, we optimise for the optimum object shape within a CRF (Conditional Random Field) framework.
+%We demonstrate efficacy in object reconstruction by performing online transformations to the aforementioned subsegments to counteract inconsistencies caused by drift in the object pose tracking process.
 
-We demonstrate efficacy in object reconstruction by performing online transformations to the aforementioned subsegments to counteract inconsistencies caused by drift in the object pose tracking process.
+We perform both quantitative and qualitative experiments to compare our approach to the state-of-the-art object reconstruction approach of Ren et al.\ \cite{Ren2013}, demonstrating compelling improvements in both pose estimation and model quality.
 
-We perform quantitative and qualitative experiments and demonstrate efficacious pose estimation and reconstruction quality respectively. As a base 
-for comparison, tracking quality is compared with a well established dense SLAM evaluation benchmark \cite{sturm12iros} and reconstruction quality 
-with the object reconstruction system outlined in \cite{Ren2013}.
+%We perform quantitative and qualitative experiments and demonstrate efficacious pose estimation and reconstruction quality respectively. As a base for comparison, tracking quality is compared with a well established dense SLAM evaluation benchmark \cite{sturm12iros} and reconstruction quality with the object reconstruction system outlined in \cite{Ren2013}.
 
 \iffalse
 The motivation behind this work is to improve current semantic scene understanding\cite{Valentin2015, Golodetz2015} by providing a means to procure 
