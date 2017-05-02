@@ -67,9 +67,10 @@ object set or the non object set. This allows one to formulate the full joint di
 Graphical Model of Figure \ref{pgm1}.
 \begin{figure}[!t]
 	\centering
-	\includegraphics{graphical_models/pgm1.pdf}
-	\caption{Probabilistic formulation of the object reconstruction pipeline.}
-	\label{pgm1}
+	\subfigure[]{\includegraphics{graphical_models/pgm1.pdf}\label{pgm1}}%
+	\hspace{12mm}%
+	\subfigure[]{\includegraphics{graphical_models/pgm2.pdf}\label{pgm2}}
+	\caption{(a) An initial probabilistic formulation of the object reconstruction pipeline, and (b) a simpler formulation based on various simplifying assumptions (see text).}
 \end{figure}
 
 Where $\Phi$ is the shape to be reconstructed, $u$ is the appearance model volume, $L$ is the 
@@ -105,12 +106,15 @@ In practice this temporal independence assumption causes no issues.
 
 Furthermore, if one assumes voxel wise independence, the plate over voxels can be removed. Finally, assuming $P(p)$ and 
 $P(\Omega)$ are uniform distributions, then we have the simpler distribution given by Figure \ref{pgm2}.
+
+\iffalse
 \begin{figure}[!t]
 	\centering
 	\includegraphics{graphical_models/pgm2.pdf}
 	\caption{Simplified probabilistic formulation of the object reconstruction pipeline.}
 	\label{pgm2}
 \end{figure}
+\fi
 
 Where the simpler distribution takes the following analytical form:
 \begin{equation}
