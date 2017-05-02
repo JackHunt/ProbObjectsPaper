@@ -214,6 +214,7 @@ As such the surface $\Phi$ is given by the following:
 \end{equation}
 where $X$ is the set of subvolumes contributing to the surface $\Phi$.
 
+\iffalse
 As such, the previously described transformation estimation process that deforms each of the subscenes implicitly to optimise jointly for the true 
 surface as depicted in Figure \ref{fig:deformationDiagram}.
 \begin{figure}[!t]
@@ -222,7 +223,7 @@ surface as depicted in Figure \ref{fig:deformationDiagram}.
 	\caption{Measured surfaces being deformed to the true surface.}
 	\label{fig:deformationDiagram}
 \end{figure}
-
+\fi
 
 \section{Volumetric Object Segmentation}
 The final stage in the proposed object reconstruction pipeline is the segmentation of the object voxels from those that have had measurements fused 
@@ -247,7 +248,7 @@ first RGB frame.
 An overview of the processing pipeline for the proposed system is outlined in Figure \ref{pipelineDiagram}.
 \begin{figure*}[!t]
 	\centering
-	\includegraphics[scale=0.33]{pipeline.pdf}
+	\includegraphics[width=\linewidth]{pipeline.pdf}
 	\caption{Object reconstruction pipeline.}
 	\label{pipelineDiagram}
 \end{figure*}
