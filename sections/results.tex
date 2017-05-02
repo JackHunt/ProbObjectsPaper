@@ -1,9 +1,11 @@
-To evaluate the performance of our system we perform experiments that draw comparisons in terms of quantitative pose estimation and qualitative reconstruction quality and efficacy.
-Firstly, pose estimation is evaluated against a well established dense SLAM evaluation benchmark \cite{sturm12iros}, with the primary difference being that with traditional dense SLAM 
-systems \cite{Prisacariu2014,Niessner2013,Newcombe2011}, for which the benchmark is often used, the entire visible scene is used for pose estimation, whereas in our system only the object 
-surface is tracked. Qualitative comparisons are also drawn between the reconstructions of our system versus those of the system described in \cite{Ren2013}.
+To evaluate the performance of our system, we perform quantitative experiments on camera pose estimation accuracy, and qualitatively analyse the obtained reconstructions.
+%To evaluate the performance of our system we perform experiments that draw comparisons in terms of quantitative pose estimation and qualitative reconstruction quality and efficacy.
+Firstly, the pose estimation accuracy is evaluated via a well-established SLAM evaluation benchmark~\cite{sturm12iros}.
+We like to point out that % with the primary difference being that with
+in traditional dense SLAM systems~\cite{Prisacariu2014,Niessner2013,Newcombe2011} -- for which the benchmark is often employed -- the entire contents of the visible scene are used for pose estimation, whereas in our system we rely only on points belonging to the object' surface.
+Finally, qualitative comparisons are drawn between the reconstructions attained by our system and those of the method described in \cite{Ren2013}.
 
-We evaluate our system on a set of objects of different sizes, some sequences with the object moving, others with the camera moving in the case of qualitative evaluation. 
+We evaluate our system on multiple sequences, depicting objects of different sizes; some with the object moving wrt. a fixed camera, others with the sensor in motion.% in the case of qualitative evaluation. 
 
 \subsection{Pose Estimation Quality}
 In this section we present quantitative results of our systems ability to maintain tracking robustness when tracking only an object and not the scene. In addition, the outputted trajectories 
@@ -18,15 +20,15 @@ Tracking is evaluated w.r.t. ATE(Absolute Trajectory Error) as outlined in \cite
 	{
         \footnotesize
 		\begin{center}
-			\begin{tabular}{l@{\hskip 1cm} c c}
-				\emph{Sequence Name} & \emph{ATE}\\
+			\begin{tabular}{l@{\hskip 1cm} c}
+				\emph{Sequence Name} & \emph{ATE (m)}\\
 				\midrule
-				\textsf{freiburg3\_cabinet} & 0.077903\\
-				\textsf{freiburg3\_teddy} & 0.030596\\
+				\textsf{freiburg3\_cabinet} & 0.078 \\ %0.077903
+				\textsf{freiburg3\_teddy}   & 0.031 \\ %0.030596
 			\end{tabular}
 		\end{center}
 	}
-	\caption{The absolute trajectory error (ATE) results (in metres, lower is better) achieved by our approach in comparison to the ground truth.}
+	\caption{Absolute Trajectory Error (ATE) results (lower is better) achieved by our approach.}
 	\label{ateTable}
 \end{table}
 
