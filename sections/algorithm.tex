@@ -13,7 +13,7 @@ The SDF volume is truncated to yield a TSDF(Truncated Signed Distance Function) 
 
 \subsubsection{Pose Estimation}
 The pose estimation method used in this work is based on the ICP algorithm as used in \cite{Newcombe2011, Prisacariu2014}. The estimation of 
-the camera or object 6-DoF pose is formulated as a minimisation problem of the form
+the camera or object 6-DoF pose is formulated as a minimisation problem of the form:
 \begin{equation}
 \begin{split}
 E = \sum_{\omega \in \Omega_{d}} \bigg( \big( R\omega + t - \mathcal{V}(\bar{\omega}) \big) \cdot \mathcal{N}(\bar{\omega}) \bigg)^{2}
@@ -172,7 +172,7 @@ With the likelihood function taking the following form:
 P(\Psi_{s'}(\Lambda(x))) = \prod_{(s, s') \in \mathcal{S}} \frac{1}{\sqrt{2 \pi \sigma}} \exp{\frac{-(\Psi_{s}(x) - \Psi_{s'}(\Lambda(x)))^2}{2\sigma^2}}
 \end{split}
 \end{equation}
-Or alternatively:-
+Or alternatively:
 \begin{equation}
 \begin{split}
 \ln P(\Psi_{s'}(\Lambda(x))) = m\ln\frac{1}{\sqrt{2\pi}\sigma}
@@ -191,13 +191,13 @@ Rodrigues Parameters \cite{Shuster1993} $\rho_{1}$, $\rho_{2}$ and $\rho_{3}$.
 Note that the logarithmic form of the above likelihood is suitable to Nonlinear Least Squares optimisation, allowing the posterior of equation 4 
 to be maximised in terms of the likelihood term of equation 4. To perform MLE(Maximum Likelihood Estimation) over this likelihood using 
 an optimisation routine such as Levenberg Marquardt, the following gradients must be computed for the rotational component of the 
-deformation:-
+deformation:
 \begin{equation}
 \begin{split}
 \frac{\partial E}{\partial r_{n}} = \frac{\partial E}{\partial \Psi} \frac{\partial \Psi}{\partial \Lambda} \frac{\partial \Lambda}{\partial r_{n}} \text{for } n \in \{1,2,3\}
 \end{split}
 \end{equation}
-Similarly for the translational component:-
+Similarly for the translational component:
 \begin{equation}
 \begin{split}
 \frac{\partial E}{\partial t_{d}} = \frac{\partial E}{\partial \Psi} \frac{\partial \Psi}{\partial \Lambda} \frac{\partial \Lambda}{\partial t_{d}} \text{for } d \in  \{x,y,z\}
