@@ -39,19 +39,20 @@ where $w(.)$ is a weighting function and $\mu$ is the aforementioned TSDF trunca
 
 %\subsection{Representation and Fusion Procedure}
 
-\begin{figure*}[!p]
+\begin{figure*}[!t]
 	\centering
 	\includegraphics[width=\linewidth]{pipeline.pdf}
-	\caption{Object reconstruction pipeline.}
+	\caption{The pipeline of our object reconstruction approach.}
 	\label{pipelineDiagram}
 \end{figure*}
 
-\begin{figure}[!p]
+\begin{figure}[!t]
 	\centering
-	\subfigure[]{\includegraphics{graphical_models/pgm1.pdf}\label{pgm1}}%
+	\subfigure[]{\includegraphics[height=3cm]{graphical_models/pgm1.pdf}\label{pgm1}}%
 	\hspace{12mm}%
-	\subfigure[]{\includegraphics{graphical_models/pgm2.pdf}\label{pgm2}}
+	\subfigure[]{\includegraphics[height=3cm]{graphical_models/pgm2.pdf}\label{pgm2}}
 	\caption{(a) An initial probabilistic formulation of the object reconstruction pipeline, and (b) a simpler formulation based on various simplifying assumptions (see text).}
+	\vspace{-\baselineskip}
 \end{figure}
 
 An overview of our object reconstruction pipeline is shown in Figure~\ref{pipelineDiagram}. We divide our object model into subvolumes, exactly one of which is active at any one time. Each subvolume consists of a TSDF, colour volume and object probability volume, and contains a rigid body transform that specifies its pose relative to the global coordinate frame. At each new camera frame, we apply our segmentation model to the colour input image to construct an object probability map, and then fuse the probabilities in this map into the object probability volume of the active subvolume (see Section~\ref{subsec:probfusion}). We also update the TSDF and colour volume of the active subvolume, and track against it using ICP, as in normal KinectFusion \cite{Newcombe2011}. At the end of each frame, we run our online model correction algorithm (see Section~\ref{subsec:onlinemodelcorrection}), which optimises the relative poses between the subvolumes to mitigate tracking drift. Once the entire reconstruction process is finished, we perform a CRF-based optimisation to refine the resulting object shape (see Section~\ref{subsec:shapeoptimisation}). In what follows, we describe each of these procedures in more detail. Our approach is not tied to the use of any one segmentation model, so we defer discussion of the model we use to the supplementary material.
@@ -224,7 +225,7 @@ The overall object surface $\Phi$ is implicitly deformed by a combining function
 As such the surface $\Phi$ is given by the following:
 \begin{equation}
 \begin{split}
-\Phi = \sum_{\chi \in X} \zeta(\Phi_{\chi}) d \Phi_{\chi}
+\Phi = \sum_{\chi \in X} \zeta(\Phi_{\chi})
 \end{split}
 \end{equation}
 where $X$ is the set of subvolumes contributing to the surface $\Phi$.
