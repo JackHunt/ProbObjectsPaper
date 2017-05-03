@@ -1,4 +1,4 @@
-To evaluate the performance of our system, we perform quantitative experiments on camera pose estimation accuracy, and qualitatively analyse the obtained reconstructions.
+To evaluate our system, we perform quantitative experiments on camera pose estimation accuracy, and qualitatively analyse the obtained reconstructions.
 %To evaluate the performance of our system we perform experiments that draw comparisons in terms of quantitative pose estimation and qualitative reconstruction quality and efficacy.
 Firstly, the pose estimation accuracy is evaluated via a well-established SLAM evaluation benchmark~\cite{sturm12iros}.
 We like to point out that % with the primary difference being that with
@@ -6,6 +6,8 @@ in traditional dense SLAM systems~\cite{Prisacariu2014,Niessner2013,Newcombe2011
 Whilst more challenging, this implicitly allows us to track the camera wrt. the object regardless of which of the two is subject to motion.
 Then, qualitative comparisons are drawn between the reconstructions attained by our system, and those of the method described in \cite{Ren2013}.
 We evaluate our system on multiple frame sequences depicting objects of different sizes. %; some with the object moving wrt. a fixed camera, others with the sensor in motion.% in the case of qualitative evaluation.
+
+\vspace{-.7\baselineskip}
 
 \subsection{Pose Estimation Quality}
 In this section we present quantitative results of our systems' %ability to maintain tracking
@@ -41,12 +43,11 @@ The tracking accuracy is evaluated via the Absolute Trajectory Error (ATE) metri
 	\centering
 	\begin{tabular}{cc}
 		\bmvaHangBox{\fbox{\includegraphics[width=0.25\textwidth]{results/rgbd_dataset_freiburg3_cabinet.png}}}&
-		\bmvaHangBox{\fbox{\includegraphics[width=0.25\textwidth]{results/rgbd_dataset_freiburg3_teddy.png}}}\\
-		(a)&(b)
+		\bmvaHangBox{\fbox{\includegraphics[width=0.25\textwidth]{results/rgbd_dataset_freiburg3_teddy.png}}}
 	\end{tabular}
 	\caption{
-		\textbf{(a)} Trajectory of the camera for the \textit{freiburg3\_cabinet} sequence versus ground truth.
-		\textbf{(b)} Trajectory of the camera for the \textit{freiburg3\_teddy} sequence versus ground truth.
+		\textbf{(L)} Trajectory of the camera for the \textit{freiburg3\_cabinet} sequence versus ground truth.
+		\textbf{(R)} Trajectory of the camera for the \textit{freiburg3\_teddy} sequence versus ground truth.
 	}
 \label{fig:tumTrajectories}
 \end{figure}
@@ -69,13 +70,28 @@ Such snapshots are captured after each quarter of a sequence has been processed.
 	\centering
 	\begin{tabular}{cc}
 		\bmvaHangBox{\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/dino.png}}}&
-		\bmvaHangBox{\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/dino_s3d_large.png}}}\\
-		(a)&(b)
+		\bmvaHangBox{\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/dino_s3d_large.png}}}
 	\end{tabular}
 	\caption{
-        Quarterly interval snapshots of the Dinosaur Head reconstruction using \textbf{(a)} our method, and \textbf{(b)} the one proposed by Ren et~al.~\cite{Ren2013}.
+        Quarterly interval snapshots of the Dinosaur Head reconstruction using \textbf{(L)} our method, and \textbf{(R)} the one proposed by Ren et~al.~\cite{Ren2013}.
 	}
 	\label{fig:dinoComparison}
+\end{figure}
+
+\begin{figure}[!t]
+	\centering
+	\begin{tabular}{ccc}
+		\bmvaHangBox{\fbox{\includegraphics[width=0.2\textwidth]{screenshots/dino_colour_top.PNG}}}&
+		\bmvaHangBox{\fbox{\includegraphics[width=0.2\textwidth]{screenshots/chair_colour_top.PNG}}}&
+		\bmvaHangBox{\fbox{\includegraphics[width=0.2\textwidth]{screenshots/rock_colour_top.PNG}}}
+	\end{tabular}
+	\caption{
+		Closed reconstructions of \textbf{(L)} a Dinosaur Head,
+		\textbf{(M)} a Chair, and
+		\textbf{(R)} a Rock.
+	}
+	\label{fig:top_shots}
+	\vspace{-\baselineskip}
 \end{figure}
 
 As depicted in Figure~\ref{fig:dinoComparison}, our method is able to successfully reconstruct the Dinosaur Head, whereas the approach by Ren~et~al. fails to converge towards a feasible shape.
@@ -86,21 +102,5 @@ Such examples will be presented in the supplementary materials.
 %The supplementary materials to this work demonstrate our efficacy vs that of Ren et al \cite{Ren2013}.\\
 
 The object reconstructions depicted in Figure~\ref{fig:demo} have been obtained from sequences in which a camera was moved in a loop around each object in order to generate a closed model.
-
-\begin{figure}[!t]
-	\centering
-	\begin{tabular}{ccc}
-		\bmvaHangBox{\fbox{\includegraphics[width=0.2\textwidth]{screenshots/dino_colour_top.PNG}}}&
-		\bmvaHangBox{\fbox{\includegraphics[width=0.2\textwidth]{screenshots/chair_colour_top.PNG}}}&
-		\bmvaHangBox{\fbox{\includegraphics[width=0.2\textwidth]{screenshots/rock_colour_top.PNG}}}\\
-		(a)&(b)&(c)
-	\end{tabular}
-	\caption{
-		Closed reconstructions of \textbf{(a)} a Dinosaur Head,
-		\textbf{(b)} a Chair, and
-		\textbf{(c)} a Rock.
-	}
-	\label{fig:top_shots}
-\end{figure}
 
 %As can be seen from the top down views of Figure \ref{fig:top_shots}, our system is capable of producing closed models, unaffected by tracking drift and loop closure events.

@@ -153,7 +153,6 @@ be enforced in terms of minimising the transformations between adjacent submaps,
 %The approach proposed in this work differs from \cite{Kahler2016} in that the optimisation is integrated in to the probabilistic formulation previously outlined. 
 Given instantaneously inferred transforms between subvolumes obtained from tracking results, 
 the objective is to infer a robust, consistent deformation transformation for the subvolume pair.
-
 As such, for each pair of visible subvolumes $(s, s')$, the following posterior must be maximised:
 \begin{equation}
 \begin{split}
@@ -167,25 +166,26 @@ increase the probability of observing the current pose $p$ given the current RGB
 variance of the camera tracking result. As such, global tracking variance is reduced by enforcing local consistency, improving the quality 
 of the reconstruction.
 
-A gradient based maximisation of the above posterior to yield an optimal deformation is a highly nonlinear optimisation problem. As such, it is suited 
-to second order gradient based optimisation routines such as Gauss-Newton or Levenberg-Marquardt.
+Gradient-based maximisation of the above posterior to yield an optimal deformation is a highly nonlinear optimisation problem. As such, it is suited 
+to second-order gradient-based optimisation routines, e.g.\ Gauss-Newton or Levenberg-Marquardt.
 It should be noted that in our implementation the $P(\Omega | p)$ term is assumed to be uniform in the case of an 
 RGBD sensor being used, however for applications such as monocular SLAM this term may be replaced with a noise model when there is 
 significant uncertainty about the given depth map at each frame.
-
 The following proportionality to the distribution over deformations is made:
 \begin{equation}
 \begin{split}
 P(L_{(s, s')} | \Omega, p) \propto P(\Psi_{s}(x) | \Psi_{s'}(\Lambda(x)))
 \end{split}
 \end{equation}
-With the likelihood function taking the following form:
+With the log likelihood function taking the following form:
+\iffalse
 \begin{equation}
 \begin{split}
 P(\Psi_{s'}(\Lambda(x))) = \prod_{(s, s') \in \mathcal{S}} \frac{1}{\sqrt{2 \pi \sigma}} \exp{\frac{-(\Psi_{s}(x) - \Psi_{s'}(\Lambda(x)))^2}{2\sigma^2}}
 \end{split}
 \end{equation}
 Or alternatively:
+\fi
 \begin{equation}
 \begin{split}
 \ln P(\Psi_{s'}(\Lambda(x))) = m\ln\frac{1}{\sqrt{2\pi}\sigma}
@@ -200,7 +200,6 @@ Where $\Psi(.)$ is a scalar valued SDF(Signed Distance Function), a discretised 
 \end{equation}
 Where $R(.)$ is a rotation matrix from the Special Orthogonal group $\mathbbm{SO}(3)$ paramaterised by the three 
 Rodrigues Parameters \cite{Shuster1993} $\rho_{1}$, $\rho_{2}$ and $\rho_{3}$.
-
 Note that the logarithmic form of the above likelihood is suitable to Nonlinear Least Squares optimisation, allowing the posterior of equation 4 
 to be maximised in terms of the likelihood term of equation 4. To perform MLE(Maximum Likelihood Estimation) over this likelihood using 
 an optimisation routine such as Levenberg Marquardt, the following gradients must be computed for the rotational component of the 
