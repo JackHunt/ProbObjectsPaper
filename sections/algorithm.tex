@@ -38,7 +38,26 @@ where $w(.)$ is a weighting function and $\mu$ is the aforementioned TSDF trunca
 \fi
 
 %\subsection{Representation and Fusion Procedure}
+
+\begin{figure*}[!p]
+	\centering
+	\includegraphics[width=\linewidth]{pipeline.pdf}
+	\caption{Object reconstruction pipeline.}
+	\label{pipelineDiagram}
+\end{figure*}
+
+\begin{figure}[!p]
+	\centering
+	\subfigure[]{\includegraphics{graphical_models/pgm1.pdf}\label{pgm1}}%
+	\hspace{12mm}%
+	\subfigure[]{\includegraphics{graphical_models/pgm2.pdf}\label{pgm2}}
+	\caption{(a) An initial probabilistic formulation of the object reconstruction pipeline, and (b) a simpler formulation based on various simplifying assumptions (see text).}
+\end{figure}
+
+An overview of our object reconstruction pipeline is shown in Figure~\ref{pipelineDiagram}. We divide our object model into subvolumes, exactly one of which is active at any one time. Each subvolume consists of a TSDF, colour volume and object probability volume, and contains a rigid body transform that specifies its pose relative to the global coordinate frame. At each new camera frame, we apply our segmentation model to the colour input image to construct an object probability map, and then fuse the probabilities in this map into the object probability volume of the active subvolume (see Section~\ref{subsec:probfusion}). We also update the TSDF and colour volume of the active subvolume, and track against it using ICP, as in normal KinectFusion \cite{Newcombe2011}. At the end of each frame, we run our online model correction algorithm (see Section~\ref{subsec:onlinemodelcorrection}), which optimises the relative poses between the subvolumes to mitigate tracking drift. Once the entire reconstruction process is finished, we perform a CRF-based optimisation to refine the resulting object shape (see Section~\ref{subsec:shapeoptimisation}). In what follows, we describe each of these procedures in more detail. Our approach is not tied to the use of any one segmentation model, so we defer discussion of the model we use to the supplementary material.
+
 \subsection{Object Probability Fusion Procedure}
+\label{subsec:probfusion}
 
 The surface map and camera pose are estimated using the standard pipeline of \cite{Newcombe2011,Prisacariu2014}. The surface location is represented as the zero level set of a truncated signed distance function (TSDF) over voxels, with online weighted-mean fusion of new observations. Pose estimation via ICP is run quasi-simultaneously against the evolving map. Here, inspired by \cite{Kolev2006}, we augment this procedure by estimating the posterior probability, per map voxel, of belonging to the object. This volume of posterior probabilities is updated on each frame, parallel to the fusion process in the mapping and pose estimation subsystems. Similarly to \cite{Kahler2016}, the representation of the reconstructed object comprises multiple `subvolumes', each pertaining to some patch on the object surface. New subvolumes are started when sufficiently many new voxels have been allocated and had data integrated, and exactly one is `active' at any time. By ensuring overlap between subvolumes, transformations between them can be found and pose inconsistencies addressed, online.
 
@@ -59,13 +78,6 @@ $\Phi$ is a discretisation of the continuous $\Phi$ in the probabilistic formula
 As previously highlighted, central to the proposed system is a volume of posterior probabilities pertaining to a voxel wise membership of either the 
 object set or the non object set. This allows one to formulate the full joint distribution over the object as the Probabilistic 
 Graphical Model of Figure \ref{pgm1}.
-\begin{figure}[!t]
-	\centering
-	\subfigure[]{\includegraphics{graphical_models/pgm1.pdf}\label{pgm1}}%
-	\hspace{12mm}%
-	\subfigure[]{\includegraphics{graphical_models/pgm2.pdf}\label{pgm2}}
-	\caption{(a) An initial probabilistic formulation of the object reconstruction pipeline, and (b) a simpler formulation based on various simplifying assumptions (see text).}
-\end{figure}
 
 Where $\Phi$ is the shape to be reconstructed, $u$ is the appearance model volume, $L$ is the 
 set of consistency constraints for each adjacent sub volume pair in the form of rigid transformations, $\Omega$ is the set of 
@@ -132,7 +144,9 @@ the standard ICP(Iterated Closest Point) approach.
 As inference on the joint distribution of our model is intractable, conditional independence assumptions are made that do not appear 
 to cause any functional issues. The estimation phase of the pipeline is described in the following section.
 
-\subsection{Estimating Deformations}
+\subsection{Online Model Correction}
+\label{subsec:onlinemodelcorrection}
+
 The tracking consistency constraint denoted by the variable $L$ in the graphical model given by Figure \ref{pgm1} and Figure \ref{pgm2} can 
 be enforced in terms of minimising the transformations between adjacent submaps, such that the camera poses tracked in each subvolume are consistent.  
 %The approach proposed in this work differs from \cite{Kahler2016} in that the optimisation is integrated in to the probabilistic formulation previously outlined. 
@@ -203,7 +217,8 @@ Similarly for the translational component:
 \end{equation}
 where the gradient $\frac{\partial \Psi}{\partial \Lambda}$ is found via finite differencing.
 
-\section{Implicit Surface Deformations}
+\subsection{Implicit Surface Deformations}
+
 In the previous section, a model and estimation procedure was presented to find optimal transformations between the aforementioned subvolumes.
 The overall object surface $\Phi$ is implicitly deformed by a combining function $\zeta(\Phi)$ over each of the subvolumes to which transformations have been applied.
 As such the surface $\Phi$ is given by the following:
@@ -225,7 +240,9 @@ surface as depicted in Figure \ref{fig:deformationDiagram}.
 \end{figure}
 \fi
 
-\section{Volumetric Object Segmentation}
+\subsection{Volumetric Object Segmentation}
+\label{subsec:shapeoptimisation}
+
 The final stage in the proposed object reconstruction pipeline is the segmentation of the object voxels from those that have had measurements fused 
 from the background. This segmentation is formulated within a CRF framework, where each node in the CRF represents a set of neighbouring voxels in space, 
 with connections being made between adjacent neighbourhoods. The process of segmentation can be posed as an energy minimisation problem over a cut in voxel space, 
@@ -239,6 +256,7 @@ E_{n} = \prod_{t=0}^{\infty} \prod_{\psi \in \Phi_{n}} P(\psi \in \Psi | \Omega_
 \end{equation}
 where $c$ represents the set of colour measurements fused in to the voxels within a given neighbourhood, for all $N$ subvolumes.
 
+\iffalse
 \section{Implementation Notes}
 The probabilities that are accumulated into the volume are generated from a Random Forest based appearance model using patch based features encompassing 
 appearance and surface information, such as depth gradients, initialised prior to reconstruction by a user interaction in the first frame. There are two 
@@ -246,9 +264,4 @@ classes in the appearance model, one for the foreground object and one for the b
 first RGB frame.
 
 An overview of the processing pipeline for the proposed system is outlined in Figure \ref{pipelineDiagram}.
-\begin{figure*}[!t]
-	\centering
-	\includegraphics[width=\linewidth]{pipeline.pdf}
-	\caption{Object reconstruction pipeline.}
-	\label{pipelineDiagram}
-\end{figure*}
+\fi
