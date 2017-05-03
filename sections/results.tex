@@ -9,7 +9,7 @@ We evaluate our system on multiple frame sequences depicting objects of differen
 
 \subsection{Pose Estimation Quality}
 In this section we present quantitative results of our systems' %ability to maintain tracking
-robustness in estimating the camera motion, by performing tracking against the reconstruction of a single object only, instead of the whole scene.
+robustness in estimating the camera motion, by performing tracking against the reconstruction of a single object, instead of the whole scene.
 The trajectories estimated by our system demonstrate low tracking drift. % and a robustness to loop closure events.
 We perform such evaluation on two sequences of the RGB-D SLAM Dataset~\cite{sturm12iros} depicting static objects observed by a moving camera.
 Tracking is performed using purely geometric clues, by matching the current depth frame with a rendering of the reconstructed object using a projective ICP tracking approach~\cite{Kahler2016}.
@@ -19,8 +19,9 @@ Tracking is performed using purely geometric clues, by matching the current dept
 
 %In the following experiments, tracking is performed using only geometry cues from the rendered object models and the instantaneous depth frame.\\
 
-The tracking accuracy is evaluated via the Absolute Trajectory Error (ATE) metric, as outlined in \cite{sturm12iros}, and is summarised in Table~\ref{ateTable}.
+%The tracking accuracy is evaluated via the Absolute Trajectory Error (ATE) metric, as outlined in \cite{sturm12iros}, and is summarised in Table~\ref{ateTable}.
 
+\iffalse
 \begin{table}[!t]
 	{
         \footnotesize
@@ -36,6 +37,7 @@ The tracking accuracy is evaluated via the Absolute Trajectory Error (ATE) metri
 	\caption{Absolute Trajectory Error (ATE) results (lower is better) achieved by our approach.}
 	\label{ateTable}
 \end{table}
+\fi
 
 \begin{figure}[!t]
 	\centering
@@ -45,14 +47,16 @@ The tracking accuracy is evaluated via the Absolute Trajectory Error (ATE) metri
 		(a)&(b)
 	\end{tabular}
 	\caption{
-		\textbf{(a)} Trajectory of the camera for the \textit{freiburg3\_cabinet} sequence versus ground truth.
-		\textbf{(b)} Trajectory of the camera for the \textit{freiburg3\_teddy} sequence versus ground truth.
+        Comparison of the estimated camera trajectory with the ground truth for
+		\textbf{(a)}~\textit{freiburg3\_cabinet} (final ATE:~$0.078m$), and
+		\textbf{(b)}~\textit{freiburg3\_teddy} (final ATE:~$0.031m$).
 	}
 \label{fig:tumTrajectories}
 \end{figure}
 
 At this point, it should be highlighted that our proposed system is at a disadvantage when compared to dense SLAM systems that utilise the entire scene geometry for pose optimisation, since we track the sensor pose against a subset of the observed scene.
 Nevertheless, as shown by the results in Figure~\ref{fig:tumTrajectories}, our system is able to robustly estimate trajectories close to the ground truth whilst using only the objects' geometric appearance.
+Quantitatively, the tracking accuracy is evaluated via the Absolute Trajectory Error (ATE) metric, as outlined by \cite{sturm12iros}.
 The cabinet reconstructed in the \textit{freiburg3\_cabinet} sequence is lacking in geometric features, as the object is mostly planar,
 %It can be seen that there is a
 and the small deficit in tracking quality is mostly due to this factor.
