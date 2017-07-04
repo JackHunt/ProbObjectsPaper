@@ -1,81 +1,94 @@
-\documentclass{bmvc2k}
-\usepackage{amsfonts}
-\usepackage{booktabs}
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{3dv}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{booktabs}
 \usepackage{bbm}
 \usepackage{bm}
+\usepackage{subfig}
 
-%% Enter your paper number here for the review copy
-\bmvcreviewcopy{611}
+% Include other packages here, before hyperref.
 
-\title{Probabilistic Object Reconstruction with Online Loop Closure}
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+%\usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
 
-% Enter the paper's authors in order
-% \addauthor{Name}{email/homepage}{INSTITUTION_CODE}
-\addauthor{Jack Hunt}{jack.hunt@eng.ox.ac.uk}{1}
-\addauthor{Victor Prisacariu}{victor.prisacariu@eng.ox.ac.uk}{1}
-\addauthor{Stuart Golodetz}{stuart.golodetz@eng.ox.ac.uk}{1}
-\addauthor{Philip Torr}{philip.torr@eng.ox.ac.uk}{1}
+%\threedvfinalcopy % *** Uncomment this line for the final submission
 
-% Enter the institutions
-% \addinstitution{Name\\Address}
-\addinstitution{
- Department of Engineering Science\\
- University of Oxford,
- Parks Road, Oxford, OX1 3PJ
-}
+\def\threedvPaperID{****} % *** Enter the 3DV Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
-\runninghead{Student, Prof, Collaborator}{BMVC Author Guidelines}
-
-% Any macro definitions you would like to include
-% These are not defined in the style file, because they don't begin
-% with \bmva, so they might conflict with the user's own macros.
-% The \bmvaOneDot macro adds a full stop unless there is one in the
-% text already.
-\def\eg{\emph{e.g}\bmvaOneDot}
-\def\Eg{\emph{E.g}\bmvaOneDot}
-\def\etal{\emph{et al}\bmvaOneDot}
-
-%------------------------------------------------------------------------- 
-% Document starts here
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+\ifthreedvfinal\pagestyle{empty}\fi
+\setcounter{page}{4321}
 \begin{document}
 
-\maketitle
+%%%%%%%%% TITLE
+\title{Probabilistic Object Reconstruction with Online Loop Closure}
 
+\author{Jack Hunt\\
+Department of Engineering Science\\
+University of Oxford,
+Parks Road, Oxford, OX1 3PJ
+{\tt\small jack.hunt@eng.ox.ac.uk}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+\and
+Second Author\\
+Institution2\\
+First line of institution2 address\\
+{\tt\small secondauthor@i2.org}
+}
+
+\maketitle
+%\thispagestyle{empty}
+
+%%%%%%%%% ABSTRACT
 \begin{abstract}
 \input{sections/abstract.tex}
 \end{abstract}
-
-%------------------------------------------------------------------------- 
-\vspace{-\baselineskip}
 
 \section{Introduction}
 \label{sec:introduction}
 \input{sections/introduction.tex}
 
-\vspace{-\baselineskip}
+%\vspace{-\baselineskip}
 
 \section{Related Work}
 \label{sec:lit_review}
 \input{sections/lit_review.tex}
 
-\vspace{-\baselineskip}
+%\vspace{-\baselineskip}
 
 \section{Method}
 \input{sections/algorithm.tex}
 
-\vspace{-\baselineskip}
+%\vspace{-\baselineskip}
 
 \section{Results}
 \label{sec:results}
 \input{sections/results.tex}
 
-\vspace{-\baselineskip}
+%\vspace{-\baselineskip}
 
 \section{Conclusion}
 \label{sec:discussion}
 \input{sections/discussion.tex}
 
+
+
+{\small
+\bibliographystyle{ieee}
 \bibliography{bibliography}
+}
+
 \end{document}
