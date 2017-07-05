@@ -41,7 +41,7 @@ where $w(.)$ is a weighting function and $\mu$ is the aforementioned TSDF trunca
 
 \begin{figure*}[!t]
 	\centering
-	\includegraphics[width=\linewidth]{pipeline.pdf}
+	\includegraphics[width=0.7\linewidth]{pipeline.pdf}
 	\caption{The pipeline of our object reconstruction approach.}
 	\label{pipelineDiagram}
 \end{figure*}
@@ -52,7 +52,7 @@ where $w(.)$ is a weighting function and $\mu$ is the aforementioned TSDF trunca
 	\hspace{12mm}%
 	\subfloat[]{\includegraphics[height=3cm]{graphical_models/pgm2.pdf}\label{pgm2}}
 	\caption{(a) An initial probabilistic formulation of the object reconstruction pipeline, and (b) a simpler formulation based on various simplifying assumptions (see text).}
-	\vspace{-\baselineskip}
+%	\vspace{-\baselineskip}
 \end{figure}
 
 An overview of our object reconstruction pipeline is shown in Figure~\ref{pipelineDiagram}. We divide our object model into subvolumes, exactly one of which is active at any one time. Each subvolume consists of a TSDF, colour volume and object probability volume, and contains a rigid body transform that specifies its pose relative to the global coordinate frame. At each new camera frame, we apply our segmentation model to the colour input image to construct an object probability map, and then fuse the probabilities in this map into the object probability volume of the active subvolume (see Section~\ref{subsec:probfusion}). We also update the TSDF and colour volume of the active subvolume, and track against it using ICP, as in normal KinectFusion \cite{Newcombe2011}. At the end of each frame, we run our online model correction algorithm (see Section~\ref{subsec:onlinemodelcorrection}), which optimises the relative poses between the subvolumes to mitigate tracking drift. Once the entire reconstruction process is finished, we perform a CRF-based optimisation to refine the resulting object shape (see Section~\ref{subsec:shapeoptimisation}). In what follows, we describe each of these procedures in more detail. Our approach is not tied to the use of any one segmentation model, so we defer discussion of the model we use to the supplementary material.
@@ -105,7 +105,7 @@ the poses, the plate containing $\Omega$ and $p$ can be removed:
 \begin{split}
 P(\Phi, \Omega, p, u, L) = 
 \prod_{v \in \mathcal{V}}P(\Phi|u_{v})
-\prod_{(s, s') \in \mathcal{S}}P(u_{v}|\Omega, p, L_{(s, s')})
+\prod_{(s, s') \in \mathcal{S}}P(u_{v}|\Omega, p, L_{(s, s')}) \\
 P(L_{(s, s')}|\Omega, p) P(L_{(s, s')})P(p)P(\Omega)
 \end{split}
 \end{equation}
@@ -127,7 +127,7 @@ Where the simpler distribution takes the following analytical form:
 \begin{equation}
 \begin{split}
 P(\Phi, \Omega, p, u, L) = 
-\prod_{(s, s') \in \mathcal{S}} P(\Phi|u, L_{(s, s')})
+\prod_{(s, s') \in \mathcal{S}} P(\Phi|u, L_{(s, s')}) \\
 P(u|\Omega, p)
 P(L_{(s, s')}|\Omega, p)
 P(L_{(s, s')})
@@ -188,8 +188,8 @@ Or alternatively:
 \fi
 \begin{equation}
 \begin{split}
-\ln P(\Psi_{s'}(\Lambda(x))) = m\ln\frac{1}{\sqrt{2\pi}\sigma}
--\frac{1}{2\sigma^2} \sum_{(s, s') \in \mathcal{S}} \bigg( \Psi_{s}(x) - \Psi_{s'}(\Lambda(x)) \bigg)^2
+\ln P(\Psi_{s'}(\Lambda(x))) = m\ln\frac{1}{\sqrt{2\pi}\sigma} -\frac{1}{2\sigma^2} \\ 
+\sum_{(s, s') \in \mathcal{S}} \bigg( \Psi_{s}(x) - \Psi_{s'}(\Lambda(x)) \bigg)^2
 \end{split}
 \end{equation}
 Where $\Psi(.)$ is a scalar valued SDF(Signed Distance Function), a discretised field of $\Phi$, as previously described. $x$ is a point represented by a 3-vector and $\Lambda(.)$ is a transformation function taking the following form:
@@ -215,7 +215,7 @@ Similarly for the translational component:
 \frac{\partial E}{\partial t_{d}} = \frac{\partial E}{\partial \Psi} \frac{\partial \Psi}{\partial \Lambda} \frac{\partial \Lambda}{\partial t_{d}} \text{for } d \in  \{x,y,z\}
 \end{split}
 \end{equation}
-where the gradient $\frac{\partial \Psi}{\partial \Lambda}$ is found via finite differencing.
+where the gradient $\frac{\partial \Psi}{\partial \Lambda}$ is found via central finite differencing.
 
 \subsection{Implicit Surface Deformations}
 
@@ -229,7 +229,6 @@ As such the surface $\Phi$ is given by the following:
 \end{equation}
 where $X$ is the set of subvolumes contributing to the surface $\Phi$.
 
-\iffalse
 As such, the previously described transformation estimation process that deforms each of the subscenes implicitly to optimise jointly for the true 
 surface as depicted in Figure \ref{fig:deformationDiagram}.
 \begin{figure}[!t]
@@ -238,7 +237,6 @@ surface as depicted in Figure \ref{fig:deformationDiagram}.
 	\caption{Measured surfaces being deformed to the true surface.}
 	\label{fig:deformationDiagram}
 \end{figure}
-\fi
 
 \subsection{Volumetric Object Segmentation}
 \label{subsec:shapeoptimisation}
@@ -254,7 +252,7 @@ neighbourhoods $\gamma$ and $\gamma^{'}$:
 E_{n} = \prod_{t=0}^{\infty} \prod_{\psi \in \Phi_{n}} P(\psi \in \Psi | \Omega_{t}, p_{t}) + P(\mathbb{E}[c]_{\gamma} | \mathbb{E}[c]_{\gamma^{'}})
 \end{split}
 \end{equation}
-where $c$ represents the set of colour measurements fused in to the voxels within a given neighbourhood, for all $N$ subvolumes.
+where $c$ represents the set of colour measurements fused in to the voxels within a given neighbourhood, for all $N$ subvolumes and $\mathbb{E}$ is the standard Expectation operator.
 
 \iffalse
 \section{Implementation Notes}

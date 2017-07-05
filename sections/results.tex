@@ -7,7 +7,7 @@ Whilst more challenging, this implicitly allows us to track the camera wrt. the 
 Then, qualitative comparisons are drawn between the reconstructions attained by our system, and those of the method described in \cite{Ren2013}.
 We evaluate our system on multiple frame sequences depicting objects of different sizes. %; some with the object moving wrt. a fixed camera, others with the sensor in motion.% in the case of qualitative evaluation.
 
-\vspace{-.7\baselineskip}
+%\vspace{-.7\baselineskip}
 
 \subsection{Pose Estimation Quality}
 In this section we present quantitative results of our systems' %ability to maintain tracking
@@ -44,8 +44,7 @@ Tracking is performed using purely geometric clues, by matching the current dept
 \begin{figure}[!t]
 	\centering
 	\begin{tabular}{cc}
-		\fbox{\includegraphics[width=0.25\textwidth]{results/rgbd_dataset_freiburg3_cabinet.png}}&
-		\fbox{\includegraphics[width=0.25\textwidth]{results/rgbd_dataset_freiburg3_teddy.png}}
+		\fbox{\includegraphics[width=0.25\textwidth]{results/rgbd_dataset_freiburg3_cabinet.png}} \\[2ex] \fbox{\includegraphics[width=0.25\textwidth]{results/rgbd_dataset_freiburg3_teddy.png}}
 	\end{tabular}
 	\caption{
         Comparison of the estimated camera trajectory with the ground truth for
@@ -73,7 +72,7 @@ Such snapshots are captured after each quarter of a sequence has been processed.
 \begin{figure}[!t]
 	\centering
 	\begin{tabular}{cc}
-		\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/dino.png}}&
+		\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/dino.png}} \\ [2ex]
 		\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/dino_s3d_large.png}}
 	\end{tabular}
 	\caption{
@@ -82,7 +81,7 @@ Such snapshots are captured after each quarter of a sequence has been processed.
 	\label{fig:dinoComparison}
 \end{figure}
 
-\begin{figure}[!t]
+\begin{figure*}[!t]
 	\centering
 	\begin{tabular}{ccc}
 		\fbox{\includegraphics[width=0.2\textwidth]{screenshots/dino_colour_top.PNG}}&
@@ -95,8 +94,8 @@ Such snapshots are captured after each quarter of a sequence has been processed.
 		\textbf{(R)} a Rock.
 	}
 	\label{fig:top_shots}
-	\vspace{-\baselineskip}
-\end{figure}
+%	\vspace{-\baselineskip}
+\end{figure*}
 
 As depicted in Figure~\ref{fig:dinoComparison}, our method is able to successfully reconstruct the Dinosaur Head, whereas the approach by Ren~et~al. fails to converge towards a feasible shape.
 In addition, Figure~\ref{fig:top_shots} demonstrates that our system is able to generate consistent models (unaffected by camera tracking drift) for a variety of sequences containing several loop closures.
