@@ -42,7 +42,7 @@ The tracking accuracy is evaluated via the Absolute Trajectory Error (ATE) metri
 \begin{figure}[!t]
 	\centering
 	\begin{tabular}{cc}
-		\fbox{\includegraphics[width=0.25\textwidth]{results/rgbd_dataset_freiburg3_cabinet.png}} \\[2ex] \fbox{\includegraphics[width=0.25\textwidth]{results/rgbd_dataset_freiburg3_teddy.png}}
+		\fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_cabinet.png}} & \fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_teddy.png}}
 	\end{tabular}
 	\caption{
         Comparison of the estimated camera trajectory with the ground truth for
@@ -74,7 +74,7 @@ Such snapshots are captured after each quarter of a sequence has been processed.
 		\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/dino_s3d_large.png}}
 	\end{tabular}
 	\caption{
-        Quarterly interval snapshots of the Dinosaur Head reconstruction using \textbf{(L)} our method, and \textbf{(R)} the one proposed by Ren et~al.~\cite{Ren2013}.
+        Quarterly interval snapshots of the Dinosaur Head reconstruction using \textbf{(Upper)} our method, and \textbf{(Lower)} the one proposed by Ren et~al.~\cite{Ren2013}.
 	}
 	\label{fig:dinoComparison}
 \end{figure}
@@ -95,13 +95,91 @@ Such snapshots are captured after each quarter of a sequence has been processed.
 %	\vspace{-\baselineskip}
 \end{figure*}
 
+\begin{figure}[!t]
+	\centering
+	\begin{tabular}{cc}
+		\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/rock.png}} \\ [2ex]
+		\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/rock_s3d_large.png}}
+	\end{tabular}
+	\caption{
+		Quarterly interval snapshots of the Museum Rock reconstruction using \textbf{(Upper)} our method, and \textbf{(Lower)} the one proposed by Ren et~al.~\cite{Ren2013}.
+	}
+	\label{fig:rockComparison}
+\end{figure}
+
 As depicted in Figure~\ref{fig:dinoComparison}, our method is able to successfully reconstruct the Dinosaur Head, whereas the approach by Ren~et~al. fails to converge towards a feasible shape.
 In addition, Figure~\ref{fig:top_shots} demonstrates that our system is able to generate consistent models (unaffected by camera tracking drift) for a variety of sequences containing several loop closures.
 Failure of the competing method %of Ren et al
-is also apparent for other sequences evaluated in this work, all presenting failure cases analogous to Figure~\ref{fig:dinoComparison}b. % to converge to a correct shape.
-Such examples will be presented in the supplementary materials.
+is also apparent for other sequences evaluated in this work, all presenting failure cases analogous to Figure~\ref{fig:dinoComparison}(R). % to converge to a correct shape.
+%Such examples will be presented in the supplementary materials.
 %The supplementary materials to this work demonstrate our efficacy vs that of Ren et al \cite{Ren2013}.\\
+Another such example may be observed in Figure \ref{fig:rockComparison}.
 
 The object reconstructions depicted in Figure~\ref{fig:demo} have been obtained from sequences in which a camera was moved in a loop around each object in order to generate a closed model.
 
 %As can be seen from the top down views of Figure \ref{fig:top_shots}, our system is capable of producing closed models, unaffected by tracking drift and loop closure events.
+
+\subsection{Quantitative Reconstruction Quality}
+In this section we perform a quantitative evaluation of reconstruction quality of our method against an established dense SLAM system \cite{Prisacariu2014} following the KinectFusion \cite{Newcombe2011} pipeline.
+The outputted meshes of our model are compared with the meshes of the dense SLAM system with the object of interest manually segmented out from the remainder of the scene. To quantify the reconstruction quality 
+we employ the Hausdorff Distance for subsets of metric spaces, where in our case the metric space is Euclidean. The Hausdorff Distance is defined as follows
+\begin{equation}
+\begin{split}
+d_{H}(X, Y) = \max \Bigg \{ \sup_{x \in X} \inf_{y \in Y} d(x, y), \sup_{y \in Y} \inf_{x \in X} d(x, y) \Bigg \}
+\end{split}
+\end{equation}
+where $X$ is the mesh for the ground truth dense SLAM reconstruction, $Y$ is the mesh outputted by our system and $d(.)$ is the Euclidean distance.
+
+The resultant comparisons may be found in table \ref{hausdorffTable}. In addition, we provide the outputted reconstructions from our system textured on reconstruction quality w.r.t. the Hausdorff Distance. 
+For reference, the colour scale used is given in figure \ref{fig:colourScale} where the left extrema(blue) is given by a sequences \textit{Max Dist} and the right extrema(red) by the sequences \textit{Min Dist}. 
+This scale corresponds to the textured renderings in figure \ref{fig:hausdorffTextured}
+
+\begin{figure}[!t]
+	\centering
+	\includegraphics[scale=0.75]{hausdorff/colour_range.png}
+	\caption{Relative colour scale for distance.}
+	\label{fig:colourScale}
+\end{figure}
+
+\begin{table}[!t]
+	{
+		\footnotesize
+		\begin{center}
+			\begin{tabular}{l c c c c}
+				\emph{Sequence} & \emph{Min Dist} & \emph{Max Dist} & \emph{Mean Dist} & \emph{RMS}\\
+				\midrule
+				\textsf{Bear} & 0 & 0.102777 & 0.013588 & 0.019796 \\
+				\textsf{Brain} & 0 & 0.026465 & 0.008745 & 0.011349 \\
+				\textsf{Chair} & 0 & 0.053441 & 0.012349 & 0.016422 \\
+				\textsf{Dino} & 0 & 0.035252 & 0.007919 & 0.010676
+			\end{tabular}
+		\end{center}
+	}
+	\caption{Hausdorff Distance measurements between ground truth mesh and our systems output.}
+	\label{hausdorffTable}
+\end{table}
+
+\begin{figure*}[!t]
+	\centering
+	\begin{tabular}{cccc}
+		\fbox{\includegraphics[width=3cm]{hausdorff/bear.PNG}}&
+		\fbox{\includegraphics[width=3cm]{hausdorff/brain.PNG}}&
+		\fbox{\includegraphics[width=3cm]{hausdorff/chair.PNG}}&
+		\fbox{\includegraphics[width=3cm]{hausdorff/dino.PNG}}\\
+		(a)&(b)&(c)&(d)
+	\end{tabular}
+	\vspace{1mm}
+	\caption{
+		Reconstructions textured by Hausdorff Distance to ground truth:
+		\textbf{(a)} Bear,
+		\textbf{(b)} Brain,
+		\textbf{(c)} Chair,
+		\textbf{(d)} Dino.
+	}
+	%	\vspace{-5mm}
+	\label{fig:hausdorffTextured}
+\end{figure*}
+
+As can be seen by the similarity measures presented, our system is capable of yielding reconstructions to a high quality despite the much more difficult tracking scenario of a single object rather than an entire 
+scene. It can be seen that our output reconstruction meshes are geometrically close to those generated with a dense SLAM system \cite{Prisacariu2014} following the KinectFusion \cite{Newcombe2011} pipeline that 
+is modelling and tracking the entire scene.
