@@ -1,8 +1,8 @@
 
 \subsection{Preliminaries}
 \paragraph{Volumetric Representation}
-The system we present follows the familiar KinectFusion \cite{Newcombe2011} pipeline for the integration of surface information. In such a 
-formulation the scene or object is represented as the zero level of a zero level set \cite{Curless1996}, where the level set is a field of distances 
+The system we present follows the KinectFusion \cite{Newcombe2011} pipeline for the integration of surface information. In such a 
+formulation the scene or object is represented as the zero level of a level set embedding \cite{Curless1996}, where the level set is a field of distances 
 to the surface and as described, the surface is given by
 \begin{equation}
 \begin{split}
@@ -13,8 +13,8 @@ where $S$ is the set of surface voxels, $\psi$ is a voxel in the SDF(Signed Dist
 The SDF volume is truncated to yield a TSDF(Truncated Signed Distance Function) with truncation region $\mu$.
 
 \paragraph{Pose Estimation}
-The pose estimation method used in this work is based on the ICP algorithm as used in \cite{Newcombe2011, Prisacariu2014}. The estimation of 
-the camera or object 6-DoF pose is formulated as a minimisation problem of the form:
+The pose estimation method used in this work is based on the ICP algorithm \cite{Besl1992}. The estimation of 
+the camera or object 6-DoF(Degree of Freedom) pose is formulated as a minimisation problem of the form:
 \begin{equation}
 \begin{split}
 E = \sum_{\omega \in \Omega_{d}} \bigg( \big( R\omega + t - \mathcal{V}(\bar{\omega}) \big) \cdot \mathcal{N}(\bar{\omega}) \bigg)^{2}
@@ -49,29 +49,28 @@ where $w(.)$ is a weighting function and $\mu$ is the aforementioned TSDF trunca
 	\subfloat[]{\includegraphics[height=3cm]{graphical_models/pgm1.pdf}\label{pgm1}}%
 	\hspace{12mm}%
 	\subfloat[]{\includegraphics[height=3cm]{graphical_models/pgm2.pdf}\label{pgm2}}
-	\caption{(a) An initial probabilistic formulation of the object reconstruction pipeline, and (b) a simpler formulation based on various simplifying assumptions (see text).}
+	\caption{(a) An initial probabilistic formulation of the object reconstruction pipeline, and (b) S simpler formulation based on various independence assumptions.}
 %	\vspace{-\baselineskip}
 \end{figure}
 
-An overview of our object reconstruction pipeline is shown in Figure~\ref{pipelineDiagram}. We divide our object model into subvolumes, exactly one of which is active at any one time. Each subvolume consists of a TSDF, colour volume and object probability volume, and contains a rigid body transform that specifies its pose relative to the global coordinate frame. At each new camera frame, we apply our segmentation model to the colour input image to construct an object probability map, and then fuse the probabilities in this map into the object probability volume of the active subvolume (see Section~\ref{subsec:probfusion}). We also update the TSDF and colour volume of the active subvolume, and track against it using ICP, as in normal KinectFusion \cite{Newcombe2011}. At the end of each frame, we run our online model correction algorithm (see Section~\ref{subsec:onlinemodelcorrection}), which optimises the relative poses between the subvolumes to mitigate tracking drift. Once the entire reconstruction process is finished, we perform a CRF-based optimisation to refine the resulting object shape (see Section~\ref{subsec:shapeoptimisation}). In what follows, we describe each of these procedures in more detail. Our approach is not tied to the use of any one segmentation model, so we defer discussion of the model we use to the supplementary material.
+An overview of our object reconstruction pipeline is shown in Figure~\ref{pipelineDiagram}. We divide our object model into subvolumes, exactly one of which is active at any one time. Each subvolume consists of a TSDF, colour volume and object probability volume, and contains a rigid body transform that specifies its pose relative to the global coordinate frame. At each new camera frame, we apply our segmentation model to the colour input image to construct an object probability map, and then fuse the probabilities in this map into the object probability volume of the active subvolume (see Section~\ref{subsec:probfusion}). We also update the TSDF and colour volume of the active subvolume, and track against it using ICP, as in normal KinectFusion \cite{Newcombe2011}. At the end of each frame, we run our online model correction algorithm (see Section~\ref{subsec:onlinemodelcorrection}), which optimises the relative poses between the subvolumes to mitigate tracking drift. Once the entire reconstruction process is finished, we perform a CRF-based optimisation to refine the resulting object shape (see Section~\ref{subsec:shapeoptimisation}). In what follows, we describe each of these procedures in more detail. Our approach is not tied to the use of any one segmentation model, though in our experiments we use PwP(Pixel Wise Posteriors) \cite{Bibby2008}.
 
 \subsection{Object Probability Fusion Procedure}
 \label{subsec:probfusion}
 
-The surface map and camera pose are estimated using the standard pipeline of \cite{Newcombe2011,Prisacariu2014}. The surface location is represented as the zero level set of a truncated signed distance function (TSDF) over voxels, with online weighted-mean fusion of new observations. Pose estimation via ICP is run quasi-simultaneously against the evolving map. Here, inspired by \cite{Kolev2006}, we augment this procedure by estimating the posterior probability, per map voxel, of belonging to the object. This volume of posterior probabilities is updated on each frame, parallel to the fusion process in the mapping and pose estimation subsystems. Similarly to \cite{Kahler2016}, the representation of the reconstructed object comprises multiple `subvolumes', each pertaining to some patch on the object surface. New subvolumes are started when sufficiently many new voxels have been allocated and had data integrated, and exactly one is `active' at any time. By ensuring overlap between subvolumes, transformations between them can be found and pose inconsistencies addressed, online.
+The surface map and camera pose are estimated using the standard pipeline of \cite{Newcombe2011,Prisacariu2014}. The surface location is represented as the zero level set of a TSDF discretised over voxels, with online weighted-mean fusion of new observations. Pose estimation via ICP is run quasi-simultaneously against the evolving map. Here, inspired by \cite{Kolev2006}, we augment this procedure by estimating the posterior probability, per map voxel, of belonging to the object. This volume of posterior probabilities is updated on each frame, parallel to the fusion process in the mapping and pose estimation subsystems. Similarly to \cite{Kahler2016}, the representation of the reconstructed object comprises multiple `subvolumes', each pertaining to some patch on the object surface. New subvolumes are started when sufficiently many new voxels have been allocated and had data integrated, and exactly one is `active' at any time. By ensuring overlap between subvolumes, transformations between them can be found and pose inconsistencies addressed, online. Empirically, we define the threshold for starting a new subvolume to be when $50\%$ of the voxels fused in to the current volume are newly observed points.
 
-At each frame, the object probabilities for the visible voxels in the active submap are updated via fusion of an appearance-derived probability map for that frame. Under the assumption of conditional independence between frames (for sake of tractability), the posterior probability of a given voxel $\psi \in \Psi$ belonging to the object has the following form:
+At each frame, the object probabilities for the visible voxels in the active submap are updated via fusion of an appearance-derived probability map for that frame. Under the assumption of conditional independence between frames (for sake of tractability), the posterior probability of a given voxel $\psi \in \Psi$ belonging to the object has the following form(noting that $\Phi \subset \Psi$):
 \begin{equation}
 \begin{split}
-P(\psi \in \Phi | \Omega, p) = \prod_{t=0}^{\infty} P(\psi_{t} \in \Phi_{t} | \Omega_{t}, p_{t})
+P(\psi \in \Phi | \Omega, p) = \prod_{t=0}^{\infty} P(\psi_{t} \in \Phi | \Omega_{t}, p_{t})
 \end{split}
 \end{equation}
 where $\Psi$ is the volume of voxels for which measurements are accumulated, $\Phi$ 
 is the volume of voxels pertaining to the object, $\Omega_{t}$ is the current image observation at time $t$ and $p_{t}$ is the 
 currently tracked pose at time $t$.
 This encodes the probability of a voxel belonging to the object as the product of the instantaneous appearance-derived pixel-wise conditionals over the times at which it was observed.
-(In the above,
-$\Phi$ is a discretisation of the continuous $\Phi$ in the probabilistic formulation that follows.)
+%(In the above, $\Phi$ is a discretisation of the continuous $\Phi$ in the probabilistic formulation that follows.)
 
 \subsection{Probabilistic Formulation of Object Reconstruction}
 As previously highlighted, central to the proposed system is a volume of posterior probabilities pertaining to a voxel wise membership of either the 
@@ -87,15 +86,15 @@ This gives rise to the following analytical formulation of the above distributio
 \begin{equation}
 \begin{split}
 P(\Phi, \Omega, p, u, L) = 
-\prod_{\psi \in \Psi}\prod_{(s, s') \in \mathcal{S}}P(\Phi|u_{v}, L_{(s, s')}) 
+\prod_{\psi \in \Psi}\prod_{s, s' \in \mathcal{S}}P(\Phi|u_{\psi}, L_{s, s'}) 
 \prod_{t=0}^{\infty}\prod_{p \in \mathcal{P}}\\
 P(u_{v}|\Omega_{p, t}, p_{t})
-P(L_{(s, s')}|\Omega_{p, t}, p_{t})
-P(L_{(s, s')})P(p_{t})P(\Omega_{p, t})
+P(L_{s, s'}|\Omega_{p, t}, p_{t})
+P(L_{s, s'})P(p_{t})P(\Omega_{p, t})
 \end{split}
 \end{equation}
-where $\mathcal{V}$ is the set of voxels across all sub volumes, $\mathcal{P}$ is the set of RGBD pixels for a given 
-frame and $\mathcal{S}$ is the set of sub volumes.
+where $\Psi$ is the set of voxels across all sub volumes, $\mathcal{P}$ is the set of RGBD pixels for a given 
+frame and $\mathcal{S}$ is the set of sub volumes. Where the notation $s, s' \in \mathcal{S}$ is used we refer to pairs of overlapping subvolumes.
 
 However, if one were to assume temporal and pixel wise independence in the RGBD observations and temporal independence in 
 the poses, the plate containing $\Omega$ and $p$ can be removed:
@@ -107,9 +106,7 @@ P(\Phi, \Omega, p, u, L) =
 P(L_{(s, s')}|\Omega, p) P(L_{(s, s')})P(p)P(\Omega)
 \end{split}
 \end{equation}
-In practice this temporal independence assumption causes no issues.
-
-Furthermore, if one assumes voxel wise independence, the plate over voxels can be removed. Finally, assuming $P(p)$ and 
+In practice this temporal independence assumption causes no issues. Furthermore, if one assumes voxel wise independence, the plate over voxels can be removed. Finally, assuming $P(p)$ and 
 $P(\Omega)$ are uniform distributions, then we have the simpler distribution given by Figure \ref{pgm2}.
 
 \iffalse
@@ -139,7 +136,7 @@ consists of an additional estimation module that relies on the use of a subvolum
 transformations to the subsegments to align them when there are intra subsegment tracking inconsistencies. 
 As previously described, during reconstruction the object is split in to subsegments, also referred to as subvolumes, 
 with the pose estimation performed in each of the active, visible subsegments. The pose estimation stage for each of these subsegments follows 
-the standard ICP(Iterated Closest Point) approach.
+the standard ICP approach.
 As inference on the joint distribution of our model is intractable, conditional independence assumptions are made that do not appear 
 to cause any functional issues. The estimation phase of the pipeline is described in the following section.
 
@@ -165,47 +162,40 @@ variance of the camera tracking result. As such, global tracking variance is red
 of the reconstruction.
 
 Gradient-based maximisation of the above posterior to yield an optimal deformation is a highly nonlinear optimisation problem. As such, it is suited 
-to second-order gradient-based optimisation routines, e.g.\ Gauss-Newton or Levenberg-Marquardt.
+to second-order gradient-based optimisation.
 It should be noted that in our implementation the $P(\Omega | p)$ term is assumed to be uniform in the case of an 
 RGBD sensor being used, however for applications such as monocular SLAM this term may be replaced with a noise model when there is 
 significant uncertainty about the given depth map at each frame.
-The following proportionality to the distribution over deformations is made:
+The following proportionality to the distribution over deformations is made for two overlapping object subsegments $\Phi_{s}, \Phi{s'} \in \Phi$, noting again that 
+$\Phi \subset \Psi$. $X$ is the set of valid voxel locations in $\Phi_{s}$ for which the currently accumulated appearance posterior is greater for foreground:
 \begin{equation}
 \begin{split}
-P(L_{(s, s')} | \Omega, p) \propto P(\Psi_{s}(x) | \Psi_{s'}(\Lambda(x)))P(L_{(s, s')})
+P(L_{s, s'} | \Omega, p) \propto P(\Phi_{s}(X)) | \Phi_{s'}(\Lambda(X)))P(L_{s, s'})
 \end{split}
 \end{equation}
-Where the prior distribution over transformations $P(L_{(s, s')})$ corresponds to the normal $\mathcal{N}(L_{(s, s')} | \mathbf{0}, \mathbf{\lambda}^{-1})$.
+Where the prior distribution over transformations $P(L_{s, s'})$ corresponds to the normal $\mathcal{N}(L_{s, s'} | \mathbf{0}, \mathbf{\lambda}^{-1})$.
 The log posterior of the above expression takes the following form:
-\iffalse
 \begin{equation}
 \begin{split}
-P(\Psi_{s'}(\Lambda(x))) = \prod_{(s, s') \in \mathcal{S}} \frac{1}{\sqrt{2 \pi \sigma}} \exp{\frac{-(\Psi_{s}(x) - \Psi_{s'}(\Lambda(x)))^2}{2\sigma^2}}
+\ln P(\Phi_{s}(x) | \Phi_{s'}(\Lambda(x)))P(L_{s, s'}) = m\ln\frac{1}{\sqrt{2\pi}\sigma} -\frac{1}{2\sigma^2} \\ 
+\sum_{\psi \in \Phi_{s}} \Bigg [ \bigg( \Phi_{s}(x_{\psi}) - \Phi_{s'}(\Lambda(x_{\psi})) \bigg)^2  - \lambda \lVert \mathbf{\mathbf{x}} \rVert_{2} \Bigg ]
 \end{split}
 \end{equation}
-Or alternatively:
-\fi
-\begin{equation}
-\begin{split}
-\ln P(\Psi_{s'}(\Lambda(x))) = m\ln\frac{1}{\sqrt{2\pi}\sigma} -\frac{1}{2\sigma^2} \\ 
-\sum_{(s, s') \in \mathcal{S}} \Bigg [ \bigg( \Psi_{s}(x) - \Psi_{s'}(\Lambda(x)) \bigg)^2  - \lambda \lVert \mathbf{\mathbf{x}} \rVert_{2} \Bigg ]
-\end{split}
-\end{equation}
-Where $\Psi(.)$ is a scalar valued SDF(Signed Distance Function), a discretised field of $\Phi$, as previously described. $x$ is a point represented by a 3-vector and $\Lambda(.)$ is a transformation function taking the following form:
+Where $\Phi_{s}(.)$ is a scalar valued SDF(Signed Distance Function) for the subsegment $s$, a discretised field of $\Phi_{s}$(where $\Phi_{s} \subset \Phi$), as previously described. $x$ is a point represented by a 3-vector and $\Lambda(.)$ is a transformation function taking the following form:
 \begin{equation}
 \begin{split}
 \Lambda(x) = R(\rho_{1}, \rho_{2}, \rho_{3})x + t
 \end{split}
 \end{equation}
-Where $R(.)$ is a rotation matrix from the Special Orthogonal group $\mathbbm{SO}(3)$ paramaterised by the three 
+Where $R(.)$ is a rotation matrix from the Special Orthogonal group $\mathbbm{SO}(3)$ parameterised by the three 
 Rodrigues Parameters \cite{Shuster1993} $\rho_{1}$, $\rho_{2}$ and $\rho_{3}$. The $\mathbf{x}$ in the log posterior refers to the vector $\mathbf{x} = [t_{1}, t_{2}, t_{3}, \rho_{1}, \rho_{2}, \rho_{3}]$, 
-the translational and rotational parameters.
+the translational and rotational parameters. Finally, $m$ is the number of voxel locations for which a valid SDF value has been found for both subsegments. In our experiments, $\sigma = 2$.\\
 Note that the logarithmic form of the posterior is suitable to Nonlinear Least Squares optimisation. To perform MAP(Maximum A Posteriori) over this posterior using 
 an optimisation routine such as Levenberg Marquardt, the following gradients must be computed for the rotational component of the 
 deformation:
 \begin{equation}
 \begin{split}
-\frac{\partial E}{\partial r_{n}} = \frac{\partial E}{\partial \Psi} \frac{\partial \Psi}{\partial \Lambda} \frac{\partial \Lambda}{\partial r_{n}} \text{for } n \in \{1,2,3\}
+\frac{\partial E}{\partial \rho_{n}} = \frac{\partial E}{\partial \Psi} \frac{\partial \Psi}{\partial \Lambda} \frac{\partial \Lambda}{\partial \rho_{n}} \text{for } n \in \{1,2,3\}
 \end{split}
 \end{equation}
 Similarly for the translational component:
@@ -215,9 +205,10 @@ Similarly for the translational component:
 \end{split}
 \end{equation}
 where the gradient $\frac{\partial \Psi}{\partial \Lambda}$ is found via central finite differencing.
+For notational convenience we define $E \equiv \ln P(\Phi_{s}(x) | \Phi_{s'}(\Lambda(x)))P(L_{s, s'})$.
 
 \subsection{Implicit Surface Deformations}
-In the previous section, a model and estimation procedure was presented to find optimal transformations between the aforementioned subvolumes.
+%In the previous section, a model and estimation procedure was presented to find optimal transformations between the aforementioned subvolumes.
 The overall object surface $\Phi$ is implicitly deformed by a combining function $\zeta(\Phi)$ over each of the subvolumes to which transformations have been applied.
 As such the surface $\Phi$ is given by the following:
 \begin{equation}
@@ -251,6 +242,8 @@ E_{n} = \prod_{t=0}^{\infty} \prod_{\psi \in \Phi_{n}} P(\psi \in \Psi | \Omega_
 \end{split}
 \end{equation}
 where $c$ represents the set of colour measurements fused in to the voxels within a given neighbourhood, for all $N$ subvolumes and $\mathbb{E}$ is the standard Expectation operator.
+The aforementioned cut in voxel space is achieved by an optimisation of the above equation within the Max-Flow framework \cite{BoykovKolmogorov}. 
+%At this point, it should be reiterated that the unary term in the above equation is the accumulated(during reconstruction) foreground vs background probability.
 
 \iffalse
 \section{Implementation Notes}

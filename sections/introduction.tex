@@ -1,9 +1,9 @@
-Dense Simultaneous Localisation and Mapping (SLAM) has proven very effective for reconstructing moderately-sized scenes,
+Dense SLAM(Simultaneous Localisation and Mapping) has proven very effective for reconstructing moderately-sized scenes,
 with much recent research driven by the availability of inexpensive, consumer-grade depth sensing equipment \cite{Newcombe2011,Niessner2013,Prisacariu2014}. 
 However, accurate pose estimation in the presence of erroneous measurements and visual aliasing in the scene remains difficult to fully solve. Common approaches \cite{Besl1992,Levoy2001} exploit geometric/texture cues to estimate the pose of each frame, but tracking can drift -- or even fail completely -- without reliable features against which to track.
 %Purely geometry based approaches may fail with a lack of descriptive geometry, as may texture based approaches with a lack of texture. 
 %Common issues range from tracking drift, often caused by geometric and/or texture ambiguity, to complete tracking failure.
-Loop closure events are another common source of tracking problems, with explicit handling often required. Moreover, a failure to handle loop closures correctly can lead to errors in the model, exacerbating any existing tracking issues.
+Loop closure events are another common source of tracking problems, with explicit handling often required to prevent errors in the model, exacerbating any existing tracking issues.
 %In addition, many dense SLAM systems fail during loop closure events, with explicit handling often required. The error incurred during loop closure events can be detrimental to tracking quality in such systems.
 These problems are only magnified when reconstructing objects: an object's surface will generally contain far fewer points than the full scene, and a lack of unambiguous points on the surface can lead to an increase in data association errors when attempting to recover the pose.
 
@@ -37,11 +37,11 @@ yield a robust and temporally consistent model. Finally, we optimise for the opt
 	\end{tabular}
 	\vspace{1mm}
 	\caption{
-		Reconstruction examples:
-		\textbf{(a)} teddy,
-		\textbf{(b)} chair,
-		\textbf{(c)} dinosaur head,
-		\textbf{(d)} rock.
+		Reconstruction examples using our system:
+		\textbf{(a)} Teddy,
+		\textbf{(b)} Chair,
+		\textbf{(c)} Dinosaur Dead,
+		\textbf{(d)} Museum Rock.
 	}
 %	\vspace{-5mm}
 	\label{fig:demo}
