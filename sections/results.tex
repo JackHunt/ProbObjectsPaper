@@ -14,7 +14,7 @@ In this section we present quantitative results of our systems' %ability to main
 robustness in estimating the camera motion, by performing tracking against the reconstruction of a single object, instead of the whole scene.
 The trajectories estimated by our system demonstrate low tracking drift. % and a robustness to loop closure events.
 We perform such evaluation on two sequences of the RGB-D SLAM Dataset~\cite{sturm12iros} depicting static objects observed by a moving camera.
-Tracking is performed using purely geometric clues, by matching the current depth frame with a rendering of the reconstructed object using a projective ICP tracking approach~\cite{Kahler2016}.
+Tracking is performed using purely geometric clues, by matching the current depth frame with a rendering of the reconstructed object using a projective ICP tracking approach~\cite{Kahler2016}. We compare results against the system of \cite{Prisacariu2014} with object segmentation.
 %, as such the evaluation is of camera pose estimation when tracking an object.
 %By tracking the sensor pose against a subset of the observed scene 
 %At this point it should be highlighted that our system is at a disadvantage when compared to dense SLAM systems that utilise the entire scene geometry for pose optimisation.
@@ -27,27 +27,29 @@ The tracking accuracy is evaluated via the Absolute Trajectory Error (ATE) metri
 	{
         \footnotesize
 		\begin{center}
-			\begin{tabular}{l@{\hskip 1cm} c}
-				\emph{Sequence Name} & \emph{ATE (m)}\\
+			\begin{tabular}{l@{\hskip 1cm} c c}
+				\emph{Sequence Name} & \emph{Our Approach ATE (m)} & \emph{InfiniTAM ATE (m)}\\
 				\midrule
-				\textsf{freiburg3\_cabinet} & 0.078 \\ %0.077903
-				\textsf{freiburg3\_teddy}   & 0.031 \\ %0.030596
+				\textsf{freiburg3\_cabinet} & 0.077903 & 0.520693\\
+				\textsf{freiburg3\_teddy}   & 0.030596 & 0.048560 
 			\end{tabular}
 		\end{center}
 	}
-	\caption{ATE(Absolute Trajectory Error) results (lower is better) achieved by our approach.}
+	\caption{ATE(Absolute Trajectory Error) results (lower is better) achieved by our approach versus InfinITAM with object segmentation.}
 	\label{ateTable}
 \end{table}
 
 \begin{figure}[!t]
 	\centering
 	\begin{tabular}{cc}
-		\fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_cabinet.png}} & \fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_teddy.png}}
+		%\fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_cabinet.png}} & %\fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_teddy.png}}
+		\fbox{\includegraphics[width=0.2\textwidth]{results/comparative_cabinet.png}} &
+		\fbox{\includegraphics[width=0.2\textwidth]{results/comparative_teddy_clean.png}}
 	\end{tabular}
 	\caption{
         Comparison of the estimated camera trajectory with the ground truth for
-		\textbf{(L)}~\textit{freiburg3\_cabinet} (final ATE:~$0.078m$), and
-		\textbf{(R)}~\textit{freiburg3\_teddy} (final ATE:~$0.031m$).
+		\textbf{(L)}~\textit{freiburg3\_cabinet}  and
+		\textbf{(R)}~\textit{freiburg3\_teddy}.
 	}
 \label{fig:tumTrajectories}
 \end{figure}
