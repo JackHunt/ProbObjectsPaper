@@ -119,6 +119,41 @@ Another such example may be observed in Figure \ref{fig:rockComparison}.
 
 The object reconstructions depicted in Figure~\ref{fig:demo} have been obtained from sequences in which a camera was moved in a loop around each object in order to generate a closed model.
 
+In addition, we provide a qualitative comparison between the reconstructions produced by the KinectFusion implementation of \cite{Prisacariu2014} when 
+tracking the entire scene and manually segmenting the object out as a post processing versus our online segmentation and reconstruction system. This 
+comparison is visible in Figure \ref{}
+
+\begin{figure*}[!t]
+	\centering
+	\begin{tabular}{cccc}
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/bear00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/brain00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/chair00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/dino00.png}}\\
+		(a)&(b)&(c)&(d) \\ 
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/bear00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/brain00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/chair00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/dino00.png}}\\
+		(e)&(f)&(g)&(h) \\ 
+	\end{tabular}
+	\vspace{1mm}
+	\caption{
+		Reconstruction examples using InfiniTAM:
+		\textbf{(a)} Bear,
+		\textbf{(b)} Brain,
+		\textbf{(c)} Chair,
+		\textbf{(d)} Dino Head.
+		Reconstruction examples using our system:
+		\textbf{(e)} Bear,
+		\textbf{(f)} Brain,
+		\textbf{(g)} Chair,
+		\textbf{(h)} Dino Head.
+	}
+	%	\vspace{-5mm}
+	\label{fig:demo}
+\end{figure*}
+
 %As can be seen from the top down views of Figure \ref{fig:top_shots}, our system is capable of producing closed models, unaffected by tracking drift and loop closure events.
 
 \subsection{Quantitative Reconstruction Quality}
