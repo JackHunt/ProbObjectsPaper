@@ -131,16 +131,7 @@ d_{H}(X, Y) = \max \Bigg \{ \sup_{x \in X} \inf_{y \in Y} d(x, y), \sup_{y \in Y
 where $X$ is the mesh for the ground truth dense SLAM reconstruction, $Y$ is the mesh outputted by our system and $d(.)$ is the Euclidean distance.
 
 The resultant comparisons may be found in table \ref{hausdorffTable}. In addition, we provide the outputted reconstructions from our system textured on reconstruction quality w.r.t. the Hausdorff Distance. 
-For reference, the colour scale used is given in figure \ref{fig:colourScale} where the left extrema(blue) is given by a sequences \textit{Max Dist} and the right extrema(red) by the sequences \textit{Min Dist}. 
-This scale corresponds to the textured renderings in figure \ref{fig:hausdorffTextured}
-
-\begin{figure}[!t]
-	\centering
-	\includegraphics[scale=0.75]{hausdorff/colour_range.png}
-	\caption{Relative colour scale for distance.}
-	\label{fig:colourScale}
-\end{figure}
-
+For reference, the colour scale used is given in figure \ref{fig:hausdorffTextured} where the left extrema(blue) is given by a sequences \textit{Max Dist} and the right extrema(red) by the sequences \textit{Min Dist}. 
 \begin{table}[!t]
 	{
 		\footnotesize
@@ -169,12 +160,17 @@ This scale corresponds to the textured renderings in figure \ref{fig:hausdorffTe
 		(a)&(b)&(c)&(d)
 	\end{tabular}
 	\vspace{1mm}
+	
+	\includegraphics[scale=0.5]{hausdorff/colour_range.png}\\
+	(e)
+	
 	\caption{
 		Reconstructions textured by Hausdorff Distance to ground truth:
 		\textbf{(a)} Bear,
 		\textbf{(b)} Brain,
 		\textbf{(c)} Chair,
-		\textbf{(d)} Dino.
+		\textbf{(d)} Dino,
+		\textbf{(e)} Relative distance scale.
 	}
 	%	\vspace{-5mm}
 	\label{fig:hausdorffTextured}
