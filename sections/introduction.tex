@@ -17,14 +17,16 @@ These problems are only magnified when reconstructing objects: an object's surfa
 
 %For example, when reconstructing an entire scene and assuming no masking, all of the data in the current and previous frames is available for tracking. When tracking solely an object this is not the case as attempting to track an objects movement w.r.t.\ static scene points and dynamic object points would cause a failure event.
 
-Recently, robust, globally-consistent scene reconstruction has been achieved by combining a multi-segment representation with loop closure detection and an online model correction algorithm \cite{Kahler2016}. In this paper, we show how to extend this approach to reconstruct accurate, globally-consistent object models, introducing a probabilistic rigid-object reconstruction framework based on 
-depth and texture features. The framework facilitates the correction of tracking drift by representing the object as a
+In this paper, we introduce a novel approach to reconstruct accurate, globally-consistent object models, introducing a probabilistic rigid-object reconstruction 
+framework based on depth features. The framework facilitates the correction of tracking drift by representing the object as a
 collection of overlapping subsegments between which transformations may be inferred to keep them aligned, resulting in a consistent
 overall model. By combining these transformed surfaces, we extract an implicitly deformed surface, optimised for via the probabilistic formulation 
-that follows. We utilise a volumetric representation for each of these object subsegments, as with larger-scale reconstruction
-systems \cite{Kahler2016}. Each voxel in the subsegments has additional appearance posterior information pertaining to the voxel's membership 
-of the object. Over time, multiple volumes containing both surface and probabilistic appearance information are maintained and manipulated to 
-yield a robust and temporally consistent model. Finally, we optimise for the optimum object shape within a CRF (Conditional Random Field) framework.
+that follows. We utilise a volumetric representation for each of these object subsegments. Each voxel in a given subsegment has additional appearance posterior 
+information pertaining to the voxel's membership of the object. Over time, multiple volumes containing both surface and probabilistic appearance information are 
+maintained and manipulated to yield a robust and temporally consistent model. Finally, we optimise for the optimum object shape within a CRF 
+(Conditional Random Field) framework.
+
+Recently, robust, globally-consistent scene reconstruction has been achieved by combining a multi-segment representation with loop closure detection and an online model correction algorithm \cite{Kahler2016}, demonstrating the efficacy of this approach for larger scenes.
 
 \begin{figure*}[!t]
 	\centering
