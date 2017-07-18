@@ -74,7 +74,7 @@ Such snapshots are captured after each quarter of a sequence has been processed.
 	\centering
 	%\begin{tabular}{c}
 		\includegraphics[width=0.45\textwidth]{filmstrips/dino.png} \\
-		%\vspace{-3mm}
+		\vspace{0.5mm}
 		\includegraphics[width=0.45\textwidth]{filmstrips/dino_s3d_large.png}
 	%\end{tabular}
 	\caption{
@@ -85,7 +85,7 @@ Such snapshots are captured after each quarter of a sequence has been processed.
 
 \begin{figure}[!t]
 	\centering
-	\begin{tabular}{cccc}
+	\begin{tabular}{cc}
 		\includegraphics[width=3cm]{screenshots/untextured/teddy_top00.png}&
 		\includegraphics[width=3cm]{screenshots/untextured/dino_top00.png}\\
 		\includegraphics[width=3cm]{screenshots/untextured/chair_top00.png}&
@@ -103,8 +103,8 @@ Such snapshots are captured after each quarter of a sequence has been processed.
 	\centering
 %	\begin{tabular}{cc}
 		\includegraphics[width=0.45\textwidth]{filmstrips/rock.png} \\
-		\vspace{0.3mm}
-	    \hspace{0.5mm} \includegraphics[width=0.45\textwidth]{filmstrips/rock_s3d_large.png}
+		\vspace{0.5mm}
+	    \includegraphics[width=0.45\textwidth]{filmstrips/rock_s3d_large.png}
 %	\end{tabular}
 	\caption{
 		Quarterly interval snapshots of the Museum Rock reconstruction using \textbf{(Upper)} our method, and \textbf{(Lower)} the one proposed by Ren et~al.~\cite{Ren2013}.
@@ -124,7 +124,7 @@ The object reconstructions depicted in Figure~\ref{fig:demo} have been obtained 
 
 In addition, we provide a qualitative comparison between the reconstructions produced by the KinectFusion implementation of \cite{Prisacariu2014} when 
 tracking the entire scene and manually segmenting the object out as a post processing versus our online segmentation and reconstruction system. This 
-comparison is visible in Figure \ref{}
+comparison is visible in Figure \ref{fig:demo}
 
 \begin{figure*}[!t]
 	\centering
@@ -149,8 +149,24 @@ comparison is visible in Figure \ref{}
 		\vspace{-5mm}
 	\label{fig:demo}
 \end{figure*}
-
 %As can be seen from the top down views of Figure \ref{fig:top_shots}, our system is capable of producing closed models, unaffected by tracking drift and loop closure events.
+Finally, we provide an example of a typical failure case when using the standard KinectFusion pipeline vs our approach. The gaps on the object surface in Figure \ref{fig:gappy_teddy} 
+is caused by tracking drift, resulting in the system fusing surface information in to the wrong region of space, as can be seen, this is remedied by our approach.
+\begin{figure}[!t]
+	\centering
+	\begin{tabular}{cc}
+		\includegraphics[width=3cm]{screenshots/GappyTeddy/one_scene00.png}&
+		\includegraphics[width=3cm]{screenshots/GappyTeddy/one_scene01.png}\\
+		\includegraphics[width=3cm]{screenshots/GappyTeddy/multi_scene00.png}&
+		\includegraphics[width=3cm]{screenshots/GappyTeddy/multi_scene01.png}\\
+	\end{tabular}
+	\vspace{-3mm}
+	\caption{
+		Teddy reconstruction with InfiniTAM(first row) versus our system(second row).
+	}
+	\label{fig:gappy_teddy}
+	%	\vspace{-\baselineskip}
+\end{figure}
 
 \subsection{Quantitative Reconstruction Quality}
 In this section we perform a quantitative evaluation of reconstruction quality of our method against an established dense SLAM system \cite{Prisacariu2014} following the KinectFusion \cite{Newcombe2011} pipeline.
