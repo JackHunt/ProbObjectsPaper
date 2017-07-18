@@ -14,7 +14,7 @@ In this section we present quantitative results of our systems' %ability to main
 robustness in estimating the camera motion, by performing tracking against the reconstruction of a single object, instead of the whole scene.
 The trajectories estimated by our system demonstrate low tracking drift. % and a robustness to loop closure events.
 We perform such evaluation on two sequences of the RGB-D SLAM Dataset~\cite{sturm12iros} depicting static objects observed by a moving camera.
-Tracking is performed using purely geometric clues, by matching the current depth frame with a rendering of the reconstructed object using a projective ICP tracking approach~\cite{Kahler2016}.
+Tracking is performed using purely geometric clues, by matching the current depth frame with a rendering of the reconstructed object using a projective ICP tracking approach~\cite{Kahler2016}. We compare results against the system of \cite{Prisacariu2014} with object segmentation.
 %, as such the evaluation is of camera pose estimation when tracking an object.
 %By tracking the sensor pose against a subset of the observed scene 
 %At this point it should be highlighted that our system is at a disadvantage when compared to dense SLAM systems that utilise the entire scene geometry for pose optimisation.
@@ -27,27 +27,29 @@ The tracking accuracy is evaluated via the Absolute Trajectory Error (ATE) metri
 	{
         \footnotesize
 		\begin{center}
-			\begin{tabular}{l@{\hskip 1cm} c}
-				\emph{Sequence Name} & \emph{ATE (m)}\\
+			\begin{tabular}{l@{\hskip 1cm} c c}
+				\emph{Sequence Name} & \emph{Our Approach ATE (m)} & \emph{InfiniTAM ATE (m)}\\
 				\midrule
-				\textsf{freiburg3\_cabinet} & 0.078 \\ %0.077903
-				\textsf{freiburg3\_teddy}   & 0.031 \\ %0.030596
+				\textsf{freiburg3\_cabinet} & 0.077903 & 0.520693\\
+				\textsf{freiburg3\_teddy}   & 0.030596 & 0.048560 
 			\end{tabular}
 		\end{center}
 	}
-	\caption{ATE(Absolute Trajectory Error) results (lower is better) achieved by our approach.}
+	\caption{ATE(Absolute Trajectory Error) results (lower is better) achieved by our approach versus InfinITAM with object segmentation.}
 	\label{ateTable}
 \end{table}
 
 \begin{figure}[!t]
 	\centering
 	\begin{tabular}{cc}
-		\fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_cabinet.png}} & \fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_teddy.png}}
+		%\fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_cabinet.png}} & %\fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_teddy.png}}
+		\fbox{\includegraphics[width=0.2\textwidth]{results/comparative_cabinet.png}} &
+		\fbox{\includegraphics[width=0.2\textwidth]{results/comparative_teddy_clean.png}}
 	\end{tabular}
 	\caption{
         Comparison of the estimated camera trajectory with the ground truth for
-		\textbf{(L)}~\textit{freiburg3\_cabinet} (final ATE:~$0.078m$), and
-		\textbf{(R)}~\textit{freiburg3\_teddy} (final ATE:~$0.031m$).
+		\textbf{(L)}~\textit{freiburg3\_cabinet}  and
+		\textbf{(R)}~\textit{freiburg3\_teddy}.
 	}
 \label{fig:tumTrajectories}
 \end{figure}
@@ -81,15 +83,15 @@ Such snapshots are captured after each quarter of a sequence has been processed.
 
 \begin{figure*}[!t]
 	\centering
-	\begin{tabular}{ccc}
-		\fbox{\includegraphics[width=0.2\textwidth]{screenshots/dino_colour_top_grey.PNG}}&
-		\fbox{\includegraphics[width=0.2\textwidth]{screenshots/chair_colour_top_grey.PNG}}&
-		\fbox{\includegraphics[width=0.2\textwidth]{screenshots/rock_colour_top_grey.PNG}}
+	\begin{tabular}{cccc}
+		\fbox{\includegraphics[width=3cm]{screenshots/untextured/teddy_top00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/untextured/dino_top00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/untextured/chair_top00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/untextured/rock_top00.png}}\\
+		(a) & (b) & (c) & (d)
 	\end{tabular}
 	\caption{
-		Closed reconstructions of \textbf{(L)} a Dinosaur Head,
-		\textbf{(M)} a Chair, and
-		\textbf{(R)} a Rock.
+		Closed reconstructions of (b) a Teddy, (b) a Dinosaur Head, (c) a Chair, and (d) a Rock.
 	}
 	\label{fig:top_shots}
 %	\vspace{-\baselineskip}
@@ -116,6 +118,41 @@ is also apparent for other sequences evaluated in this work, all presenting fail
 Another such example may be observed in Figure \ref{fig:rockComparison}.
 
 The object reconstructions depicted in Figure~\ref{fig:demo} have been obtained from sequences in which a camera was moved in a loop around each object in order to generate a closed model.
+
+In addition, we provide a qualitative comparison between the reconstructions produced by the KinectFusion implementation of \cite{Prisacariu2014} when 
+tracking the entire scene and manually segmenting the object out as a post processing versus our online segmentation and reconstruction system. This 
+comparison is visible in Figure \ref{}
+
+\begin{figure*}[!t]
+	\centering
+	\begin{tabular}{cccc}
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/bear00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/brain00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/chair00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/dino00.png}}\\
+		(a)&(b)&(c)&(d) \\ 
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/bear00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/brain00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/chair00.png}}&
+		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/dino00.png}}\\
+		(e)&(f)&(g)&(h) \\ 
+	\end{tabular}
+	\vspace{1mm}
+	\caption{
+		Reconstruction examples using InfiniTAM:
+		\textbf{(a)} Bear,
+		\textbf{(b)} Brain,
+		\textbf{(c)} Chair,
+		\textbf{(d)} Dino Head.
+		Reconstruction examples using our system:
+		\textbf{(e)} Bear,
+		\textbf{(f)} Brain,
+		\textbf{(g)} Chair,
+		\textbf{(h)} Dino Head.
+	}
+	%	\vspace{-5mm}
+	\label{fig:demo}
+\end{figure*}
 
 %As can be seen from the top down views of Figure \ref{fig:top_shots}, our system is capable of producing closed models, unaffected by tracking drift and loop closure events.
 
