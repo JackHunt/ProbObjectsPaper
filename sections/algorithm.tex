@@ -169,13 +169,13 @@ surface as depicted in Figure \ref{fig:deformationDiagram}.
 \begin{figure}[!t]
 	\centering
 	\includegraphics[scale=0.25]{deformation.png}
+	\vspace{-3mm}
 	\caption{Measured surfaces being deformed to the true surface.}
 	\label{fig:deformationDiagram}
 \end{figure}
 
 \subsection{Volumetric Object Segmentation}
 \label{subsec:shapeoptimisation}
-
 The final stage in the proposed object reconstruction pipeline is the segmentation of the object voxels from those that have had measurements fused 
 from the background. This segmentation is formulated within a CRF framework, where each node in the CRF represents a set of neighbouring voxels in space, 
 with connections being made between adjacent neighbourhoods. The process of segmentation can be posed as an energy minimisation problem over a cut in voxel space, 
@@ -250,15 +250,29 @@ where $w(.)$ is a weighting function and $\mu$ is the aforementioned TSDF trunca
 \begin{figure*}[!t]
 	\centering
 	\includegraphics[width=0.7\linewidth]{pipeline.pdf}
+	\vspace{-3mm}
 	\caption{The pipeline of our object reconstruction approach.}
 	\label{pipelineDiagram}
 \end{figure*}
 
+\iffalse
 \begin{figure}[!t]
 	\centering
 	\subfloat[]{\includegraphics[height=3cm]{graphical_models/pgm1.pdf}\label{pgm1}}%
 	\hspace{12mm}%
 	\subfloat[]{\includegraphics[height=3cm]{graphical_models/pgm2.pdf}\label{pgm2}}
 	\caption{(a) An initial probabilistic formulation of the object reconstruction pipeline, and (b) S simpler formulation based on various independence assumptions.}
-	%	\vspace{-\baselineskip}
+	\vspace{-\baselineskip}
+\end{figure}
+\fi
+\begin{figure}[!t]
+	\centering
+	\begin{tabular}{cc}
+		%\fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_cabinet.png}} & %\fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_teddy.png}}
+		\includegraphics[height=3cm]{graphical_models/pgm1.pdf}&
+		\includegraphics[height=3cm]{graphical_models/pgm2.pdf}
+		\vspace{-3mm}
+	\end{tabular}
+    \caption{An initial probabilistic formulation of the object reconstruction pipeline(left) and a simpler formulation based on various independence assumptions(right).}
+	\label{fig:pgm}
 \end{figure}

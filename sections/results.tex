@@ -35,6 +35,7 @@ The tracking accuracy is evaluated via the Absolute Trajectory Error (ATE) metri
 			\end{tabular}
 		\end{center}
 	}
+   \vspace{-4mm}
 	\caption{ATE(Absolute Trajectory Error) results (lower is better) achieved by our approach versus InfinITAM with object segmentation.}
 	\label{ateTable}
 \end{table}
@@ -43,13 +44,13 @@ The tracking accuracy is evaluated via the Absolute Trajectory Error (ATE) metri
 	\centering
 	\begin{tabular}{cc}
 		%\fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_cabinet.png}} & %\fbox{\includegraphics[width=0.2\textwidth]{results/rgbd_dataset_freiburg3_teddy.png}}
-		\fbox{\includegraphics[width=0.2\textwidth]{results/comparative_cabinet.png}} &
-		\fbox{\includegraphics[width=0.2\textwidth]{results/comparative_teddy_clean.png}}
+		\includegraphics[width=0.2\textwidth]{results/comparative_cabinet.png} &
+		\includegraphics[width=0.2\textwidth]{results/comparative_teddy_clean.png}
 	\end{tabular}
+    \vspace{-3mm}
 	\caption{
         Comparison of the estimated camera trajectory with the ground truth for
-		\textbf{(L)}~\textit{freiburg3\_cabinet}  and
-		\textbf{(R)}~\textit{freiburg3\_teddy}.
+		~\textit{freiburg3\_cabinet}(left)  and ~\textit{freiburg3\_teddy}(right).
 	}
 \label{fig:tumTrajectories}
 \end{figure}
@@ -71,38 +72,40 @@ Such snapshots are captured after each quarter of a sequence has been processed.
 
 \begin{figure}[!t]
 	\centering
-	\begin{tabular}{cc}
-		\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/dino.png}} \\ [2ex]
-		\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/dino_s3d_large.png}}
-	\end{tabular}
+	%\begin{tabular}{c}
+		\includegraphics[width=0.45\textwidth]{filmstrips/dino.png} \\
+		%\vspace{-3mm}
+		\includegraphics[width=0.45\textwidth]{filmstrips/dino_s3d_large.png}
+	%\end{tabular}
 	\caption{
-        Quarterly interval snapshots of the Dinosaur Head reconstruction using \textbf{(Upper)} our method, and \textbf{(Lower)} the one proposed by Ren et~al.~\cite{Ren2013}.
+        Quarterly interval snapshots of the Dinosaur Head reconstruction using our method(upper), and the one proposed by Ren et~al.~\cite{Ren2013}(lower).
 	}
 	\label{fig:dinoComparison}
 \end{figure}
 
-\begin{figure*}[!t]
+\begin{figure}[!t]
 	\centering
 	\begin{tabular}{cccc}
-		\fbox{\includegraphics[width=3cm]{screenshots/untextured/teddy_top00.png}}&
-		\fbox{\includegraphics[width=3cm]{screenshots/untextured/dino_top00.png}}&
-		\fbox{\includegraphics[width=3cm]{screenshots/untextured/chair_top00.png}}&
-		\fbox{\includegraphics[width=3cm]{screenshots/untextured/rock_top00.png}}\\
-		(a) & (b) & (c) & (d)
+		\includegraphics[width=3cm]{screenshots/untextured/teddy_top00.png}&
+		\includegraphics[width=3cm]{screenshots/untextured/dino_top00.png}\\
+		\includegraphics[width=3cm]{screenshots/untextured/chair_top00.png}&
+		\includegraphics[width=3cm]{screenshots/untextured/rock_top00.png}\\
 	\end{tabular}
+    \vspace{-3mm}
 	\caption{
-		Closed reconstructions of (b) a Teddy, (b) a Dinosaur Head, (c) a Chair, and (d) a Rock.
+		Closed reconstructions of a Teddy, a Dinosaur Head, a Chair and a Rock.
 	}
 	\label{fig:top_shots}
 %	\vspace{-\baselineskip}
-\end{figure*}
+\end{figure}
 
 \begin{figure}[!t]
 	\centering
-	\begin{tabular}{cc}
-		\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/rock.png}} \\ [2ex]
-		\fbox{\includegraphics[width=0.45\textwidth]{filmstrips/rock_s3d_large.png}}
-	\end{tabular}
+%	\begin{tabular}{cc}
+		\includegraphics[width=0.45\textwidth]{filmstrips/rock.png} \\
+		\vspace{0.3mm}
+	    \hspace{0.5mm} \includegraphics[width=0.45\textwidth]{filmstrips/rock_s3d_large.png}
+%	\end{tabular}
 	\caption{
 		Quarterly interval snapshots of the Museum Rock reconstruction using \textbf{(Upper)} our method, and \textbf{(Lower)} the one proposed by Ren et~al.~\cite{Ren2013}.
 	}
@@ -126,31 +129,24 @@ comparison is visible in Figure \ref{}
 \begin{figure*}[!t]
 	\centering
 	\begin{tabular}{cccc}
-		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/bear00.png}}&
-		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/brain00.png}}&
-		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/chair00.png}}&
-		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/dino00.png}}\\
-		(a)&(b)&(c)&(d) \\ 
-		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/bear00.png}}&
-		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/brain00.png}}&
-		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/chair00.png}}&
-		\fbox{\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/dino00.png}}\\
-		(e)&(f)&(g)&(h) \\ 
+		\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/bear00.png}&
+		\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/brain00.png}&
+		\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/chair00.png}&
+		\includegraphics[width=3cm]{screenshots/Comparison Stills/InfiniTAM/dino00.png}\\
+		\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/bear00.png}&
+		\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/brain00.png}&
+		\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/chair00.png}&
+		\includegraphics[width=3cm]{screenshots/Comparison Stills/ProbObjects/dino00.png}\\
+		\includegraphics[width=3cm]{hausdorff/bear.png}&
+		\includegraphics[width=3cm]{hausdorff/brain.png}&
+		\includegraphics[width=3cm]{hausdorff/chair.png}&
+		\includegraphics[width=3cm]{hausdorff/dino.png}\\
 	\end{tabular}
-	\vspace{1mm}
+	\vspace{-3mm}
 	\caption{
-		Reconstruction examples using InfiniTAM:
-		\textbf{(a)} Bear,
-		\textbf{(b)} Brain,
-		\textbf{(c)} Chair,
-		\textbf{(d)} Dino Head.
-		Reconstruction examples using our system:
-		\textbf{(e)} Bear,
-		\textbf{(f)} Brain,
-		\textbf{(g)} Chair,
-		\textbf{(h)} Dino Head.
+		From left to right, Bear, Brain, Chair and Dinosaur Head. Row 1 is InfiniTAM output, row 2 is our system and row 3 is the Hausdorff distance between the two, with the colour scale ranging from blue(\textit{max dist}) to red(\textit{min dist})
 	}
-	%	\vspace{-5mm}
+		\vspace{-5mm}
 	\label{fig:demo}
 \end{figure*}
 
@@ -183,36 +179,10 @@ For reference, the colour scale used is given in figure \ref{fig:hausdorffTextur
 			\end{tabular}
 		\end{center}
 	}
+\vspace{-3mm}
 	\caption{Hausdorff Distance measurements between ground truth mesh and our systems output.}
 	\label{hausdorffTable}
 \end{table}
-
-\begin{figure*}[!t]
-	\centering
-	\begin{tabular}{cccc}
-		\fbox{\includegraphics[width=3cm]{hausdorff/bear.png}}&
-		\fbox{\includegraphics[width=3cm]{hausdorff/brain.png}}&
-		\fbox{\includegraphics[width=3cm]{hausdorff/chair.png}}&
-		\fbox{\includegraphics[width=3cm]{hausdorff/dino.png}}\\
-		(a)&(b)&(c)&(d)
-	\end{tabular}
-	\vspace{1mm}
-	
-	\includegraphics[scale=0.5]{hausdorff/colour_range.png}\\
-	(e)
-	
-	\caption{
-		Reconstructions textured by Hausdorff Distance to ground truth:
-		\textbf{(a)} Bear,
-		\textbf{(b)} Brain,
-		\textbf{(c)} Chair,
-		\textbf{(d)} Dino,
-		\textbf{(e)} Relative distance scale.
-	}
-	%	\vspace{-5mm}
-	\label{fig:hausdorffTextured}
-\end{figure*}
-
 As can be seen by the similarity measures presented, our system is capable of yielding reconstructions to a high quality despite the much more difficult tracking scenario of a single object rather than an entire 
 scene. It can be seen that our output reconstruction meshes are geometrically close to those generated with a dense SLAM system \cite{Prisacariu2014} following the KinectFusion \cite{Newcombe2011} pipeline that 
 is modelling and tracking the entire scene.
