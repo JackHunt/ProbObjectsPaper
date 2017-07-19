@@ -19,7 +19,7 @@ These problems are only magnified when reconstructing objects: an object's surfa
 
 In this paper, we introduce a novel approach to reconstruct accurate, globally-consistent object models, introducing a probabilistic rigid-object reconstruction 
 framework based on depth features. The framework facilitates the correction of tracking drift by representing the object as a
-collection of overlapping subsegments between which transformations may be inferred to keep them aligned, resulting in a consistent
+collection of overlapping subsegments between which transformations may be inferred to maintain alignment, resulting in a consistent
 overall model. By combining these transformed surfaces, we extract an implicitly deformed surface, optimised for via the probabilistic formulation 
 that follows. We utilise a volumetric representation for each of these object subsegments. Each voxel in a given subsegment has additional appearance posterior 
 information pertaining to the voxel's membership of the object. Over time, multiple volumes containing both surface and probabilistic appearance information are 
@@ -47,7 +47,7 @@ Recently, robust, globally-consistent scene reconstruction has been achieved by 
 	\label{fig:demo}
 \end{figure}
 %We demonstrate efficacy in object reconstruction by performing online transformations to the aforementioned subsegments to counteract inconsistencies caused by drift in the object pose tracking process.
-We perform both quantitative and qualitative experiments to compare our approach to the state-of-the-art object reconstruction approach of Ren et al.\ \cite{Ren2013}, demonstrating compelling improvements in both pose estimation and model quality.
+We perform both quantitative and qualitative experiments to compare our approach to the state-of-the-art object reconstruction approach of Ren et al.\ \cite{Ren2013}, demonstrating compelling improvements in both pose estimation and model quality. In addition we demonstrate compelling results over the standard KinectFusion pipeline using an open implementation \cite{Prisacariu2014} as a benchmark.
 
 %We perform quantitative and qualitative experiments and demonstrate efficacious pose estimation and reconstruction quality respectively. As a base for comparison, tracking quality is compared with a well established dense SLAM evaluation benchmark \cite{sturm12iros} and reconstruction quality with the object reconstruction system outlined in \cite{Ren2013}.
 
