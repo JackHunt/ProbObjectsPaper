@@ -142,11 +142,19 @@ The object reconstructions depicted in Figure~\ref{fig:demo} have been obtained 
 	\end{tabular}
 	\vspace{-3mm}
 	\caption{
-		From left to right, Bear, Brain, Chair and Dinosaur Head. Row 1 is InfiniTAM output, row 2 is our system and row 3 is the Hausdorff distance between the two, with the colour scale ranging from blue(\textit{max dist}) to red(\textit{min dist})
+		From left to right, Bear, Brain, Chair and Dinosaur Head. Row 1 is InfiniTAM output, row 2 is our system and row 3 is the Hausdorff distance between the two, with the colour scale 
+		given in Figure \ref{fig:colour_range})
 	}
 	\vspace{-5mm}
 	\label{fig:demo}
 \end{figure*}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{hausdorff/colour_range.png}
+	\caption{Hausdorff distance heatmap key. Blue is \textit{max dist} and red is \textit{min dist} of Table \ref{hausdorffTable}}
+	\label{fig:colour_range}
+\end{figure}
 
 In addition, we provide a qualitative comparison between the reconstructions produced by the KinectFusion implementation of \cite{Prisacariu2014} when 
 tracking the entire scene and manually segmenting the object out as a post processing versus our online segmentation and reconstruction system. This 
@@ -193,7 +201,7 @@ For reference, the colour scale used is given in figure \ref{fig:hausdorffTextur
 				\textsf{Bear} & 0 & 0.102777 & 0.013588 & 0.019796 \\
 				\textsf{Brain} & 0 & 0.026465 & 0.008745 & 0.011349 \\
 				\textsf{Chair} & 0 & 0.053441 & 0.012349 & 0.016422 \\
-				\textsf{Dino} & 0 & 0.035252 & 0.007919 & 0.010676
+				\textsf{Dinosaur Head} & 0 & 0.035252 & 0.007919 & 0.010676
 			\end{tabular}
 		\end{center}
 	}

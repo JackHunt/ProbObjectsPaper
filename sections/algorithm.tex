@@ -1,5 +1,13 @@
-An overview of our object reconstruction pipeline is shown in Figure~\ref{pipelineDiagram}. We divide our object model into subvolumes, each consistintg of a TSDF, 
+An overview of our object reconstruction pipeline is shown in Figure~\ref{pipelineDiagram}. We divide our object model into subvolumes, each consisting of a TSDF, 
 colour volume and object probability volume, and contains a rigid body transform that specifies its pose relative to the global coordinate frame. At each new camera frame, we apply our segmentation model to the colour input image to construct an object probability map, and then accumulate the probabilities in this map into the object probability volume of the active subvolume (see Section~\ref{subsec:probfusion}). We also update the TSDF and colour volume of the active subvolume, and track against it using ICP. At the end of each frame, we run our novel online model correction algorithm (see Section~\ref{subsec:onlinemodelcorrection}), which infers the relative poses between the subvolumes to mitigate tracking drift. Once the reconstruction process is finished, we perform a CRF-based optimisation to refine the resulting object shape (see Section~\ref{subsec:shapeoptimisation}). Our approach is not tied to the use of any one segmentation model, though in our experiments we use PwP(Pixel Wise Posteriors) \cite{Bibby2008}.
+
+\begin{figure*}[!t]
+	\centering
+	\includegraphics[width=0.7\linewidth]{pipeline.pdf}
+	\vspace{-3mm}
+	\caption{The pipeline of our object reconstruction approach.}
+	\label{pipelineDiagram}
+\end{figure*}
 
 \subsection{Object Probability Fusion Procedure}
 \label{subsec:probfusion}
@@ -36,7 +44,7 @@ Graphical Model of Figure \ref{fig:pgm}(left).
 	\label{fig:pgm}
 \end{figure}
 
-Where $\Phi$ is the shape to be reconstructed, $u$ is the appearance model volume, $L$ is the 
+Where $\Phi$ is the shape to be reconstructed(represented as a subset of voxels for which surface data has been integrated), $u$ is the appearance model volume, $L$ is the 
 set of consistency constraints for each adjacent sub volume pair in the form of rigid transformations, $\Omega$ is the set of 
 RGBD image pixels and $p$ the set of poses over time.
 
@@ -179,7 +187,7 @@ for the true surface as depicted in Figure \ref{fig:deformationDiagram}.
 	\centering
 	\includegraphics[scale=0.25]{deformation.png}
 	\vspace{-3mm}
-	\caption{Measured surfaces being deformed to the true surface.}
+	\caption{Measured surfaces from different subvolumes being deformed to the true surface.}
 	\label{fig:deformationDiagram}
 \end{figure}
 In our experiments $\zeta (.)$ is defined as follows
@@ -251,8 +259,8 @@ the camera or object 6-DoF(Degree of Freedom) pose is formulated as a minimisati
 \end{equation}
 where $\Omega_{d}$ is a depth image, $\omega$ is a 3D point extracted from the depth image, $R$ is an  $\mathbbm{SO}(3)$ 
 rotation matrix, $t$ is a translation vector, $\mathcal{V}$ is a rendered depth map from the SDF model, $\mathcal{N}$ is a rendered 
-normal map from the SDF model and $\bar{\omega}$ is the point $\omega$ projected into the coordinate frame of $\mathcal{V}$ and 
-$\mathcal{N}$. At this point it should be highlighted that the tracking algorithm used is separate from the contributions in this paper and 
+normal map from the SDF model and $\bar{\omega}$ is the point $\omega$ projected from the coordinate frame of $\mathcal{V}$ and 
+$\mathcal{N}$ to the image plane. At this point it should be highlighted that the tracking algorithm used is separate from the contributions in this paper and 
 as such can be substituted for any suitable pose estimation algorithm.
 
 \paragraph{Surface Integration}
@@ -264,22 +272,3 @@ the following update to the TSDF volume $\mathcal{D}$ is made
 	\end{split}
 \end{equation}
 where $w(.)$ is a weighting function and $\mu$ is the aforementioned TSDF truncation region.
-%\subsection{Representation and Fusion Procedure}
-\begin{figure*}[!t]
-	\centering
-	\includegraphics[width=0.7\linewidth]{pipeline.pdf}
-	\vspace{-3mm}
-	\caption{The pipeline of our object reconstruction approach.}
-	\label{pipelineDiagram}
-\end{figure*}
-
-\iffalse
-\begin{figure}[!t]
-	\centering
-	\subfloat[]{\includegraphics[height=3cm]{graphical_models/pgm1.pdf}\label{pgm1}}%
-	\hspace{12mm}%
-	\subfloat[]{\includegraphics[height=3cm]{graphical_models/pgm2.pdf}\label{pgm2}}
-	\caption{(a) An initial probabilistic formulation of the object reconstruction pipeline, and (b) S simpler formulation based on various independence assumptions.}
-	\vspace{-\baselineskip}
-\end{figure}
-\fi
