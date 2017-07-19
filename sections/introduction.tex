@@ -21,12 +21,11 @@ In this paper, we introduce a novel approach to reconstruct accurate, globally-c
 framework based on depth features. The framework facilitates the correction of tracking drift by representing the object as a
 collection of overlapping subsegments between which transformations may be inferred to maintain alignment, resulting in a consistent
 overall model. By combining these transformed surfaces, we extract an implicitly deformed surface, optimised for via the probabilistic formulation 
-that follows. We utilise a volumetric representation for each of these object subsegments. Each voxel in a given subsegment has additional appearance posterior 
+that follows. We utilise a volumetric representation for each of these object subsegments, with each voxel in a given subsegment having additional appearance posterior 
 information pertaining to the voxel's membership of the object. Over time, multiple volumes containing both surface and probabilistic appearance information are 
-maintained and manipulated to yield a robust and temporally consistent model. Finally, we optimise for the optimum object shape within a CRF 
-(Conditional Random Field) framework.
+maintained and manipulated to yield a robust and temporally consistent model. Finally, we optimise for the optimum object segmentation within a CRF (Conditional Random Field) framework.
 
-Recently, robust, globally-consistent scene reconstruction has been achieved by combining a multi-segment representation with loop closure detection and an online model correction algorithm \cite{Kahler2016}, demonstrating the efficacy of this approach for larger scenes.
+Recently, robust, globally-consistent, large scale scene reconstruction has been achieved by combining a multi-segment representation with loop closure detection and an online model correction algorithm \cite{Kahler2016}, demonstrating the efficacy of this approach for larger scenes.
 
 \begin{figure}[!t]
 	\centering

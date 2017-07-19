@@ -57,7 +57,7 @@ The tracking accuracy is evaluated via the ATE(Absolute Trajectory Error) metric
 \label{fig:tumTrajectories}
 \end{figure}
 
-At this point, it should be highlighted that our proposed system is at a disadvantage when compared to dense SLAM systems that utilise the entire scene geometry for pose optimisation, since we track the sensor pose against a subset of the observed scene.
+At this point, it should be highlighted that our proposed system is at a disadvantage when compared to dense SLAM systems that utilise the entire scene geometry for pose optimisation, since we track the sensor/object pose against a subset of the observed scene.
 Nevertheless, as shown by the results in Figure~\ref{fig:tumTrajectories}, our system is able to robustly estimate trajectories close to the ground truth whilst using only the objects' geometric appearance.
 %Quantitatively, the tracking accuracy is evaluated via the Absolute Trajectory Error (ATE) metric, as outlined by \cite{sturm12iros}.
 The cabinet reconstructed in the \textit{freiburg3\_cabinet} sequence is lacking in geometric features, as the object is mostly planar,
@@ -68,7 +68,7 @@ In the \textit{freiburg3\_teddy} sequence we determine a trajectory very close t
 Improvement over the accuracy in \textit{freiburg3\_cabinet} is due to the wider availability of geometrical features, such as curves in the teddy's body and head.
 
 \subsection{Qualitative Reconstruction Quality}
-In this section we present a qualitative comparison of our method vs. the approach by Ren et~al.~\cite{Ren2013} in the reconstruction of closed object models. %by relying on a variety of sequences and demonstrating efficacy over \cite{Ren2013} in this regard.
+In this section we present a qualitative comparison of our method against the approach by Ren et~al.~\cite{Ren2013} in the reconstruction of closed object models. %by relying on a variety of sequences and demonstrating efficacy over \cite{Ren2013} in this regard.
 Each sequence is run through both systems; to evaluate the obtained results we regularly take snapshots of the reconstruction in the case of our system, and the level set evolutions, in the case of Ren et al.
 Such snapshots are captured after each quarter of a sequence has been processed. %quarterly intervals of the systems run time through the sequence.
 
@@ -152,12 +152,12 @@ The object reconstructions depicted in Figure~\ref{fig:demo} have been obtained 
 \begin{figure}
 	\centering
 	\includegraphics[scale=0.5]{hausdorff/colour_range.png}
-	\caption{Hausdorff distance heatmap key. Blue is \textit{max dist} and red is \textit{min dist} of Table \ref{hausdorffTable}}
+	\caption{Hausdorff distance heatmap key. Blue is \textit{Max Dist} and red is \textit{Min Dist} of Table \ref{hausdorffTable}}
 	\label{fig:colour_range}
 \end{figure}
 
 In addition, we provide a qualitative comparison between the reconstructions produced by the KinectFusion implementation of \cite{Prisacariu2014} when 
-tracking the entire scene and manually segmenting the object out as a post processing versus our online segmentation and reconstruction system. This 
+tracking the entire scene and manually segmenting the object out as a post processing step against our online segmentation and reconstruction system. This 
 comparison is visible in Figure \ref{fig:demo}
 
 %As can be seen from the top down views of Figure \ref{fig:top_shots}, our system is capable of producing closed models, unaffected by tracking drift and loop closure events.
@@ -180,17 +180,17 @@ is caused by tracking drift, resulting in the system fusing surface information 
 
 \subsection{Quantitative Reconstruction Quality}
 In this section we perform a quantitative evaluation of reconstruction quality of our method against an established dense SLAM system \cite{Prisacariu2014} following the KinectFusion \cite{Newcombe2011} pipeline.
-The outputted meshes of our model are compared with the meshes of the dense SLAM system with the object of interest manually segmented out from the remainder of the scene. To quantify the reconstruction quality 
+The outputted reconstructions of our model are compared with the reconstruction of the dense SLAM system with the object of interest manually segmented out from the remainder of the scene. To quantify the reconstruction quality 
 we employ the Hausdorff Distance \cite{Hausdorff} for subsets of metric spaces, where in our case the metric space is Euclidean. The Hausdorff Distance is defined as follows
 \begin{equation}
 \begin{split}
 d_{H}(X, Y) = \max \Bigg \{ \sup_{x \in X} \inf_{y \in Y} d(x, y), \sup_{y \in Y} \inf_{x \in X} d(x, y) \Bigg \}
 \end{split}
 \end{equation}
-where $X$ is the mesh for the ground truth dense SLAM reconstruction, $Y$ is the mesh outputted by our system and $d(.)$ is the Euclidean distance.
+where $X$ is the ground truth dense SLAM reconstruction, $Y$ is the reconstruction outputted by our system and $d(.)$ is the Euclidean distance.
 
-The resultant comparisons may be found in table \ref{hausdorffTable}. In addition, we provide the outputted reconstructions from our system textured on reconstruction quality w.r.t. the Hausdorff Distance. 
-For reference, the colour scale used is given in figure \ref{fig:hausdorffTextured} where the left extrema(blue) is given by a sequences \textit{Max Dist} and the right extrema(red) by the sequences \textit{Min Dist}. 
+The resultant comparisons may be found in Table \ref{hausdorffTable}. In addition, we provide the outputted reconstructions from our system textured on reconstruction quality w.r.t. the Hausdorff Distance. 
+For reference, the colour scale used is given in figure \ref{fig:colour_range} where the left extrema(blue) is given by a sequences \textit{Max Dist} and the right extrema(red) by the sequences \textit{Min Dist}. 
 \begin{table}[!t]
 	{
 		\footnotesize
@@ -210,7 +210,7 @@ For reference, the colour scale used is given in figure \ref{fig:hausdorffTextur
 	\label{hausdorffTable}
 \end{table}
 As can be seen by the similarity measures presented, our system is capable of yielding reconstructions to a high quality despite the much more difficult tracking scenario of a single object rather than an entire 
-scene. It can be seen that our output reconstruction meshes are geometrically close to those generated with a dense SLAM system \cite{Prisacariu2014} following the KinectFusion \cite{Newcombe2011} pipeline that 
+scene. It can be seen that our output reconstructions are geometrically close to those generated with a dense SLAM system \cite{Prisacariu2014} following the KinectFusion \cite{Newcombe2011} pipeline that 
 is modelling and tracking the entire scene.
 
 \subsection{Running Times and Performance}
