@@ -1,5 +1,5 @@
 We divide our object model into subvolumes, each consisting of a TSDF, 
-colour volume and object probability volume, and contains a rigid body transform that specifies its pose relative to the global coordinate frame. At each new camera frame, we apply our segmentation model to the colour input image to construct an object probability map, and then accumulate the probabilities from this map into the object probability volume of the active subvolume (see Section~\ref{subsec:probfusion}). We also update the TSDF and colour volume of the active subvolume, and track against it using ICP. At the end of each frame, we run our novel online model correction algorithm (see Section~\ref{subsec:onlinemodelcorrection}), which infers the relative poses between the subvolumes to mitigate tracking drift. Once the reconstruction process is finished, we perform a CRF-based optimisation to refine the resulting object segmentation (see Section~\ref{subsec:shapeoptimisation}). Our approach is not tied to the use of any one probabilistic model, though in our experiments we use PwP(Pixel Wise Posteriors) \cite{Bibby2008}. An overview of our object reconstruction pipeline is shown in Figure~\ref{pipelineDiagram}.
+colour volume and object probability volume, and contains a rigid body transform that specifies its pose relative to the global coordinate frame. At each new camera frame, we apply our segmentation model to the colour input image to construct an object probability map, and then accumulate the probabilities from this map into the object probability volume of the active subvolume (see Section~\ref{subsec:probfusion}). We also update the TSDF and colour volume of the active subvolume, and track against it using ICP. At the end of each frame, we run our novel online model correction algorithm (see Section~\ref{subsec:onlinemodelcorrection}), which infers the relative poses between the subvolumes to mitigate tracking drift. Once the reconstruction process is finished, we perform a CRF-based optimisation to refine the resulting object segmentation (see Section~\ref{subsec:shapeoptimisation}). Our approach is not tied to the use of any one probabilistic model, though in our experiments we use PwP (Pixel Wise Posteriors) \cite{Bibby2008}. An overview of our object reconstruction pipeline is shown in Figure~\ref{pipelineDiagram}.
 
 \begin{figure*}[!t]
 	\centering
@@ -14,7 +14,7 @@ colour volume and object probability volume, and contains a rigid body transform
 
 The surface map and camera pose are estimated using the standard pipeline of \cite{Newcombe2011,Prisacariu2014}. The surface is represented as the zero level set of a TSDF discretised over voxels, with online weighted-mean fusion of new observations. Pose estimation via ICP is run quasi-simultaneously against the evolving map. Here, inspired by \cite{Kolev2006}, we augment this procedure by estimating the posterior probability, per map voxel, of belonging to the object. This volume of posterior probabilities is updated on each frame, parallel to the fusion process in the mapping and pose estimation subsystems. The representation of the reconstructed object comprises multiple `subvolumes', each pertaining to some patch on the object surface. New subvolumes are started when sufficiently many new voxels have been allocated and have had data integrated. By ensuring overlap between subvolumes, transformations between them can be found and pose inconsistencies addressed, online. Empirically, we define the threshold for starting a new subvolume to be when $50\%$ of the voxels fused in to the current volume are newly observed points.
 
-At each frame, the object probabilities for the visible voxels in the active submap are updated via an appearance-derived probability map for that frame. Under the assumption of conditional independence between frames (for sake of tractability), the posterior probability of a given voxel $\psi \in \Psi$ belonging to the object has the following form(noting that $\Phi \subset \Psi$):
+At each frame, the object probabilities for the visible voxels in the active submap are updated via an appearance-derived probability map for that frame. Under the assumption of conditional independence between frames (for sake of tractability), the posterior probability of a given voxel $\psi \in \Psi$ belonging to the object has the following form (noting that $\Phi \subset \Psi$):
 \begin{equation}
 \label{eq:membership}
 \begin{split}
@@ -39,11 +39,11 @@ Graphical Model of Figure \ref{fig:pgm}(left).
 		\includegraphics[height=3cm]{graphical_models/pgm2.pdf}
 		\vspace{-3mm}
 	\end{tabular}
-	\caption{An initial probabilistic formulation of the object reconstruction pipeline(left) and a simpler formulation based on various independence assumptions(right).}
+	\caption{An initial probabilistic formulation of the object reconstruction pipeline (left) and a simpler formulation based on various independence assumptions (right).}
 	\label{fig:pgm}
 \end{figure}
 
-Where $\Phi$ is the shape to be reconstructed(represented as a subset of voxels for which surface data has been integrated), $u$ is the appearance model volume, $L$ is the 
+Where $\Phi$ is the shape to be reconstructed (represented as a subset of voxels for which surface data has been integrated), $u$ is the appearance model volume, $L$ is the 
 set of consistency constraints for each adjacent sub volume pair in the form of rigid transformations, $\Omega$ is the set of 
 RGBD image pixels and $p$ the set of poses over time.
 
@@ -142,7 +142,7 @@ The log posterior of the above expression takes the following form:
 \sum_{\psi \in \Phi_{s}} \Bigg [ \bigg( \Phi_{s}(x_{\psi}) - \Phi_{s'}(\Lambda(x_{\psi})) \bigg)^2  - \lambda \lVert \mathbf{\mathbf{x}} \rVert_{2} \Bigg ]
 \end{split}
 \end{equation}
-Where $\Phi_{s}(.)$ is a scalar valued SDF(Signed Distance Function) for the subsegment $s$, a discretised field of $\Phi_{s}$(where $\Phi_{s} \subset \Phi$), as previously described. $x$ is a point represented by a 3-vector and $\Lambda(.)$ is a transformation function taking the following form:
+Where $\Phi_{s}(.)$ is a scalar valued SDF (Signed Distance Function) for the subsegment $s$, a discretised field of $\Phi_{s}$ (where $\Phi_{s} \subset \Phi$), as previously described. $x$ is a point represented by a 3-vector and $\Lambda(.)$ is a transformation function taking the following form:
 \begin{equation}
 \begin{split}
 \Lambda(x) = R(\rho_{1}, \rho_{2}, \rho_{3})x + t
@@ -151,7 +151,7 @@ Where $\Phi_{s}(.)$ is a scalar valued SDF(Signed Distance Function) for the sub
 Where $R(.)$ is a rotation matrix from the Special Orthogonal group $\mathbbm{SO}(3)$ parameterised by the three 
 Rodrigues Parameters \cite{Shuster1993} $\rho_{1}$, $\rho_{2}$ and $\rho_{3}$. The $\mathbf{x}$ in the log posterior refers to the vector $\mathbf{x} = [t_{1}, t_{2}, t_{3}, \rho_{1}, \rho_{2}, \rho_{3}]$, 
 the translational and rotational parameters. Finally, $m$ is the number of voxel locations for which a valid SDF value has been found for both subsegments. In our experiments, $\sigma = 2$.\\
-Note that the logarithmic form of the posterior is suitable to Nonlinear Least Squares optimisation. Gradient-based maximisation of the above posterior to yield an optimal deformation is a highly nonlinear optimisation problem. As such, it is suited to second-order gradient-based optimisation. To perform MAP(Maximum A Posteriori) over this posterior using 
+Note that the logarithmic form of the posterior is suitable to Nonlinear Least Squares optimisation. Gradient-based maximisation of the above posterior to yield an optimal deformation is a highly nonlinear optimisation problem. As such, it is suited to second-order gradient-based optimisation. To perform MAP (Maximum A Posteriori) over this posterior using 
 an optimisation routine such as Levenberg Marquardt, the following gradients must be computed for the rotational component of the 
 deformation:
 \begin{equation}
