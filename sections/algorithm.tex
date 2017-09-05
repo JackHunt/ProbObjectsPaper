@@ -105,7 +105,7 @@ to cause any functional issues.
 \subsection{Online Model Correction}
 \label{subsec:onlinemodelcorrection}
 
-The tracking consistency constraint denoted by the variable $L$ in the graphical models given by Figure \ref{pgm} can 
+The tracking consistency constraint denoted by the variable $L$ in the graphical models given by Figure \ref{fig:pgm} can 
 be enforced in terms of minimising the disparity between adjacent subvolumes, such that the poses tracked in each subvolume are consistent.  
 %The approach proposed in this work differs from \cite{Kahler2016} in that the optimisation is integrated in to the probabilistic formulation previously outlined. 
 Given instantaneously inferred transforms between subvolumes obtained from tracking results, 
@@ -130,7 +130,7 @@ The following proportionality to the distribution over deformations is made for 
 $\Phi \subset \Psi$. $X$ is the set of valid voxel locations in $\Phi_{s}$ for which the currently accumulated appearance posterior is greater for foreground:
 \begin{equation}
 \begin{split}
-P(L_{s, s'} | \Omega, p) \propto P(\Phi_{s}(X)) | \Phi_{s'}(\Lambda(X)))P(L_{s, s'})
+P(L_{s, s'} | \Omega, p) \propto P(\Phi_{s}(X)) | \Phi_{s'}(\Lambda(X))P(L_{s, s'})
 \end{split}
 \end{equation}
 Where the prior distribution over transformations $P(L_{s, s'})$ corresponds to the Gaussian Conjugate Prior $\mathcal{N}(L_{s, s'} | \mathbf{0}, \mathbf{\lambda}^{-1})$.
