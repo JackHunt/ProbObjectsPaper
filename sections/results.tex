@@ -23,7 +23,7 @@ with object segmentation such that the comparison system also only tracks the ob
 
 %In the following experiments, tracking is performed using only geometry cues from the rendered object models and the instantaneous depth frame.\\
 
-The tracking accuracy is evaluated via the ATE(Absolute Trajectory Error) metric \cite{sturm12iros}, and is summarised in Table~\ref{ateTable}.
+The tracking accuracy is evaluated via the ATE (Absolute Trajectory Error) metric \cite{sturm12iros}, and is summarised in Table~\ref{ateTable}.
 
 \begin{table}[!t]
 	{
@@ -38,7 +38,7 @@ The tracking accuracy is evaluated via the ATE(Absolute Trajectory Error) metric
 		\end{center}
 	}
    \vspace{-4mm}
-	\caption{ATE(Absolute Trajectory Error) results (lower is better) achieved by our approach versus InfinITAM with object segmentation.}
+	\caption{ATE (Absolute Trajectory Error) results (lower is better) achieved by our approach versus InfiniTAM with object segmentation.}
 	\label{ateTable}
 \end{table}
 
@@ -52,7 +52,7 @@ The tracking accuracy is evaluated via the ATE(Absolute Trajectory Error) metric
     \vspace{-3mm}
 	\caption{
         Comparison of the estimated camera trajectory with the ground truth for
-		~\textit{freiburg3\_cabinet}(left)  and ~\textit{freiburg3\_teddy}(right).
+		~\textit{freiburg3\_cabinet} (left)  and ~\textit{freiburg3\_teddy} (right).
 	}
 \label{fig:tumTrajectories}
 \end{figure}
@@ -80,7 +80,7 @@ Such snapshots are captured after each quarter of a sequence has been processed.
 		\includegraphics[width=0.45\textwidth]{filmstrips/dino_s3d_large.png}
 	%\end{tabular}
 	\caption{
-        Quarterly interval snapshots of the Dinosaur Head reconstruction using our method(upper), and the one proposed by Ren et~al.~\cite{Ren2013}(lower).
+        Quarterly interval snapshots of the Dinosaur Head reconstruction using our method (upper), and the one proposed by Ren et~al.~\cite{Ren2013} (lower).
 	}
 	\label{fig:dinoComparison}
 \end{figure}
@@ -109,7 +109,7 @@ Such snapshots are captured after each quarter of a sequence has been processed.
 	    \includegraphics[width=0.45\textwidth]{filmstrips/rock_s3d_large.png}
 %	\end{tabular}
 	\caption{
-		Quarterly interval snapshots of the Museum Rock reconstruction using our method(top row), and the one proposed by Ren et~al.~\cite{Ren2013}(bottom row).
+		Quarterly interval snapshots of the Museum Rock reconstruction using our method (top row), and the one proposed by Ren et~al.~\cite{Ren2013} (bottom row).
 	}
 	\label{fig:rockComparison}
 \end{figure}
@@ -143,8 +143,7 @@ The object reconstructions depicted in Figure~\ref{fig:demo} have been obtained 
 	\vspace{-3mm}
 	\caption{
 		From left to right, Bear, Brain, Chair and Dinosaur Head. Row 1 is InfiniTAM output, row 2 is our system and row 3 is the Hausdorff distance between the two, with the colour scale 
-		given in Figure \ref{fig:colour_range})
-	}
+		given in Figure \ref{fig:colour_range}.}
 	\vspace{-5mm}
 	\label{fig:demo}
 \end{figure*}
@@ -152,7 +151,7 @@ The object reconstructions depicted in Figure~\ref{fig:demo} have been obtained 
 \begin{figure}
 	\centering
 	\includegraphics[scale=0.5]{hausdorff/colour_range.png}
-	\caption{Hausdorff distance heatmap key. Blue is \textit{Max Dist} and red is \textit{Min Dist} of Table \ref{hausdorffTable}}
+	\caption{Hausdorff distance heatmap key. Blue is \textit{Max Dist} and red is \textit{Min Dist} of Table \ref{hausdorffTable}.}
 	\label{fig:colour_range}
 \end{figure}
 
@@ -173,7 +172,7 @@ is caused by tracking drift, resulting in the system fusing surface information 
 	\end{tabular}
 	\vspace{-3mm}
 	\caption{
-		Teddy reconstruction with InfiniTAM(first row) versus our system(second row).
+		Teddy reconstruction with InfiniTAM (first row) versus our system (second row).
 	}
 	\label{fig:gappy_teddy}
 \end{figure}
@@ -190,7 +189,7 @@ d_{H}(X, Y) = \max \Bigg \{ \sup_{x \in X} \inf_{y \in Y} d(x, y), \sup_{y \in Y
 where $X$ is the ground truth dense SLAM reconstruction, $Y$ is the reconstruction outputted by our system and $d(.)$ is the Euclidean distance.
 
 The resultant comparisons may be found in Table \ref{hausdorffTable}. In addition, we provide the outputted reconstructions from our system textured on reconstruction quality w.r.t. the Hausdorff Distance. 
-For reference, the colour scale used is given in figure \ref{fig:colour_range} where the left extrema(blue) is given by a sequences \textit{Max Dist} and the right extrema(red) by the sequences \textit{Min Dist}. 
+For reference, the colour scale used is given in figure \ref{fig:colour_range} where the left extrema (blue) is given by a sequences \textit{Max Dist} and the right extrema (red) by the sequences \textit{Min Dist}. 
 \begin{table}[!t]
 	{
 		\footnotesize
@@ -216,4 +215,4 @@ is modelling and tracking the entire scene.
 \subsection{Running Times and Performance}
 We have implemented our system both on the CPU and GPU. With a GPU implementation with NVIDIA CUDA we are able to achieve runtimes of on average \textit{90Hz} with a consumer grade NVIDIA GeForce GTX1060 with 
 6GB GRAM. With our CPU only implementation we make use of parallelism with OpenMP and achieve runtimes of on average \textit{5Hz} on a consumer grade PC with an Intel Core i5-6600K 3.5GHz CPU and 16GB of RAM. Such 
-online runtimes are possible due to the asynchronous way in which we have implemented the online adjustments combined with GPU acceleration
+online runtimes are possible due to the asynchronous way in which we have implemented the online adjustments combined with GPU acceleration.

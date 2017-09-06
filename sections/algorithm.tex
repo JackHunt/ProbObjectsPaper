@@ -151,8 +151,8 @@ Where $\Phi_{s}(.)$ is a scalar valued SDF (Signed Distance Function) for the su
 Where $R(.)$ is a rotation matrix from the Special Orthogonal group $\mathbbm{SO}(3)$ parameterised by the three 
 Rodrigues Parameters \cite{Shuster1993} $\rho_{1}$, $\rho_{2}$ and $\rho_{3}$. The $\mathbf{x}$ in the log posterior refers to the vector $\mathbf{x} = [t_{1}, t_{2}, t_{3}, \rho_{1}, \rho_{2}, \rho_{3}]$, 
 the translational and rotational parameters. Finally, $m$ is the number of voxel locations for which a valid SDF value has been found for both subsegments. In our experiments, $\sigma = 2$.\\
-Note that the logarithmic form of the posterior is suitable to Nonlinear Least Squares optimisation. Gradient-based maximisation of the above posterior to yield an optimal deformation is a highly nonlinear optimisation problem. As such, it is suited to second-order gradient-based optimisation. To perform MAP (Maximum A Posteriori) over this posterior using 
-an optimisation routine such as Levenberg Marquardt, the following gradients must be computed for the rotational component of the 
+Note that the logarithmic form of the posterior is suitable to non-linear least squares optimisation. Gradient-based maximisation of the above posterior to yield an optimal deformation is a highly non-linear optimisation problem. As such, it is suited to second-order gradient-based optimisation. To perform MAP (Maximum A Posteriori) over this posterior using 
+an optimisation routine such as Levenberg-Marquardt, the following gradients must be computed for the rotational component of the 
 deformation:
 \begin{equation}
 \begin{split}
@@ -217,10 +217,10 @@ The aforementioned cut in voxel space is achieved by an optimisation of the abov
 
 \subsection{Explicit Loop Closure Detection}
 In addition to our online model correction algorithm to counteract tracking drift, we also detect loop closure events such that re-localisation can occur and 
-the tracked pose be adjusted accordingly. Following the approaches of \cite{Glocker15,Kahler2016} we utilise a Keyframe based loop closure detection system. For a 
-given depth image, its corresponding Keyframe is a subsampled and Gaussian filtered version of the depth image which is then encoded in a Fern Conservatory. 
-Similarity/dissimilarity scores between Ferns are then computed and used to either detect a loop closure event for high scoring matches with existing Keyframes, 
-or to spawn a new Keyframe if dissimilarity is sufficiently high w.r.t. the last Keyframe.
+the tracked pose be adjusted accordingly. Following the approaches of \cite{Glocker15,Kahler2016} we utilise a keyframe-based loop closure detection system. For a 
+given depth image, its corresponding keyframe is a subsampled and Gaussian filtered version of the depth image which is then encoded in a Fern Conservatory. 
+Similarity/dissimilarity scores between Ferns are then computed and used to either detect a loop closure event for high scoring matches with existing keyframes, 
+or to spawn a new keyframe if dissimilarity is sufficiently high w.r.t.\ the last keyframe.
 
 \subsection{Surface Fusion Procedure}
 \paragraph{Volumetric Representation}
